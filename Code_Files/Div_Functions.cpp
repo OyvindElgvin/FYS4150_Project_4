@@ -32,3 +32,21 @@ vector<int> readvalues(string file){
     values.close();
     return N_values;
     }
+
+
+
+void initialize(int n_spins, double temp, int **spin_matrix, double& E, double& M){
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
