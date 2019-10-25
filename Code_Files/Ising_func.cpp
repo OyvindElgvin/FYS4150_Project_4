@@ -16,27 +16,43 @@ using namespace std;
 using namespace arma;
 
 
-void Ising_Func(double T,int L,int N,int test){
+void Ising_Func(vec T,int L,int N,int test){
 
     // start function here
 
     // initialize
     double E_mean = 0;
+    double E2_mean = 0;
     double M_mean = 0;
+    double M2_mean = 0;
     double Cv = 0;
     double X = 0;
 
+    // Loop over Temperatures
+    for (uword i;i<T.n_elem;i++){
     double accepted_configurations = 0;
+
+    vec dE = ("-8 -4 0 4 8");
+    vec P = vec(5,fill::zeros);
+    for (uword i;i<5;i++){
+        P(i) = exp(-dE(i)*T(i));
+    }
 
     mat S_matrix(static_cast<uword>(L),static_cast<uword>(L),fill::ones);
     vec Energies;
     vec M_Moments;
+    double E = 0;//expression for initial energy
+    double M = 0;//expression for inital magnetization
+    // Loop over Monte Carlo Cycles
+    for(int i = 0;i<N;i++);
 
 
 
-
-
-
+    E_mean += E;
+    E2_mean += E*E;
+    M_mean += M;
+    M2_mean += M*M;
+    }
     // end calculations here
 
     // Run test if so desired
@@ -94,14 +110,14 @@ void Ising_Func(double T,int L,int N,int test){
 
     // Writing results to file
     if (test != 1){
-        string filename = "Energies_T_" + to_string(T) + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
+        string filename = "Energies_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_E;
         output_E.open(filename,ios::out);
         output_E << E_mean << endl << endl;
         output_E << Energies << endl;
         output_E.close();
 
-        filename = "Mmoments_T_" + to_string(T) + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
+        filename = "Mmoments_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_M;
         output_M.open(filename,ios::out);
         output_M << M_mean << endl << endl;
