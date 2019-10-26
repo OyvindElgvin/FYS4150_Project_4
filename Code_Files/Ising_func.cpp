@@ -25,6 +25,7 @@ void Ising_Func(vec T,int L,int N,int test){
     double E2_mean = 0;
     double M_mean = 0;
     double M2_mean = 0;
+    double M_abs_mean = 0;
     double Cv = 0;
     double X = 0;
 
@@ -52,6 +53,7 @@ void Ising_Func(vec T,int L,int N,int test){
     E2_mean += E*E;
     M_mean += M;
     M2_mean += M*M;
+    M_abs_mean += fabs(M);
     }
     // end calculations here
 
