@@ -16,7 +16,7 @@ using namespace std;
 using namespace arma;
 
 
-void Ising_Func(double T, int L, int N, int test);
+void Ising_Func(vec T, int L, int N, int test);
 int Ising_Test();
 vector<int> readvalues(string file);
 
