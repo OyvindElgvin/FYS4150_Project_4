@@ -12,10 +12,13 @@
 #define EPS 3.0e-14
 #define MAXIT 10
 
+#include <random>
+#include <chrono>
 
 
 using namespace std;
 using namespace arma;
+using namespace chrono;
 
 // Read a Coloumn Vector from a file
 vector<int> readvalues(string file){
@@ -42,26 +45,41 @@ inline int periodic(int i, int limit, int add) {
 
 
 // function to initialise energy, spin matrix and magnetization
-void initialize(int n_spins, double temp, int **spin_matrix, double& E, double& M){
+void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M){
     // setup spin matrix and intial magnetization
-    for(int y = 0; y < n_spins; y++) {
-        for (int x = 0; x < n_spins; x++){
-            if (temp < 1.5) spin_matrix[y][x] = 1; // spin orientation for the ground state
-            M += double spin_matrix[y][x];
+    for(uword y = 0; y < n_spins; y++) {
+        for (uword x = 0; x < n_spins; x++){
+            if (temp < 1.5) spin_matrix(y,x) = 1; // spin orientation for the ground state
+            M += static_cast<double>(spin_matrix(y,x));
         }
     }
     // setup initial energy
-    for(int y =0; y < n_spins; y++) {
-        for (int x= 0; x < n_spins; x++){
-            E -= double spin_matrix[y][x]*
-                       (spin_matrix[periodic(y,n_spins,-1)][x] +
-                        spin_matrix[y][periodic(x,n_spins,-1)]);
+    for(uword y =0; y < n_spins; y++) {
+        for (uword x= 0; x < n_spins; x++){
+            E -= static_cast<double>(spin_matrix(y,x)*
+                       (spin_matrix(periodic(y,n_spins,-1),x) +
+                        spin_matrix(y,periodic(x,n_spins,-1))));
         }
     }
-}// end function initialise
+}// end function initialize
 
 
+// function for changing energy state
+void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,mat& spin_matrix, double& Energy, double& Mmoment){
 
+    double delta_E = 2*spin_matrix(i,j) * (spin_matrix(i,j-1) + spin_matrix(i,j+1) + spin_matrix(i-1,j) + spin_matrix(i+1,j));
+    uvec index = find(dE == delta_E);
+    double Prob = P(index(0));
+
+    double r = generate_canonical< double, 128 > (generator);
+    if (r < Prob){
+        spin_matrix(i,j) = -spin_matrix(i,j);
+        Energy = Energy + delta_E;
+        Mmoment = Mmoment + 2*spin_matrix(i,j);
+    }
+
+
+} // end function changing_state
 
 
 

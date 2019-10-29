@@ -39,6 +39,8 @@ void Ising_Func(vec T,int L,int N,int test){
         P(i) = exp(-dE(i)*T(i));
     }
 
+    
+    
     mat S_matrix(static_cast<uword>(L),static_cast<uword>(L),fill::ones);
     vec Energies;
     vec M_Moments;
