@@ -67,10 +67,14 @@ void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M
 // function for changing energy state
 void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,mat& spin_matrix, double& Energy, double& Mmoment){
 
+    // Calculating energy difference for flipped spin
     double delta_E = 2*spin_matrix(i,j) * (spin_matrix(i,j-1) + spin_matrix(i,j+1) + spin_matrix(i-1,j) + spin_matrix(i+1,j));
+
+    // Find probability exp(-b dE) from precalculated array
     uvec index = find(dE == delta_E);
     double Prob = P(index(0));
 
+    // Sample rule: Check if new state is accepted
     double r = generate_canonical< double, 128 > (generator);
     if (r < Prob){
         spin_matrix(i,j) = -spin_matrix(i,j);
