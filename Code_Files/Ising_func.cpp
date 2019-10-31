@@ -30,7 +30,7 @@ void Ising_Func(vec T,int L,int N,int test){
     double X = 0;
 
     // Loop over Temperatures
-    for (uword i;i<T.n_elem;i++){
+    for (uword i=0;i<T.n_elem;i++){
     double accepted_configurations = 0;
 
     vec dE = ("-8 -4 0 4 8");
@@ -46,10 +46,12 @@ void Ising_Func(vec T,int L,int N,int test){
     vec M_Moments;
     double E = 0;//expression for initial energy
     double M = 0;//expression for inital magnetization
+    double spin_prob = 1.0/(L*L);
     // Loop over Monte Carlo Cycles
+
     for(int i = 0;i<N;i++);
 
-
+        double r = generate_canonical< double, 128 > (generator);
 
     E_mean += E;
     E2_mean += E*E;

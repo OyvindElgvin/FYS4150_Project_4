@@ -25,7 +25,7 @@ vector<int> readvalues(string file);
 int main(){
 
     void test_dE();
-    /*
+
     // Running test for L = 2 and N = 100
     Ising_Func(1.0,2,100,1);
 
@@ -48,6 +48,6 @@ int main(){
     } // end of N loop
     } // end of T loop
     } // end of L loop
-    */
+
 
 } // end of main
