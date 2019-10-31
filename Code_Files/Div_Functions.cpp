@@ -45,7 +45,29 @@ inline int periodic(int i, int limit, int add) {
 
 
 // function to initialise energy, spin matrix and magnetization
-void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M){
+void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M,string order){
+    // set up spin matrix and initial amagnetization
+    if (order == "order"){
+        spin_matrix.ones();
+    }
+    else{
+        spin_matrix.randu();
+        for (uword i = 0; i<n_spins; i++){
+            for (uword j = 0; j<n_spins; j++){
+                if(spin_matrix(i,j) < 0.5){spin_matrix(i,j) = -1.;}
+                else{spin_matrix(i,j) = 1.;}
+            }
+        }
+    }
+
+    for (uword i = 0; i<n_spins; i++){
+        for (uword j = 0; j<n_spins; j++){
+            M += spin_matrix(i,j);
+
+        }
+    }
+
+
     // setup spin matrix and intial magnetization
     for(int y = 0; y < n_spins; y++) {
         for (int x = 0; x < n_spins; x++){

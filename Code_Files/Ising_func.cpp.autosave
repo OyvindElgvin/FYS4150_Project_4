@@ -43,7 +43,7 @@ void Ising_Func(vec T,int L,int N,int test){
 
     vec dE = ("-8 -4 0 4 8");
     vec P = vec(5,fill::zeros);
-    for (uword i;i<5;i++){
+    for (uword i=0;i<5;i++){
         P(i) = exp(-dE(i)*T(i));
     }
 
@@ -63,13 +63,15 @@ void Ising_Func(vec T,int L,int N,int test){
         int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L*L) );
 
         changing_state(generator, ix, iy, dE, P,S_matrix, E, M);
-    }
+    
 
     E_mean += E;
     E2_mean += E*E;
     M_mean += M;
     M2_mean += M*M;
     M_abs_mean += fabs(M);
+    }
+    
     }
     // end calculations here
 
