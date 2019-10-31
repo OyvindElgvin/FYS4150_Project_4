@@ -2,7 +2,7 @@
 #include "armadillo"
 #include <vector>
 #include "time.h"
-
+#include <random>
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -11,10 +11,11 @@
 #include <stdio.h>
 #define EPS 3.0e-14
 #define MAXIT 10
+#include <chrono>
 
 using namespace std;
 using namespace arma;
-
+using namespace chrono;
 
 void Ising_Func(vec T,int L,int N,int test){
 
@@ -28,6 +29,9 @@ void Ising_Func(vec T,int L,int N,int test){
     double M_abs_mean = 0;
     double Cv = 0;
     double X = 0;
+
+    unsigned seed = system_clock::now().time_since_epoch().count();
+    mt19937_64 gen (seed);
 
     // Loop over Temperatures
     for (uword i;i<T.n_elem;i++){
