@@ -47,15 +47,15 @@ inline int periodic(int i, int limit, int add) {
 // function to initialise energy, spin matrix and magnetization
 void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M){
     // setup spin matrix and intial magnetization
-    for(uword y = 0; y < n_spins; y++) {
-        for (uword x = 0; x < n_spins; x++){
+    for(int y = 0; y < n_spins; y++) {
+        for (int x = 0; x < n_spins; x++){
             if (temp < 1.5) spin_matrix(y,x) = 1; // spin orientation for the ground state
             M += static_cast<double>(spin_matrix(y,x));
         }
     }
     // setup initial energy
-    for(uword y =0; y < n_spins; y++) {
-        for (uword x= 0; x < n_spins; x++){
+    for(int y =0; y < n_spins; y++) {
+        for (int x= 0; x < n_spins; x++){
             E -= static_cast<double>(spin_matrix(y,x)*
                        (spin_matrix(periodic(y,n_spins,-1),x) +
                         spin_matrix(y,periodic(x,n_spins,-1))));
