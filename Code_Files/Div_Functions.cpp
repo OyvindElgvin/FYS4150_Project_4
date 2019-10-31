@@ -60,10 +60,13 @@ void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M
         }
     }
 
+
     for (uword i = 0; i<n_spins; i++){
         for (uword j = 0; j<n_spins; j++){
             M += spin_matrix(i,j);
-
+            E -= spin_matrix(i,j)*
+                    (spin_matrix(periodic(i,n_spins,-1),j) +
+                     spin_matrix(i,periodic(j,n_spins,-1)));
         }
     }
 

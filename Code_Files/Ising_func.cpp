@@ -39,8 +39,7 @@ void Ising_Func(vec T,int L,int N,int test){
 
     // Loop over Temperatures
     for (uword i=0;i<T.n_elem;i++){
-    double accepted_configurations = 0;
-
+        T_ = T(i);
     vec dE = ("-8 -4 0 4 8");
     vec P = vec(5,fill::zeros);
     for (uword i;i<5;i++){
