@@ -15,6 +15,7 @@
 #include <random>
 #include <chrono>
 
+#include "pro4_functions.h"
 
 using namespace std;
 using namespace arma;
@@ -45,8 +46,8 @@ inline int periodic(int i, int limit, int add) {
 
 
 // function to initialise energy, spin matrix and magnetization
-void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M,string order){
-    // set up spin matrix and initial amagnetization
+void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order){
+    // Set up spin matrix
     if (order == "order"){
         spin_matrix.ones();
     }
@@ -60,7 +61,7 @@ void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M
         }
     }
 
-
+    // Set up inital magnetic moment and energy
     for (uword i = 0; i<n_spins; i++){
         for (uword j = 0; j<n_spins; j++){
             M += spin_matrix(i,j);
@@ -69,31 +70,13 @@ void initialize(int n_spins, double temp, mat& spin_matrix, double& E, double& M
                      spin_matrix(i,periodic(j,n_spins,-1)));
         }
     }
-
-
-    // setup spin matrix and intial magnetization
-    for(int y = 0; y < n_spins; y++) {
-        for (int x = 0; x < n_spins; x++){
-            if (temp < 1.5) spin_matrix(y,x) = 1; // spin orientation for the ground state
-            M += static_cast<double>(spin_matrix(y,x));
-        }
-    }
-    // setup initial energy
-    for(int y =0; y < n_spins; y++) {
-        for (int x= 0; x < n_spins; x++){
-            E -= static_cast<double>(spin_matrix(y,x)*
-                       (spin_matrix(periodic(y,n_spins,-1),x) +
-                        spin_matrix(y,periodic(x,n_spins,-1))));
-        }
-    }
-}// end function initialize
-
+} // End initialize
 
 // function for changing energy state
-void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,mat& spin_matrix, double& Energy, double& Mmoment){
+void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC){
 
     // Calculating energy difference for flipped spin
-    double delta_E = 2*spin_matrix(i,j) * (spin_matrix(i,j-1) + spin_matrix(i,j+1) + spin_matrix(i-1,j) + spin_matrix(i+1,j));
+    double delta_E = 2*spin_matrix(i,j) * (spin_matrix(i,periodic(j,L,-1)) + spin_matrix(i,periodic(j,L,1)) + spin_matrix(periodic(i,L,-1),j) + spin_matrix(periodic(i,L,1),j));
 
     // Find probability exp(-b dE) from precalculated array
     uvec index = find(dE == delta_E);
@@ -105,15 +88,35 @@ void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,mat& s
         spin_matrix(i,j) = -spin_matrix(i,j);
         Energy = Energy + delta_E;
         Mmoment = Mmoment + 2*spin_matrix(i,j);
+        AC += 1;
     }
-
 
 } // end function changing_state
 
 
+void Task_b(){
+    vector<int> Nvalues = readvalues("Pro4b_Nvalues.txt");
+    int L = 2;
+    vec T = vec("1.0");
 
+    for (int i = 0;i<Nvalues.size();i++){
+    Ising_Func(T,L,Nvalues[i],"Results_4b","order",0);
 
+    }
 
+} // end Task_b
+
+void Task_c(){
+    vector<int> Nvalues = readvalues("Pro4c_Nvalues.txt");
+    int L = 20;
+    vec T = vec("1.0 2.4");
+
+    for (int i = 0;i<Nvalues.size();i++){
+    Ising_Func(T,L,Nvalues[i],"Results_4c_order","order",0);
+    Ising_Func(T,L,Nvalues[i],"Results_4c_order","random",0);
+    }
+
+} // end Task_c
 
 
 

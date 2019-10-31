@@ -58,7 +58,9 @@ OBJECTS       = debug/.o \
 		debug/Ising_test.o \
 		debug/main_pro4.o
 
-DIST          =  lib.h \ \
+DIST          = ../Code_Files/Pro4_Lvalues.txt \
+		../Code_Files/Pro4_Nvalues.txt ../Code_Files/pro4_functions.h \
+		lib.h \ \
 		..\Code_Files\Div_Functions.cpp \
 		..\Code_Files\Ising_func.cpp \
 		..\Code_Files\Ising_test.cpp \
@@ -1260,7 +1262,8 @@ debug/Ising_func.o: ../Code_Files/Ising_func.cpp C:/Qt/armadillo-9.700.2/include
 		C:/Qt/armadillo-9.700.2/include/armadillo_bits/newarp_TridiagEigen_meat.hpp \
 		C:/Qt/armadillo-9.700.2/include/armadillo_bits/newarp_UpperHessenbergEigen_meat.hpp \
 		C:/Qt/armadillo-9.700.2/include/armadillo_bits/newarp_UpperHessenbergQR_meat.hpp \
-		C:/Qt/armadillo-9.700.2/include/armadillo_bits/compiler_setup_post.hpp
+		C:/Qt/armadillo-9.700.2/include/armadillo_bits/compiler_setup_post.hpp \
+		../Code_Files/pro4_functions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\Ising_func.o ..\Code_Files\Ising_func.cpp
 
 debug/Ising_test.o: ../Code_Files/Ising_test.cpp C:/Qt/armadillo-9.700.2/include/armadillo \
@@ -2410,7 +2413,8 @@ debug/main_pro4.o: ../Code_Files/main_pro4.cpp C:/Qt/armadillo-9.700.2/include/a
 		C:/Qt/armadillo-9.700.2/include/armadillo_bits/newarp_TridiagEigen_meat.hpp \
 		C:/Qt/armadillo-9.700.2/include/armadillo_bits/newarp_UpperHessenbergEigen_meat.hpp \
 		C:/Qt/armadillo-9.700.2/include/armadillo_bits/newarp_UpperHessenbergQR_meat.hpp \
-		C:/Qt/armadillo-9.700.2/include/armadillo_bits/compiler_setup_post.hpp
+		C:/Qt/armadillo-9.700.2/include/armadillo_bits/compiler_setup_post.hpp \
+		../Code_Files/pro4_functions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main_pro4.o ..\Code_Files\main_pro4.cpp
 
 ####### Install

@@ -21,56 +21,91 @@ using namespace chrono;
 
 
 
-void Ising_Func(vec T,int L,int N,int test){
+void Ising_Func(vec T,int L,int N,string file,string order,int test){
 
     // start function here
 
+
+    // Initiaize Random Number Generator
+    unsigned seed = system_clock::now().time_since_epoch().count();
+    mt19937_64 generator (seed);
+
+    // Vectors for storing E, M, Cv and X for different Temperatures
+    vec E_t = vec(T.n_elem,fill::zeros);
+    vec M_t = vec(T.n_elem,fill::zeros);
+    vec Cv_t = vec(T.n_elem,fill::zeros);
+    vec X_t = vec(T.n_elem,fill::zeros);
+    vec AC_t = vec(T.n_elem,fill::zeros);
+
+    // Loop over Temperatures
+
+    for (uword i=0;i<T.n_elem;i++){
+    vec dE = ("-8 -4 0 4 8");
+    vec P = vec(5,fill::zeros);
+    for (uword i=0;i<5;i++){
+        P(i) = exp(-dE(i)/T(i));
+    }
+
+
     // initialize
+    double E = 0; //expression for initial energy
+    double M = 0; //expression for inital magnetization
+    double Cv = 0; //Heat Capacity
+    double X = 0; //Susceptibility
+    int accepted_configurations = 0;
+
+
     double E_mean = 0;
     double E2_mean = 0;
     double M_mean = 0;
     double M2_mean = 0;
     double M_abs_mean = 0;
-    double Cv = 0;
-    double X = 0;
-
-    unsigned seed = system_clock::now().time_since_epoch().count();
-    mt19937_64 generator (seed);
-
-    // Loop over Temperatures
-    for (uword i=0;i<T.n_elem;i++){
-        T_ = T(i);
-    vec dE = ("-8 -4 0 4 8");
-    vec P = vec(5,fill::zeros);
-    for (uword i;i<5;i++){
-        P(i) = exp(-dE(i)*T(i));
-    }
 
 
+    mat S_matrix = mat(L,L,fill::zeros);
+    vec Energies  = vec(N,fill::zeros);
 
-    mat S_matrix(static_cast<uword>(L),static_cast<uword>(L),fill::ones);
-    vec Energies;
-    vec M_Moments;
-    double E = 0;//expression for initial energy
-    double M = 0;//expression for inital magnetization
-    double spin_prob = 1.0/(L*L);
+    initialize(L,S_matrix,E,M,order);
+
+
     // Loop over Monte Carlo Cycles
-
-    for(int i = 0;i<N;i++){
+    for(int j = 0;j<N;j++){
 
         int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L*L) );
         int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L*L) );
 
-        changing_state(generator, ix, iy, dE, P,S_matrix, E, M);
-    }
+        changing_state(generator, ix, iy, dE, P,S_matrix, E, M,accepted_configurations);
 
+
+    Energies(j) = E;
     E_mean += E;
     E2_mean += E*E;
     M_mean += M;
     M2_mean += M*M;
     M_abs_mean += fabs(M);
-    }
+    } // end of Monte Carlo loop
+
+
+    E_mean /= N;
+    E2_mean /= N;
+    M_mean /= N;
+    M2_mean /= N;
+    M_abs_mean /= N;
+
+    double Variance_E = (1/N)*(E2_mean-E_mean*E_mean);
+    double Variance_M = (1/N)*(M2_mean-M_mean*M_mean);
+    Cv = Variance_E/(T(i)*T(i));
+    X = Variance_M/T(i);
+
+    E_t(i) = E_mean;
+    M_t(i) = M_abs_mean;
+    Cv_t(i) = Cv;
+    X_t(i) = X;
+    AC_t(i) = accepted_configurations;
+
     // end calculations here
+
+
 
     // Run test if so desired
     if (test == 1){
@@ -117,8 +152,9 @@ void Ising_Func(vec T,int L,int N,int test){
     }
 
 
-    /*
+
     // Printing results to terminal
+    /*
     if (test != 1){
        cout << "--------------------------------------" << endl;
        cout << "Temperature = " << T << endl;
@@ -146,6 +182,22 @@ void Ising_Func(vec T,int L,int N,int test){
     }
 
 */
-return;
 
+
+    } // End of temperature loop
+
+    if (test != 1){
+        string filename = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
+        ofstream output_Results;
+        output_Results.open(filename,ios::out);
+        output_Results << T << endl << endl;
+        output_Results << E_t << endl << endl;
+        output_Results << M_t << endl << endl;
+        output_Results << Cv_t << endl << endl;
+        output_Results << X_t << endl << endl;
+        output_Results << AC_t << endl;
+        output_Results.close();
+    }
+
+return;
 } // End of Ising_func
