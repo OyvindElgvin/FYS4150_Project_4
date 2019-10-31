@@ -1,0 +1,9 @@
+Z              =  5973.916645
+<E>            = -7.983928344
+<E^2>          =  63.87144113
+Variance of E  =  0.1283293234
+Heat Capacity  =  Variance_E
+<M>            =  0
+<M^2>          =  15.9732151
+Variance of M  =  <M^2>
+Susceptibility =  <M^2>
