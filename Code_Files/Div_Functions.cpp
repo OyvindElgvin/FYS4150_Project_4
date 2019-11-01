@@ -113,7 +113,7 @@ void Task_c(){
 
     for (int i = 0;i<Nvalues.size();i++){
     Ising_Func(T,L,Nvalues[i],"Results_4c_order","order",0);
-    Ising_Func(T,L,Nvalues[i],"Results_4c_order","random",0);
+    Ising_Func(T,L,Nvalues[i],"Results_4c_random","random",0);
     }
 
 } // end Task_c
