@@ -1,6 +1,8 @@
 from numpy import *
 from matplotlib.pyplot import *
 
+# 1 The most likely state
+
 # Read from files
 m=100000
 n = array([i for i in range(0,m)]) # List of number of monte carlo cycles
@@ -13,8 +15,6 @@ M_mean_L20_T1_unord = array([random.randn() for _ in range(m)])
 M_mean_L20_T24_ord = array([random.randn() for _ in range(m)])
 M_mean_L20_T24_unord = array([random.randn() for _ in range(m)])
 
-
-# The most likely state
 fig1, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
 line1 = ax1.plot(n,E_mean_L20_T1_ord,label="a)")
 ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
@@ -30,6 +30,7 @@ ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', trans
 ax4.set_ylabel("$\\langle E\\rangle$")
 xlabel("# of MC-cycles (n)")
 #savefig("../Figures/E_mean_L20.pdf")
+close()
 #show()
 
 fig2, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
@@ -47,9 +48,10 @@ ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', trans
 ax4.set_ylabel("$\\langle M\\rangle$")
 xlabel("# of MC-cycles (n)")
 #savefig("../Figures/M_mean_L20.pdf")
+close()
 #show()
 
-# Probability distribution
+# 2 Probability distribution
 fig3, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
 line1 = ax1.hist(E_mean_L20_T1_ord, 50, normed=True, facecolor='g', alpha=0.75)
 ax1.set_ylabel("$\\rho_{\\langle E\\rangle}$")
@@ -61,6 +63,7 @@ line4 = ax4.hist(E_mean_L20_T24_unord, 50, normed=True, facecolor='g', alpha=0.7
 ax4.set_ylabel("$\\rho_{\\langle E\\rangle}$")
 xlabel("$\\langle E\\rangle$")
 #savefig("../Figures/E_mean_L20_probability.pdf")
+close()
 
 fig4, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
 line1 = ax1.hist(M_mean_L20_T1_ord, 50, normed=True, facecolor='g', alpha=0.75)
@@ -73,7 +76,98 @@ line4 = ax4.hist(M_mean_L20_T24_unord, 50, normed=True, facecolor='g', alpha=0.7
 ax4.set_ylabel("$\\rho_{\\langle M\\rangle}$")
 xlabel("$\\langle E\\rangle$")
 #savefig("../Figures/M_mean_L20_probability.pdf")
+close()
+#show()
 
+# 3 Phase transition and critical temperature
+
+# Read from files
+T0 = 2.0
+T1 = 2.3
+h = 0.05
+T = linspace(T0,T1,int((T1-T0)/h))
+
+E_mean_L40 = array([random.randn() for _ in range(len(T))])
+E_mean_L60 = array([random.randn() for _ in range(len(T))])
+E_mean_L80 = array([random.randn() for _ in range(len(T))])
+E_mean_L100 = array([random.randn() for _ in range(len(T))])
+M_mean_L40 = array([random.randn() for _ in range(len(T))])
+M_mean_L60 = array([random.randn() for _ in range(len(T))])
+M_mean_L80 = array([random.randn() for _ in range(len(T))])
+M_mean_L100 = array([random.randn() for _ in range(len(T))])
+Cv_mean_L40 = array([random.randn() for _ in range(len(T))])
+Cv_mean_L60 = array([random.randn() for _ in range(len(T))])
+Cv_mean_L80 = array([random.randn() for _ in range(len(T))])
+Cv_mean_L100 = array([random.randn() for _ in range(len(T))])
+X_mean_L40 = array([random.randn() for _ in range(len(T))])
+X_mean_L60 = array([random.randn() for _ in range(len(T))])
+X_mean_L80 = array([random.randn() for _ in range(len(T))])
+X_mean_L100 = array([random.randn() for _ in range(len(T))])
+
+fig5, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
+line1 = ax1.plot(T,E_mean_L40,label="a)")
+ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
+ax1.set_ylabel("$\\langle E\\rangle$")
+line2 = ax2.plot(T,E_mean_L60,label="b)")
+ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
+line3 = ax3.plot(T,E_mean_L80,label="c)")
+ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
+ax3.set_xlabel("Temperature (T)")
+ax3.set_ylabel("$\\langle E\\rangle$")
+line4 = ax4.plot(T,E_mean_L100,label="d)")
+ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
+xlabel("Temperature (T)")
+#savefig("../Figures/E_mean_func_of_T.pdf")
+close()
+#show()
+
+fig6, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
+line1 = ax1.plot(T,M_mean_L40,label="a)")
+ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
+ax1.set_ylabel("$\\langle |M|\\rangle$")
+line2 = ax2.plot(T,M_mean_L60,label="b)")
+ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
+line3 = ax3.plot(T,M_mean_L80,label="c)")
+ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
+ax3.set_xlabel("Temperature (T)")
+ax3.set_ylabel("$\\langle |M|\\rangle$")
+line4 = ax4.plot(T,M_mean_L100,label="d)")
+ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
+xlabel("Temperature (T)")
+#savefig("../Figures/M_mean_func_of_T.pdf")
+close()
+#show()
+
+fig7, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
+line1 = ax1.plot(T,Cv_mean_L40,label="a)")
+ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
+ax1.set_ylabel("$C_{v}$")
+line2 = ax2.plot(T,Cv_mean_L60,label="b)")
+ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
+line3 = ax3.plot(T,Cv_mean_L80,label="c)")
+ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
+ax3.set_xlabel("Temperature (T)")
+ax3.set_ylabel("$C_{v}$")
+line4 = ax4.plot(T,Cv_mean_L100,label="d)")
+ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
+xlabel("Temperature (T)")
+#savefig("../Figures/Cv_mean_func_of_T.pdf")
+close()
+#show()
+
+fig8, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
+line1 = ax1.plot(T,X_mean_L40,label="a)")
+ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
+ax1.set_ylabel("$\\chi$")
+line2 = ax2.plot(T,X_mean_L60,label="b)")
+ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
+line3 = ax3.plot(T,X_mean_L80,label="c)")
+ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
+ax3.set_xlabel("Temperature (T)")
+ax3.set_ylabel("$\\chi$")
+line4 = ax4.plot(T,X_mean_L100,label="d)")
+ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
+xlabel("Temperature (T)")
+#savefig("../Figures/X_mean_func_of_T.pdf")
+#close()
 show()
-
-# Phase transition and critical temperature
