@@ -31,7 +31,6 @@ ax4.set_ylabel("$\\langle E\\rangle$")
 xlabel("# of MC-cycles (n)")
 #savefig("../Figures/E_mean_L20.pdf")
 close()
-#show()
 
 fig2, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
 line1 = ax1.plot(n,M_mean_L20_T1_ord,label="a)")
@@ -49,7 +48,6 @@ ax4.set_ylabel("$\\langle M\\rangle$")
 xlabel("# of MC-cycles (n)")
 #savefig("../Figures/M_mean_L20.pdf")
 close()
-#show()
 
 # 2 Probability distribution
 fig3, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
@@ -77,7 +75,6 @@ ax4.set_ylabel("$\\rho_{\\langle M\\rangle}$")
 xlabel("$\\langle E\\rangle$")
 #savefig("../Figures/M_mean_L20_probability.pdf")
 close()
-#show()
 
 # 3 Phase transition and critical temperature
 
@@ -119,7 +116,6 @@ ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', trans
 xlabel("Temperature (T)")
 #savefig("../Figures/E_mean_func_of_T.pdf")
 close()
-#show()
 
 fig6, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
 line1 = ax1.plot(T,M_mean_L40,label="a)")
@@ -136,7 +132,6 @@ ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', trans
 xlabel("Temperature (T)")
 #savefig("../Figures/M_mean_func_of_T.pdf")
 close()
-#show()
 
 fig7, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
 line1 = ax1.plot(T,Cv_mean_L40,label="a)")
@@ -153,7 +148,6 @@ ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', trans
 xlabel("Temperature (T)")
 #savefig("../Figures/Cv_mean_func_of_T.pdf")
 close()
-#show()
 
 fig8, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
 line1 = ax1.plot(T,X_mean_L40,label="a)")
@@ -169,5 +163,6 @@ line4 = ax4.plot(T,X_mean_L100,label="d)")
 ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
 xlabel("Temperature (T)")
 #savefig("../Figures/X_mean_func_of_T.pdf")
-#close()
+close()
+
 show()
