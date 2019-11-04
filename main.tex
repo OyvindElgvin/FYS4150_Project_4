@@ -5,6 +5,18 @@
 \usepackage[top=50pt,left=40pt,right=40pt]{geometry}
 \usepackage{titling,wrapfig}
 \usepackage{color}
+\usepackage{csquotes}
+\usepackage{verbatim}
+\usepackage{csvsimple}
+\usepackage{booktabs}
+\usepackage[
+backend=biber,
+style=alphabetic,
+citestyle=authoryear,
+sorting=nyt
+]{biblatex}
+\addbibresource{bibliography.bib}
+ 
  
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -33,7 +45,6 @@
 \lstset{style=mystyle}
 
 
-
 \let\vecarrow\vec
 \renewcommand{\vec}[1]{\mathbf{#1}}
 \let\oldhat\hat
@@ -54,6 +65,20 @@
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
 
+\makeatletter
+\csvset{
+  autobooktabularcenter/.style={
+    file=#1,
+    after head=\csv@pretable\begin{tabular}{*{\csv@columncount}{l}}\csv@tablehead,
+    table head=\toprule\csvlinetotablerow\\\midrule,
+    late after line=\\\midrule,
+    table foot=\\\bottomrule,
+    late after last line=\csv@tablefoot\end{tabular}\csv@posttable,
+    command=\csvlinetotablerow},
+}
+\makeatother
+\newcommand{\csvautotabularcenter}[2][]{\csvloop{autotabularcenter={#2},#1}}
+\newcommand{\csvautobooktabularcenter}[2][]{\csvloop{autobooktabularcenter={#2},#1}}
 
 \tolerance = 5000
 \hbadness = \tolerance
@@ -74,30 +99,139 @@
 
 \section{Introduction}
 
-The Ising model is a model that has a large variety of usage. In this report, the model will be used to study phase transitions in magnetic systems. The systems at hand are systems of size $L\times L$ particles in a grid. Each particle may be in either state "up" or "down" denoted with $1$ and $-1$, respectively. The model only focuses on the interaction between the nearest neighbors particles, and the energy between these is given by
-$$
-E=-J\sum_{<kl>}^{N}s_ks_l \label{eq:1}
-$$
+The Ising model is a model that has a large variety of usage. In this report, the model will be used to study phase transitions and thermodynamic properties in magnetic systems. The systems at hand are systems of size $L\times L$ particles in a grid. Each particle may be in either state "up" or "down" denoted with $1$ and $-1$, respectively. The model only focuses on the interaction between the nearest neighbor particles, and the energy between these is given by
+\begin{align}
+    E = -J \sum_{<kl>}^N s_ks_l 
+\end{align}
+where $N$ is the number of particles, $s_i=\pm 1$ and $J>0$ is a constant which represents ferromagnetism and the strength of the particle interactions. We assume periodic boundary conditions so that every particle in the lattice has four nearest neighbors. 
 
-where $N$ is the number of particles, $s_i=\pm 1$ and $J>0$ is a constant which represents ferromagnetism and the strength of the particle interactions. We assume periodic boundary conditions so that every particle has four nearest neighbors. 
+Further, the partition function of the system is given by
+\begin{equation}
+Z=\sum_i e^{-\beta E_i} \label{eq:partition}
+\end{equation}
+the specific heat capacity
+\begin{equation}
+C_V=\frac{1}{k_B T^2}\left(\langle E^2\rangle-\langle E\rangle^2\right)
+\end{equation}
+the magnetisation
+\begin{equation}
+M=\sum_is_i
+\end{equation}
+and the susceptibility
+\begin{equation}
+\chi= \frac{1}{k_B T}\left(\langle M^2\rangle-\langle M\rangle^2\right)
+\end{equation}
+as functions of the energy and spin. Where, $\beta =1/k_B T$. These equations are also mentioned in the lecture slides by (\cite{LectureIsing}) from the course FYS3150.
 
-Further, the partition function of the system is given by the energy as
+Initially, we will derive values of a 2x2 case and thereafter, proceed to higher dimensions. In a higher dimension case with $L=20$, the time it takes to reach the most likely state, represented by the number of Monte Carlo cycles, is calculated for two different temperatures with both an ordered and a random initial state. This gives an estimate of the equilibrium time of the system. The energy data from this case is then translated to a probability function $P(E)$. 
 
-$$
-Z=\sum_i e^{-\beta E_i} = \sum_E \Omega (E) e^{-\beta E} \label{eq:2}
-$$
+Next, the systems with $L=40, L=60, L=80$ and $L=100$ are studied as functions of temperature. These calculations are performed to try and simulate phase transitions in the systems. For successfully detected phase transitions, the critic temperature is also extracted and compared to the exact.
+
+\section{Methods and theory}
+
+\subsection{Benchmarks}
+
+For the $2x2$ case, the energy, magnetic momentum, specific heat capacity, and the magnetic susceptibility can all be calculated analytically. These analytical values, shown in Table \ref{tab:benchmarks}, are used as benchmarks for the numerically derived values.
+
+\subsection{The Metropolis algorithm}
+
+The heavy calculation in this project is done by the \textit{metropolis} algorithm. The steps of this algorithm are:
+
+1. Initialize a random initial state with the energy $E_0$. This state will have spins in random directions. 
+
+2. Choose a random spin particle in the lattice, and flip it.
+
+3. Calculate the energy change, $\Delta E=E_1-E_0$, caused by the flipped spin. If $\Delta E \le 0$, the spin change is accepted, and step 6 is the next step.
+
+4. If the $\Delta E > 0$, calculate the the Boltzmann distribution $w=e^{-\beta \Delta E}$.
+
+5. Calculate a random number $r$. If $r \le w$, the new configuration is accepted, otherwise the old configuration is kept.
+
+6. Update the expectation values (energy, magnetization, heat capacity, and susceptibility).
+
+7. Repeat steps 2-6 until the values are satisfying.
 
 
+\noindent Step 2-6 is what is called a Monte Carlo cycle and is, in turn, a measurement of the energy of the system. The final values are to be divided by the total number of Monte Carlo cycles used. The Metropolis algorithm is described more thoroughly in the lecture notes of FYS3150 (\cite{LectureIsing}) with code examples.
+
+\subsection{Periodic boundary conditions}
+To account for the fact that some of the spins at the boundary of the lattice does not have four nearest neighbours, periodic boundary conditions are introduced. This means that a spin at a boundary i.e. $s_{N,0}$ has a neighbour to the right with the same spin as the particle $s_{0,0}$. In one dimension, this can be expressed by
+
+\begin{align*}
+    E_i=-J\sum_{j=1}^{N}s_js_{j+1}
+\end{align*}
+
+For small dimensions, the energy of the system will be significantly affected by whether or not periodic boundary conditions are implemented. As $N \rightarrow \infty$, the boundary becomes insignificant. This is what happens when looking at phase transitions and critical temperatures, where the system has to be described in a larger dimension.
+
+\subsection{Phase transitions}
+In the Ising model, it is interesting to see if it is possible to estimate phase transitions in the systems. These phase transitions can be i.e. liquid/gas (first order) or ferromagnetic/paramagnetic (second order). These transitions are all depending on the parameter, $T_C$, the Curie temperature or the critical temperature. The theory given in the Lecture notes of FYS3150 (\cite{LectureIsing}) can be used to describe some of the values in the Ising model class with a power law behavior as
+
+\begin{equation}
+    \langle M(T)\rangle\sim (T-T_c)^\beta \propto L^{-\beta/\nu}
+\end{equation}
+\begin{equation}
+    C_V(T)\sim (T-T_c)^{-\gamma} \propto L^{-\alpha/\nu}
+\end{equation}
+\begin{equation}
+    \chi(T)\sim (T-T_c)^\alpha \propto L^{-\gamma/\nu}
+\end{equation}
+where $\beta = 1/8$ is the so called critical exponent, $\alpha = 0$ and $\gamma = 7/4$. The value of $\nu$ is defined by the correlation length which has a divergent behavior when approaching $T_c$
+\begin{equation}
+      \xi(T) \propto L \sim \left|T_C-T\right|^{-\nu},
+  \label{eq:xi}
+\end{equation}
+
+\noindent The lattice sizes in this report are always finite, and therefore $\chi$ will be proportional to this lattice size as seen in the equations above. Using finite size scaling relations, it will be possible to relate the results and behaviors in the finite lattices with the once from the infinite case. This results in the scaling of the critical temperature as
+
+\begin{equation}
+    T_C(L)-T_C(L=\infty) = aL^{-1/\nu}
+\end{equation}
+The exact result for $T_c$ is found in (\cite{LarsOns}) to be $\approx 2.269$ with $\nu = 1$.
+
+Gjelder dette for et spesielt tilfelle? Ja, tilfellet der $L\rightarrow \infty$. 
+
+\section{Results}
+
+\subsection{The 2x2 Case}
+
+Table \ref{tab:configurations} list of the different spin configurations with their respective degeneracy, energy and magnetization, as where Table \ref{tab:benchmarks} displays some calculations from the 2x2 case.
+
+\begin{table}[H]
+    \centerline{\csvautobooktabularcenter{E_M_Configurations.csv}}
+    \caption{List of the different spin configurations with their respective degeneracy, energy and magnetization.}
+    \label{tab:configurations}
+\end{table}
 \vfill
+\begin{table}[H]
+    \centerline{\csvautobooktabular{Benchmarks.csv}}
+    \caption{List of analytical values for the $2x2$ case.}
+    \label{tab:benchmarks}
+\end{table}
 
-\section{Methods}
+I Tabell \ref{tab:benchmarks}, kan vi i grunnen faktisk bare fylle inn en ekstra kolonne med resultatene fra 4b. Så blir det enkelt å sammenligne (som er hovedpunktet i oppgave 4b).
 
-Her tror jeg det må være en slags intro til metodene, hva tror dere? 
-Eller at bare hele denne bolken skal i resultater? Det er liksom så mye utregninger. 
+\subsection{The most likely state}
 
-\vfill
+Tabell med "How many Monte Carly cycles is needed to reach equilibrium?" for T = 1.0 og 2.4 med både ordnet og uordnet initialtilstand (L = 20) for E og M. Eventuelle plot av tiden (antall MC sykluser) før likevekt kan vi legge i Appendix og bare referere til i duskusjonen.
 
-For the $2x2$ case, the energy, magnetic momentum, specific heat capacity, and the magnetic susceptibility can all be calculated analytically. These analytical values are used as benchmarks for the numerically derived values. 
+\subsection{The Probability Distribution}
+
+Her trenger vi kun fire plot av de tilhørende probability distributions plottene til de forrige resultatene. Det kan her også være kult å innlemme $\sigma _E^2$ i plottet i form av standardavviket fra mean-verdien. For eksempel slik som fra wikipedia: \url{https://en.wikipedia.org/wiki/File:Comparison_standard_deviations.svg}.
+
+\subsection{Phase transitions and the critical temperature, $T_c$}
+
+Plot av $\langle E\rangle, \langle |M|\rangle, C_V$ og $\chi$ som funksjon av temperatur, $T \in [2.0,2.3]$, for tilfellene med L = 40, L = 60, L = 80 og L = 100. Samt en tabell der de kritiske temperaturene er utregnet for hvert system (L = 40, 60, 80 100).
+
+\section{Discussion}
+
+Tenker vi kan kjøre samme struktur i denne seksjonen som i resultatseksjonen, slik at vi diskuterer hvert system/delopggave for seg.
+
+\section{Conclusion}
+
+\section{Appendix}
+
+\subsection{Calculating the benchmarks}
+
 
 Finding the analytical values, we start by calculating the energies for the configurations of all possible spins. The number of configurations in the $2x2$ case is  $2^4 = 16$, in total. The energies are given by summing the interaction between the four neighbors:
 \begin{align*}
@@ -110,11 +244,30 @@ where an interaction is one of the four possible:
 \begin{align*}
     E_{\uparrow \downarrow} = E_{\downarrow \uparrow} = 2J
 \end{align*}
-The associated magnetic moment, $M$, is calculated for each spin configuration as:
+The $2x2$ case can then be divided in degeneracy of energies by how many spin up there is: 
+\begin{align*}
+    E_{\text{4 spin}\uparrow} = (-2J) + (-2J) + (-2J) + (-2J) = -8J \text{ with degeneracy = 1}
+\end{align*}
+\begin{align*}
+    E_{\text{3 spin}\uparrow} = 2J + (-2J) + 2J + (-2J) = 0 \text{ with degeneracy = 4}
+\end{align*}
+\begin{align*}
+    E_{\text{2 spin}\uparrow} = (-2J) + 2J + (-2J) + 2J = 0 \text{ with degeneracy = 4}
+\end{align*}
+\begin{align*}
+    E_{\text{2 spin}\uparrow} = 2J + 2J + 2J + 2J = 8J \text{ with degeneracy = 2}
+\end{align*}
+\begin{align*}
+    E_{\text{1 spin}\uparrow} = 2J + 2J + (-2J) + (-2J) = 0 \text{ with degeneracy = 4}
+\end{align*}
+\begin{align*}
+    E_{\text{0 spin}\uparrow} = (-2J) + (-2J) + (-2J) + (-2J) = -8J \text{ with degeneracy = 1}
+\end{align*}
+with the associated magnetic moment, $M$, calculated for each spin configuration as:
 \begin{align*}
     M_{i}=\sum_{j=1}^{N} s_{j}
 \end{align*}
-and completes table 1, displaying the energies, degeneracies, and magnetization for the sixteen spin configurations. The calculations of the energies are shown in the appendix. 
+as shown table 1.
 
 With these energies, degeneracies, magnetization, and periodic boundary conditions we can calculate the analytical benchmark expressions, starting with the participation function, which is calculated as: 
 \begin{align*}
@@ -143,7 +296,7 @@ The specific heat capacity take the expression:
 \begin{align*}
     C_v = \frac{\sigma_E^2}{k_BT^2} 
 \end{align*}
-where the variance for the energies, $\sigma_E^2$, is
+where the variance, $\sigma_E^2$, is: 
 \begin{align*}
     \sigma_E^2 = \hspace{0.2cm} <E^2> - <E>^2 \hspace{0.2cm}
                = \frac{64J^2cosh(\beta 8J)}{cosh(\beta 8J) + 3}
@@ -171,11 +324,11 @@ so that the analytical value of the susceptibility is:
 where the magnetic variance is defined as:
 \begin{align*}
     \sigma_M^2 = \hspace{0.2cm} <M^2> - <M>^2 \hspace{0.2cm}
-               = \hspace{0.2cm} <M^2> - 0
+               = \hspace{0.2cm} <M^2> - \hspace{0.2cm} 0
                = \frac{8e^{\beta 8J} + 8}{cosh(\beta 8J) + 3}
 \end{align*}
 
-The mean absolute value of the magnetic moment is of interest because it can be a better way to describe the mean magnetization and is given by:
+\noindent The mean absolute value of the magnetic moment is given by: 
 \begin{align*}
     <|M|> \hspace{0.2cm} 
           = \sum_{i=1}^{2^n} |M_i^2P_i(\beta)| 
@@ -184,54 +337,14 @@ The mean absolute value of the magnetic moment is of interest because it can be 
           = \frac{2e^{\beta 8J} + 4}{cosh(\beta 8J) + 3}
 \end{align*}
 
-Kan også sette inn den nye $\chi$ med $|M|$, men ja, jeg vet ikke.
 
 
 
 
-\vfill
 
+\subsection{Tables and data}
 
-\begin{table}[h]
-    \centering
-    \lstinputlisting[firstline=1]{E_M_Configurations.txt}
-    %\includegraphics{}
-    \caption{\textit{List of configurations of energies and magnetizations}}
-    \label{tab:E_M_Configurations}
-\end{table}
-
-
-
-\section{Results and Discussion}
-
-\section{Conclusion}
-
-\section{Appendix}
-
-Calculations for table 1 for the 2x2 case:
-\begin{align*}
-    E_{\text{4 spin}\uparrow} = (-2J) + (-2J) + (-2J) + (-2J) = -8J \text{ with degeneracy = 1}
-\end{align*}
-\begin{align*}
-    E_{\text{3 spin}\uparrow} = 2J + (-2J) + 2J + (-2J) = 0 \text{ with degeneracy = 4}
-\end{align*}
-\begin{align*}
-    E_{\text{2 spin}\uparrow} = (-2J) + 2J + (-2J) + 2J = 0 \text{ with degeneracy = 4}
-\end{align*}
-\begin{align*}
-    E_{\text{2 spin}\uparrow} = 2J + 2J + 2J + 2J = 8J \text{ with degeneracy = 2}
-\end{align*}
-\begin{align*}
-    E_{\text{1 spin}\uparrow} = 2J + 2J + (-2J) + (-2J) = 0 \text{ with degeneracy = 4}
-\end{align*}
-\begin{align*}
-    E_{\text{0 spin}\uparrow} = (-2J) + (-2J) + (-2J) + (-2J) = -8J \text{ with degeneracy = 1}
-\end{align*}
-
-
-\section{References}
-
-
+\printbibliography
 
 
 \end{document}
