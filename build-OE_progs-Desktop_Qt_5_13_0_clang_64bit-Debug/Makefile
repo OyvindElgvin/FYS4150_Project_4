@@ -55,13 +55,11 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Code_Files/Div_Functions.cpp \
 		../Code_Files/Ising_func.cpp \
 		../Code_Files/Ising_test.cpp \
-		../Code_Files/main_pro4.cpp \
-		main.cpp 
+		../Code_Files/main_pro4.cpp 
 OBJECTS       = Div_Functions.o \
 		Ising_func.o \
 		Ising_test.o \
-		main_pro4.o \
-		main.o
+		main_pro4.o
 DIST          = /Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/qdevice.pri \
 		/Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/device_config.prf \
@@ -231,8 +229,7 @@ DIST          = /Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/sp
 		../OE_progs/OE_progs.pro  ../Code_Files/Div_Functions.cpp \
 		../Code_Files/Ising_func.cpp \
 		../Code_Files/Ising_test.cpp \
-		../Code_Files/main_pro4.cpp \
-		main.cpp
+		../Code_Files/main_pro4.cpp
 QMAKE_TARGET  = OE_progs
 DESTDIR       = 
 TARGET        = OE_progs
@@ -2919,9 +2916,6 @@ main_pro4.o: ../Code_Files/main_pro4.cpp /usr/local/Cellar/armadillo/9.600.6/inc
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/compiler_setup_post.hpp \
 		../Code_Files/pro4_functions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main_pro4.o ../Code_Files/main_pro4.cpp
-
-main.o: main.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ####### Install
 

@@ -25,6 +25,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
 
     // start function here
 
+    cout << "Calculating.." << endl;
 
 
     // Initiaize Random Number Generator
@@ -110,18 +111,19 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     M2_mean /= N;
     M_abs_mean /= N;
 
-    cout << E_mean << endl
-         << M_mean << endl;
+    cout << "<E>   = " << E_mean << endl
+         << "<M>   = " << M_mean << endl;
 
-    cout << E2_mean << endl
-         << M2_mean << endl;
+    cout << "<E^2> = " <<E2_mean << endl
+         << "<M^2> = " <<M2_mean << endl;
 
     double Variance_E = (1/1)*(E2_mean-E_mean*E_mean);
     double Variance_M = (1/1)*(M2_mean-M_mean*M_mean);
     Cv = Variance_E/(T(i)*T(i));
     X = Variance_M/T(i);
 
-    cout << Cv << "         " << X << endl;
+    cout << "Cv    = " << Cv << endl
+         << "X     = " << X << endl;
 
     E_t(i) = E_mean;
     M_t(i) = M_abs_mean;
@@ -137,9 +139,9 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     if (test == 1){
 
         double eps = pow(10,-2);
-        double exact_Em = -7.98;
+        double exact_Em = -7.983928344;
         double exact_Mm = 0.0;
-        double exact_C = 0.1283293234;
+        double exact_Cv = 0.1283293234;
         double exact_X = 15.9732151;
 
         if (abs(exact_Em - E_mean) < eps){
@@ -158,13 +160,13 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
                  << "Computed: " << M_mean << endl
                  << "Exact: " << exact_Mm << endl;
         }
-        if (abs(exact_C - Cv) < eps){
+        if (abs(exact_Cv - Cv) < eps){
             cout << "Heat Capacity equals exact value with precision " << eps << endl;
         }
         else{
             cout << "HEAT CAPACITY DOES NOT EQUAL EXACT VALUE" << endl
                  << "Computed: " << Cv << endl
-                 << "Exact: " << exact_C << endl;
+                 << "Exact: " << exact_Cv << endl;
         }
         if (abs(exact_X - X) < eps){
             cout << "Susceptibility equals exact value with precision " << eps << endl;
