@@ -75,6 +75,7 @@ void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order)
 // function for changing energy state
 void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC){
 
+
     // Calculating energy difference for flipped spin
     double delta_E = 2*spin_matrix(i,j) * (spin_matrix(i,periodic(j,L,-1)) + spin_matrix(i,periodic(j,L,1)) + spin_matrix(periodic(i,L,-1),j) + spin_matrix(periodic(i,L,1),j));
 
@@ -84,6 +85,7 @@ void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,
 
     // Sample rule: Check if new state is accepted
     double r = generate_canonical< double, 128 > (generator);
+    //cout << dE(index(0)) << "     " << Prob << "      " << r << endl;
     if (r < Prob){
         spin_matrix(i,j) = -spin_matrix(i,j);
         Energy = Energy + delta_E;
