@@ -23,7 +23,7 @@ using namespace chrono;
 void Ising_Func(int N, int L, int test);
 vector<int> readvalues(string file);
 
-
+/*
 int Ising_Test(){
 
     int L = 2;
@@ -34,7 +34,7 @@ int Ising_Test(){
     return 0;
 
 } // end of test
-
+*/
 void test_dE(){
     unsigned seed = system_clock::now().time_since_epoch().count();
     mt19937_64 generator (seed);

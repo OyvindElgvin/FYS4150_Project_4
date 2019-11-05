@@ -26,13 +26,14 @@ vector<int> readvalues(string file);
 
 int main(){
 
-    void test_dE();
+    //void test_dE();
 
     // Running test for L = 2 and N = 100, T = 1
 
     vec T = vec("1.0");
 
-    //Ising_Func(T,2,100,1);
+
+    Ising_Func(T,2,100000000,"Test","no order",1);
 
 
 
@@ -44,7 +45,7 @@ int main(){
 
 
 
-
+/*
 
     // Reading T, N and L values from file
     vector<int> Nvalues = readvalues("Pro4_Nvalues.txt");
@@ -66,5 +67,5 @@ int main(){
     //} // end of T loop
     } // end of L loop
 
-
+*/
 } // end of main

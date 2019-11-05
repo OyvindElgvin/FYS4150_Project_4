@@ -26,6 +26,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     // start function here
 
 
+
     // Initiaize Random Number Generator
     unsigned seed = system_clock::now().time_since_epoch().count();
     mt19937_64 generator (seed);
@@ -37,14 +38,21 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     vec X_t = vec(T.n_elem,fill::zeros);
     vec AC_t = vec(T.n_elem,fill::zeros);
 
+
+
     // Loop over Temperatures
 
     for (uword i=0;i<T.n_elem;i++){
+
+
+
     vec dE = ("-8 -4 0 4 8");
     vec P = vec(5,fill::zeros);
-    for (uword i=0;i<5;i++){
-        P(i) = exp(-dE(i)/T(i));
+    for (uword j=0;j<5;j++){
+        P(j) = exp(-dE(j)/T(i));
     }
+
+
 
 
     // initialize
@@ -65,18 +73,28 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     mat S_matrix = mat(L,L,fill::zeros);
     vec Energies  = vec(N,fill::zeros);
 
+
+
+
     initialize(L,S_matrix,E,M,order);
 
 
+    //cout << S_matrix << endl;
+    //cout << E << endl;
+    //cout << M << endl;
+    //cout << "---------" << endl;
     // Loop over Monte Carlo Cycles
     for(int j = 0;j<N;j++){
 
-        int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L*L) );
-        int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L*L) );
+        int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
+        int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
 
-        changing_state(generator, ix, iy, dE, P,S_matrix, E, M,accepted_configurations);
-
-
+        changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
+       // cout << "-----------------" << endl;
+        //cout << S_matrix << endl;
+        //cout << ix << "      " << iy << endl;
+        //cout << E << endl;
+        //cout << M << endl;
     Energies(j) = E;
     E_mean += E;
     E2_mean += E*E;
@@ -92,10 +110,18 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     M2_mean /= N;
     M_abs_mean /= N;
 
-    double Variance_E = (1/N)*(E2_mean-E_mean*E_mean);
-    double Variance_M = (1/N)*(M2_mean-M_mean*M_mean);
+    cout << E_mean << endl
+         << M_mean << endl;
+
+    cout << E2_mean << endl
+         << M2_mean << endl;
+
+    double Variance_E = (1/1)*(E2_mean-E_mean*E_mean);
+    double Variance_M = (1/1)*(M2_mean-M_mean*M_mean);
     Cv = Variance_E/(T(i)*T(i));
     X = Variance_M/T(i);
+
+    cout << Cv << "         " << X << endl;
 
     E_t(i) = E_mean;
     M_t(i) = M_abs_mean;
@@ -110,11 +136,11 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     // Run test if so desired
     if (test == 1){
 
-        double eps = pow(10,-8);
-        double exact_Em = 0;
-        double exact_Mm = 0;
-        double exact_C = 0;
-        double exact_X = 0;
+        double eps = pow(10,-2);
+        double exact_Em = -7.98;
+        double exact_Mm = 0.0;
+        double exact_C = 0.1283293234;
+        double exact_X = 15.9732151;
 
         if (abs(exact_Em - E_mean) < eps){
             cout << "Mean energy equals exact value with precision " << eps << endl;
