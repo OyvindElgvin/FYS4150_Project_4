@@ -28,4 +28,7 @@ vector<int> readvalues(string file);
 void Ising_Func(vec T,int L,int N,string file, string order,int test);
 void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order);
 
+void Task_c();
+
+
 #endif // PRO4_FUNCTIONS_H

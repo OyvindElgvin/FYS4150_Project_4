@@ -35,6 +35,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     // Vectors for storing E, M, Cv and X for different Temperatures
     vec E_t = vec(T.n_elem,fill::zeros);
     vec M_t = vec(T.n_elem,fill::zeros);
+    vec Mabs_t = vec(T.n_elem,fill::zeros);
     vec Cv_t = vec(T.n_elem,fill::zeros);
     vec X_t = vec(T.n_elem,fill::zeros);
     vec AC_t = vec(T.n_elem,fill::zeros);
@@ -72,7 +73,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
 
 
     mat S_matrix = mat(L,L,fill::zeros);
-    vec Energies  = vec(N,fill::zeros);
+    //vec Energies  = vec(N,fill::zeros);
 
 
 
@@ -96,7 +97,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
         //cout << ix << "      " << iy << endl;
         //cout << E << endl;
         //cout << M << endl;
-    Energies(j) = E;
+    //Energies(j) = E;
     E_mean += E;
     E2_mean += E*E;
     M_mean += M;
@@ -126,14 +127,13 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
          << "X     = " << X << endl;
 
     E_t(i) = E_mean;
-    M_t(i) = M_abs_mean;
+    M_t(i) = M_mean;
+    Mabs_t(i) = M_abs_mean;
     Cv_t(i) = Cv;
     X_t(i) = X;
     AC_t(i) = accepted_configurations;
 
     // end calculations here
-
-
 
     // Run test if so desired
     if (test == 1){
@@ -176,13 +176,13 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
                  << "Computed: " << X << endl
                  << "Exact: " << exact_X << endl;
         }
-        return;
+
     }
 
 
 
     // Printing results to terminal
-    /*
+
     if (test != 1){
        cout << "--------------------------------------" << endl;
        cout << "Temperature = " << T << endl;
@@ -191,25 +191,6 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
        cout << "Mean magnetic moment = " << M_mean << endl;
     }
 
-    // Writing results to file
-    if (test != 1){
-        string filename = "Energies_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
-        ofstream output_E;
-        output_E.open(filename,ios::out);
-        output_E << E_mean << endl << endl;
-        output_E << Energies << endl;
-        output_E.close();
-
-        filename = "Mmoments_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
-        ofstream output_M;
-        output_M.open(filename,ios::out);
-        output_M << M_mean << endl << endl;
-        output_M << M_Moments << endl;
-        output_M.close();
-
-    }
-
-*/
 
 
     } // End of temperature loop
@@ -218,11 +199,12 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
         string filename = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_Results;
         output_Results.open(filename,ios::out);
-        output_Results << T << endl << endl;
-        output_Results << E_t << endl << endl;
-        output_Results << M_t << endl << endl;
-        output_Results << Cv_t << endl << endl;
-        output_Results << X_t << endl << endl;
+        output_Results << T << endl;
+        output_Results << E_t << endl;
+        output_Results << M_t << endl;
+        output_Results << Mabs_t << endl;
+        output_Results << Cv_t << endl;
+        output_Results << X_t << endl;
         output_Results << AC_t << endl;
         output_Results.close();
     }

@@ -30,12 +30,14 @@ int main(){
 
     // Running test for L = 2 and N = 100, T = 1
 
-    vec T = vec("1.0");
+    /*
+    vec T = vec("1.0 2.4");
 
 
     Ising_Func(T,2,100000000,"Test","no order",1);
 
-
+    */
+    Task_c();
 
 
 
