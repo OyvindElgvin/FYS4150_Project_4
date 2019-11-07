@@ -31,10 +31,10 @@ int main(){
     // Running test for L = 2 and N = 100, T = 1
 
 
-    vec T = vec("2.4");
+    vec T = vec("1.0 2.4");
 
 
-    Ising_Func(T,20,10000000,"Test_energies","no order",1);
+    Ising_Func(T,20,10000000,"Test_stuff","no order",0);
 
 
     // Task_c();

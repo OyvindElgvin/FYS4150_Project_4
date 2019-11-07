@@ -96,6 +96,17 @@ void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,
 } // end function changing_state
 
 
+vec T_vector(double min, double max,double step_length){
+    int num_steps = static_cast<int>((max-min)/step_length);
+    vec T = vec(num_steps,fill::zeros);
+    T(0) = min;
+    for (uword i = 1;i<num_steps;i++){
+        T(i) = T(i-1) + step_length;
+    }
+    return T;
+} // end function T_vector
+
+
 void Task_b(){
     vector<int> Nvalues = readvalues("Pro4b_Nvalues.txt");
     int L = 2;
@@ -105,7 +116,7 @@ void Task_b(){
     Ising_Func(T,L,Nvalues[i],"Results_4b","order",0);
 
     }
-
+    return;
 } // end Task_b
 
 void Task_c(){
@@ -117,7 +128,7 @@ void Task_c(){
     Ising_Func(T,L,Nvalues[i],"Results_4c_order","order",0);
     Ising_Func(T,L,Nvalues[i],"Results_4c_random","random",0);
     }
-
+    return;
 } // end Task_c
 
 
@@ -129,6 +140,18 @@ void Task_d(){
     for (int i = 0;i<Nvalues.size();i++){
         Ising_Func(T,L,Nvalues[i],"Results_4d","random",0);
     }
+    return;
 } // end Task_d
 
+void Task_e(){
+    vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
+    vec T = T_vector(2.0,2.3,0.05);
+    vec L = vec("20 40 60 80 100");
+    for (int i = 0;i<Nvalues.size();i++){
+        for (uword j= 0;j<L.n_elem;j++){
+            Ising_Func(T,L(j),Nvalues[i],"Results_4e","order",0);
+        }//end of L loop
+    }//end of N loop
+    return;
+}// end Task_e
 

@@ -1,7 +1,7 @@
-from Py_Functions import readarrays
+from Py_Functions import readarrays, readmatrices
 from numpy import array, zeros, log10, linspace
 import matplotlib.pyplot as plt
-
+'''
 T = array([1.0,2.4])
 E = zeros(shape=(8,2))
 M = zeros(shape=(8,2))
@@ -25,14 +25,24 @@ for i in range(8):
 
 #print AC
 
+plt.plot(log10(N),[E[i][1] for i in range(8)])
+
 Energies = readarrays("Test_energies.txt")[0][0]
 print len(Energies)
 print "---"
 N = linspace(10,10**7,len(Energies))
 print len(N)
 print "---"
-plt.plot(log10(N),Energies)
+plt.figure()
+#plt.plot(log10(N),Energies)
 
+Energy2 = [Energies[i] for i in range(10**4,10**7-100)]
+num_bins = int(abs(max(Energy2)/4.))
+print num_bins
+n, bins, patches = plt.hist(Energy2,num_bins)
 
-#plt.plot(log10(N),[E[i][1] for i in range(8)])
 plt.show()
+'''
+
+A = readmatrices("Test_stuff_N_10000_L_20.txt")[0]
+print A
