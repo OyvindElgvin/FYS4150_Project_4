@@ -1,5 +1,5 @@
 from Py_Functions import readarrays
-from numpy import array, zeros, log10
+from numpy import array, zeros, log10, linspace
 import matplotlib.pyplot as plt
 
 T = array([1.0,2.4])
@@ -23,8 +23,16 @@ for i in range(8):
 	AC[i][0] = A[6][0]
 	AC[i][1] = A[6][1]
 
-print AC
+#print AC
+
+Energies = readarrays("Test_energies.txt")[0][0]
+print len(Energies)
+print "---"
+N = linspace(10,10**7,len(Energies))
+print len(N)
+print "---"
+plt.plot(log10(N),Energies)
 
 
-plt.plot(log10(N),[log10(AC[i][0]) for i in range(8)])
+#plt.plot(log10(N),[E[i][1] for i in range(8)])
 plt.show()

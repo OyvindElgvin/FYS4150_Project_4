@@ -111,7 +111,7 @@ void Task_b(){
 void Task_c(){
     vector<int> Nvalues = readvalues("Pro4c_Nvalues.txt");
     int L = 20;
-    vec T = vec("1.0 2.4");
+    vec T = vec("1 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
     Ising_Func(T,L,Nvalues[i],"Results_4c_order","order",0);
@@ -121,6 +121,14 @@ void Task_c(){
 } // end Task_c
 
 
+void Task_d(){
+    vector<int> Nvalues = readvalues("Pro4d_Nvalues.txt");
+    int L = 20;
+    vec T = vec("1. 2.4");
 
+    for (int i = 0;i<Nvalues.size();i++){
+        Ising_Func(T,L,Nvalues[i],"Results_4d","random",0);
+    }
+} // end Task_d
 
 
