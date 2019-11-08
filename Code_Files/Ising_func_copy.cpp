@@ -120,11 +120,11 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
                 Cv = Variance_E/(T(i)*T(i));
                 X = Variance_M/T(i);
 
-                E_t(i,((j+1)/1000)-1) = E_mean;
-                M_t(i,((j+1)/1000)-1) = M_mean;
-                Mabs_t(i,((j+1)/1000)-1) = M_abs_mean;
-                Cv_t(i,((j+1)/1000)-1) = Cv;
-                X_t(i,((j+1)/1000)-1) = X;
+                E_t(i,((j+1)/1000)-1) = E_mean/(L*L); //Per spin
+                M_t(i,((j+1)/1000)-1) = M_mean/(L*L);
+                Mabs_t(i,((j+1)/1000)-1) = M_abs_mean/(L*L);
+                Cv_t(i,((j+1)/1000)-1) = Cv/(L*L);
+                X_t(i,((j+1)/1000)-1) = X/(L*L);
             }
 
         } // end of Monte Carlo loop
