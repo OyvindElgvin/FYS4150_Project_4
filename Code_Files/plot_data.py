@@ -76,7 +76,7 @@ xlabel("# of MC-cycles ($log_{10}(n)$)")
 
 # 2 Probability distribution
 fig3, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
-line1 = ax1.hist(E[:,0], 50, normed=True, facecolor='g', alpha=0.75)
+line1 = ax1.hist(E[:,0], int((max(E[:,0]-min(E[:,0])))/4), normed=True, facecolor='g', alpha=0.75)
 ax1.set_ylabel("$\\rho_{\\langle E\\rangle}$")
 line2 = ax2.hist(E_ran[:,0], 50, normed=True, facecolor='g', alpha=0.75)
 ax2.set_ylabel("$\\rho_{\\langle E\\rangle}$")
