@@ -1,5 +1,5 @@
 #include<iostream>
-#include "armadillo"
+#include <armadillo>
 #include <vector>
 #include "time.h"
 #include <random>
@@ -12,6 +12,7 @@
 #define EPS 3.0e-14
 #define MAXIT 10
 #include <chrono>
+#include <omp.h>
 
 #include "pro4_functions.h"
 
@@ -19,7 +20,10 @@ using namespace std;
 using namespace arma;
 using namespace chrono;
 
-
+// Terminal:
+/*
+g++-9 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -fopenmp
+*/
 
 void Ising_Func(vec T,int L,int N,string file,string order,int test){
 
@@ -41,21 +45,30 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     //mat AC_t = mat(T.n_elem,N/1000,fill::zeros);
     vec AC_t = vec(T.n_elem,fill::zeros);
 
+    // starting clock for time keeping
+    high_resolution_clock::time_point time1 = high_resolution_clock::now();
+
+    // parallelizing 4 threads and making a seperate seed for each thread
+    #pragma omp parallel num_threads(4)
+    {
+
+    double E_mean = 0;
+    double E2_mean = 0;
+    double M_mean = 0;
+    double M2_mean = 0;
+    double M_abs_mean = 0;
+
+    // parallelizing for different temperatures
+    #pragma omp parallel for //reduction (+:E_mean, E2_mean, M_mean, M2_mean, M_abs_mean)
 
     // Loop over Temperatures
-
     for (uword i=0;i<T.n_elem;i++){
-
-
 
         vec dE = ("-8 -4 0 4 8");
         vec P = vec(5,fill::zeros);
         for (uword j=0;j<5;j++){
             P(j) = exp(-dE(j)/T(i));
         }
-
-
-
 
         // initialize
         double E = 0; //expression for initial energy
@@ -64,40 +77,25 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
         double X = 0; //Susceptibility
         int accepted_configurations = 0;
 
-
-        double E_mean = 0;
-        double E2_mean = 0;
-        double M_mean = 0;
-        double M2_mean = 0;
-        double M_abs_mean = 0;
-
+        E_mean = 0;
+        E2_mean = 0;
+        M_mean = 0;
+        M2_mean = 0;
+        M_abs_mean = 0;
 
         mat S_matrix = mat(L,L,fill::zeros);
         vec Energies  = vec(N,fill::zeros);
 
-
-
-
         initialize(L,S_matrix,E,M,order);
 
-
-        //cout << S_matrix << endl;
-        //cout << E << endl;
-        //cout << M << endl;
-        //cout << "---------" << endl;
-        // Loop over Monte Carlo Cycles
         for(int j = 0;j<N;j++){
 
             int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
             int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
 
             changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
-            // cout << "-----------------" << endl;
-            //cout << S_matrix << endl;
-            //cout << ix << "      " << iy << endl;
-            //cout << E << endl;
-            //cout << M << endl;
-            Energies(j) = E;
+
+            //Energies(j) = E;
             E_mean += E;
             E2_mean += E*E;
             M_mean += M;
@@ -126,27 +124,24 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
         } // end of Monte Carlo loop
 
 
+        AC_t(i) = accepted_configurations;
 
 
         cout << "<E>   = " << E_mean << endl
              << "<M>   = " << M_mean << endl;
-
         cout << "<E^2> = " <<E2_mean << endl
              << "<M^2> = " <<M2_mean << endl;
-
-
         cout << "Cv    = " << Cv << endl
              << "X     = " << X << endl;
 
 
-        AC_t(i) = accepted_configurations;
 
         // end calculations here
 
         // Run test if so desired
         if (test == 1){
 
-            double eps = pow(10,-2);
+            double eps = pow(10,-6);
             double exact_Em = -7.983928344;
             double exact_Mm = 0.0;
             double exact_Cv = 0.1283293234;
@@ -189,23 +184,16 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
 
 
 
-        // Printing results to terminal
-
-        if (test != 1){
-            cout << "--------------------------------------" << endl;
-            cout << "Temperature = " << T << endl;
-            cout << "N = " << N << "     " << "L = " << L << endl;
-            cout << "Mean energy = " << E_mean << endl;
-            cout << "Mean magnetic moment = " << M_mean << endl;
-        }
-
-        /*ofstream output_energy;
-        output_energy.open("Test_energies.txt",ios::out);
-        output_energy << Energies << endl;
-        output_energy.close();
-        */
-
+    }
     } // End of temperature loop
+
+    // stops the clock
+    high_resolution_clock::time_point time2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double> >(time2-time1);
+    double runtime = time_span.count();
+
+    cout << "runtime = " << runtime << endl;
+
 
     if (test != 1){
         string filename = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;

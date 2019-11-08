@@ -53,11 +53,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Code_Files/Div_Functions.cpp \
-		../Code_Files/Ising_func.cpp \
+		../Code_Files/Ising_func_copy.cpp \
 		../Code_Files/Ising_test.cpp \
 		../Code_Files/main_pro4.cpp 
 OBJECTS       = Div_Functions.o \
-		Ising_func.o \
+		Ising_func_copy.o \
 		Ising_test.o \
 		main_pro4.o
 DIST          = /Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/spec_pre.prf \
@@ -227,7 +227,7 @@ DIST          = /Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/sp
 		/Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/yacc.prf \
 		/Users/oyvindengebretsen/Qt2/5.13.0/clang_64/mkspecs/features/lex.prf \
 		../OE_progs/OE_progs.pro  ../Code_Files/Div_Functions.cpp \
-		../Code_Files/Ising_func.cpp \
+		../Code_Files/Ising_func_copy.cpp \
 		../Code_Files/Ising_test.cpp \
 		../Code_Files/main_pro4.cpp
 QMAKE_TARGET  = OE_progs
@@ -1205,7 +1205,7 @@ Div_Functions.o: ../Code_Files/Div_Functions.cpp /usr/local/Cellar/armadillo/9.6
 		../Code_Files/pro4_functions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Div_Functions.o ../Code_Files/Div_Functions.cpp
 
-Ising_func.o: ../Code_Files/Ising_func.cpp /usr/local/Cellar/armadillo/9.600.6/include/armadillo \
+Ising_func_copy.o: ../Code_Files/Ising_func_copy.cpp /usr/local/Cellar/armadillo/9.600.6/include/armadillo \
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/compiler_extra.hpp \
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/config.hpp \
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/compiler_setup.hpp \
@@ -1774,7 +1774,7 @@ Ising_func.o: ../Code_Files/Ising_func.cpp /usr/local/Cellar/armadillo/9.600.6/i
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/newarp_UpperHessenbergQR_meat.hpp \
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/compiler_setup_post.hpp \
 		../Code_Files/pro4_functions.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Ising_func.o ../Code_Files/Ising_func.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Ising_func_copy.o ../Code_Files/Ising_func_copy.cpp
 
 Ising_test.o: ../Code_Files/Ising_test.cpp /usr/local/Cellar/armadillo/9.600.6/include/armadillo \
 		/usr/local/Cellar/armadillo/9.600.6/include/armadillo_bits/compiler_extra.hpp \

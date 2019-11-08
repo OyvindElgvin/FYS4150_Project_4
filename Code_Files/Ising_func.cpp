@@ -81,11 +81,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
         initialize(L,S_matrix,E,M,order);
 
 
-        //cout << S_matrix << endl;
-        //cout << E << endl;
-        //cout << M << endl;
-        //cout << "---------" << endl;
-        // Loop over Monte Carlo Cycles
+
         for(int j = 0;j<N;j++){
 
             int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
