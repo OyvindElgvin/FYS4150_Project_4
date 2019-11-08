@@ -199,7 +199,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
     double runtime = time_span.count();
     runtime = runtime/3600;
 
-    cout << "runtime = " << runtime << endl;
+    cout << "runtime = " << runtime << "hours" << endl;
 
 
     if (test != 1){
