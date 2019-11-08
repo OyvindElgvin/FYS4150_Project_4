@@ -15,7 +15,7 @@ A_100 = Py_Functions.readmatrices("../Results_4e_N_%s_L_100.txt" % n)[0]
 T = [i for i in A_40[0]]
 lst = [A_40,A_60,A_80,A_100]
 
-plotFunctions.plotPhaseTransition(lst,T)
+plotFunctions.plotPhaseTransition(lst,T,n)
 
 '''
 #Initialize

@@ -3,7 +3,7 @@ from matplotlib.pyplot import *
 from numba import jit
 
 @jit
-def plotPhaseTransition(lst,temp):
+def plotPhaseTransition(lst,temp,n):
     L = [40,60,80,100]
 
     T = temp
@@ -27,15 +27,37 @@ def plotPhaseTransition(lst,temp):
             index += 1
         figure(2)
         plot(T,M,label="L = "+str(L[size]))
+        index = 0
+        for j in i[3]: # Loop over Magnetizations per temperature
+            Cv[index] = j[-1]
+            index += 1
+        figure(3)
+        plot(T,Cv,label="L = "+str(L[size]))
+        index = 0
+        for j in i[4]: # Loop over Magnetizations per temperature
+            X[index] = j[-1]
+            index += 1
+        figure(4)
+        plot(T,X,label="L = "+str(L[size]))
         size += 1
     figure(1)
     legend()
     xlabel("Temperature (T)")
     ylabel("$\\langle E\\rangle (T)$")
-    savefig("E_of_T.pdf")
+    savefig("E_of_T_N_"+str(n)+".pdf")
     figure(2)
     legend()
     xlabel("Temperature (T)")
     ylabel("$\\langle M\\rangle (T)$")
-    savefig("M_of_T.pdf")
+    savefig("M_of_T_N_"+str(n)+".pdf")
+    figure(3)
+    legend()
+    xlabel("Temperature (T)")
+    ylabel("$C_{V} (T)$")
+    savefig("Cv_of_T_N_"+str(n)+".pdf")
+    figure(4)
+    legend()
+    xlabel("Temperature (T)")
+    ylabel("$\\chi (T)$")
+    savefig("X_of_T_N_"+str(n)+".pdf")
     show()
