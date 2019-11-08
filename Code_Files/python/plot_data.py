@@ -1,7 +1,22 @@
 from numpy import *
 from matplotlib.pyplot import *
+import plotFunctions
 import Py_Functions
+
 # 1 The most likely state
+
+
+# 3 Phase transition and critical temperature
+n = 1000000
+A_40 = Py_Functions.readmatrices("../Results_4e_N_%s_L_40.txt" % n)[0]
+A_60 = Py_Functions.readmatrices("../Results_4e_N_%s_L_60.txt" % n)[0]
+A_80 = Py_Functions.readmatrices("../Results_4e_N_%s_L_80.txt" % n)[0]
+A_100 = Py_Functions.readmatrices("../Results_4e_N_%s_L_100.txt" % n)[0]
+T = [i for i in A_40[0]]
+lst = [A_40,A_60,A_80,A_100]
+
+plotFunctions.plotPhaseTransition(lst,T)
+
 '''
 #Initialize
 n = array([pow(10,i) for i in range(1,9)])
@@ -100,33 +115,3 @@ ax4.set_ylabel("$\\rho_{\\langle M\\rangle}$")
 xlabel("$\\langle M\\rangle$")
 #savefig("../Figures/M_mean_L20_probability.pdf")
 '''
-
-# 3 Phase transition and critical temperature
-
-# Read from files
-n = 1000000
-A_40 = Py_Functions.readmatrices("Results_4e_N_%s_L_40.txt" % n)[0]
-A_60 = Py_Functions.readmatrices("Results_4e_N_%s_L_60.txt" % n)[0]
-A_80 = Py_Functions.readmatrices("Results_4e_N_%s_L_80.txt" % n)[0]
-A_100 = Py_Functions.readmatrices("Results_4e_N_%s_L_100.txt" % n)[0]
-
-lst = [A_40,A_60,A_80,A_100]
-L = [40,60,80,100]
-
-T = [i for i in A_40[0]]
-E = zeros(len(A_40[0]))
-
-size = 0
-for i in lst: #Loop over all different L calculations
-    index = 0
-    for j in i[1]: # Loop over Energies per temperature in given LxL system
-        #print(j[-1]) #Read last value
-        E[index] = j[-1]
-        index += 1
-    print(E)
-    plot(T,E,label="L = "+str(L[size]))
-    #for j in i[2]: # Loop over Magnetizations per temperature
-    size += 1
-xlabel("Temperature (T)")
-ylabel("$\\langle E\\rangle (T)$")
-show()
