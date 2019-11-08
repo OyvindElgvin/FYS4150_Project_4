@@ -38,8 +38,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
 
 
     // Initiaize Random Number Generator
-    unsigned seed = system_clock::now().time_since_epoch().count();
-    mt19937_64 generator (seed);
+
 
     // Vectors for storing E, M, Cv and X for different Temperatures
     mat E_t = mat(T.n_elem,N/1000,fill::zeros);
@@ -57,7 +56,8 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
     #pragma omp parallel num_threads(2)
     //#pragma omp parallel num_threads(4)
     {
-
+    unsigned seed = system_clock::now().time_since_epoch().count();
+    mt19937_64 generator (seed);
     double E_mean = 0;
     double E2_mean = 0;
     double M_mean = 0;
