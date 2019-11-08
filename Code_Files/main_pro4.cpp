@@ -33,10 +33,10 @@ int main(){
     vec T = vec("1.0 1.2 1.6 2.4");
 
 
-    Ising_Func(T,20,1000000,"Test_stuff","no order",0);
+    //Ising_Func(T,20,10000000,"Test_stuff","order",0);
 
 
-    // Task_c();
+    Task_e();
 
 
 

@@ -149,7 +149,7 @@ void Task_e(){
     vec L = vec("20 40 60 80 100");
     for (int i = 0;i<Nvalues.size();i++){
         for (uword j= 0;j<L.n_elem;j++){
-            Ising_Func(T,L(j),Nvalues[i],"Results_4e","order",0);
+            Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e","order",0);
         }//end of L loop
     }//end of N loop
     return;

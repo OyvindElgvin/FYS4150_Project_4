@@ -21,11 +21,16 @@ using namespace arma;
 using namespace chrono;
 
 // Terminal:
+//Øyvind:
 /*
-g++-9 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -fopenmp
+c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -lomp
+*/
+//Henrik:
+/*
+c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.800.1/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.800.1/include/ -larmadillo -lomp
 */
 
-void Ising_Func(vec T,int L,int N,string file,string order,int test){
+void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
 
     // start function here
 
@@ -49,7 +54,8 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     high_resolution_clock::time_point time1 = high_resolution_clock::now();
 
     // parallelizing 4 threads and making a seperate seed for each thread
-    #pragma omp parallel num_threads(4)
+    #pragma omp parallel num_threads(2)
+    //#pragma omp parallel num_threads(4)
     {
 
     double E_mean = 0;
@@ -59,7 +65,7 @@ void Ising_Func(vec T,int L,int N,string file,string order,int test){
     double M_abs_mean = 0;
 
     // parallelizing for different temperatures
-    #pragma omp parallel for //reduction (+:E_mean, E2_mean, M_mean, M2_mean, M_abs_mean)
+    #pragma omp parallel for reduction (+:E_mean, E2_mean, M_mean, M2_mean, M_abs_mean)
 
     // Loop over Temperatures
     for (uword i=0;i<T.n_elem;i++){
