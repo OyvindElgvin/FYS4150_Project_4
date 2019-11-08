@@ -145,8 +145,8 @@ void Task_d(){
 
 void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
-    vec T = T_vector(2.0,2.3,0.05);
-    vec L = vec("20 40 60 80 100");
+    vec T = T_vector(2.0,2.4,0.05);
+    vec L = vec("40 60 80 100");
     for (int i = 0;i<Nvalues.size();i++){
         for (uword j= 0;j<L.n_elem;j++){
             Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e","order",0);

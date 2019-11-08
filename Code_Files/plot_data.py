@@ -2,7 +2,7 @@ from numpy import *
 from matplotlib.pyplot import *
 import Py_Functions
 # 1 The most likely state
-
+'''
 #Initialize
 n = array([pow(10,i) for i in range(1,9)])
 T = array([1.0,2.4])
@@ -21,8 +21,8 @@ AC_ran = zeros((len(n),2))
 
 # Read from files
 for i in range(len(n)):
-    A = Py_Functions.readarrays("Results_4c_order_N_%s_L_20.txt" % n[i])[0]
-    A_ran = Py_Functions.readarrays("Results_4c_random_N_%s_L_20.txt" % n[i])[0]
+    A = Py_Functions.readmatrices("Results_4e_N_%s_L_20.txt" % n[i])[0]
+    A_ran = Py_Functions.readmatrices("Results_4e_N_%s_L_20.txt" % n[i])[0]
     E[i][0] = A[1][0]
     E[i][1] = A[1][1]
     M[i][0] = A[2][0]
@@ -87,7 +87,7 @@ ax4.set_ylabel("$\\rho_{\\langle E\\rangle}$")
 xlabel("$\\langle E\\rangle$")
 #savefig("../Figures/E_mean_L20_probability.pdf")
 
-'''
+
 fig4, (ax1, ax2, ax3, ax4) = subplots(4, 1, sharex=True)
 line1 = ax1.hist(M_mean_L20_T1_ord, 50, normed=True, facecolor='g', alpha=0.75)
 ax1.set_ylabel("$\\rho_{\\langle M\\rangle}$")
@@ -99,95 +99,34 @@ line4 = ax4.hist(M_mean_L20_T24_unord, 50, normed=True, facecolor='g', alpha=0.7
 ax4.set_ylabel("$\\rho_{\\langle M\\rangle}$")
 xlabel("$\\langle M\\rangle$")
 #savefig("../Figures/M_mean_L20_probability.pdf")
-
+'''
 
 # 3 Phase transition and critical temperature
 
 # Read from files
-T0 = 2.0
-T1 = 2.3
-h = 0.05
-T = linspace(T0,T1,int((T1-T0)/h))
+n = 1000000
+A_40 = Py_Functions.readmatrices("Results_4e_N_%s_L_40.txt" % n)[0]
+A_60 = Py_Functions.readmatrices("Results_4e_N_%s_L_60.txt" % n)[0]
+A_80 = Py_Functions.readmatrices("Results_4e_N_%s_L_80.txt" % n)[0]
+A_100 = Py_Functions.readmatrices("Results_4e_N_%s_L_100.txt" % n)[0]
 
-E_mean_L40 = array([random.randn() for _ in range(len(T))])
-E_mean_L60 = array([random.randn() for _ in range(len(T))])
-E_mean_L80 = array([random.randn() for _ in range(len(T))])
-E_mean_L100 = array([random.randn() for _ in range(len(T))])
-M_mean_L40 = array([random.randn() for _ in range(len(T))])
-M_mean_L60 = array([random.randn() for _ in range(len(T))])
-M_mean_L80 = array([random.randn() for _ in range(len(T))])
-M_mean_L100 = array([random.randn() for _ in range(len(T))])
-Cv_mean_L40 = array([random.randn() for _ in range(len(T))])
-Cv_mean_L60 = array([random.randn() for _ in range(len(T))])
-Cv_mean_L80 = array([random.randn() for _ in range(len(T))])
-Cv_mean_L100 = array([random.randn() for _ in range(len(T))])
-X_mean_L40 = array([random.randn() for _ in range(len(T))])
-X_mean_L60 = array([random.randn() for _ in range(len(T))])
-X_mean_L80 = array([random.randn() for _ in range(len(T))])
-X_mean_L100 = array([random.randn() for _ in range(len(T))])
+lst = [A_40,A_60,A_80,A_100]
+L = [40,60,80,100]
 
-fig5, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
-line1 = ax1.plot(T,E_mean_L40,label="a)")
-ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
-ax1.set_ylabel("$\\langle E\\rangle$")
-line2 = ax2.plot(T,E_mean_L60,label="b)")
-ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
-line3 = ax3.plot(T,E_mean_L80,label="c)")
-ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
-ax3.set_xlabel("Temperature (T)")
-ax3.set_ylabel("$\\langle E\\rangle$")
-line4 = ax4.plot(T,E_mean_L100,label="d)")
-ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
+T = [i for i in A_40[0]]
+E = zeros(len(A_40[0]))
+
+size = 0
+for i in lst: #Loop over all different L calculations
+    index = 0
+    for j in i[1]: # Loop over Energies per temperature in given LxL system
+        #print(j[-1]) #Read last value
+        E[index] = j[-1]
+        index += 1
+    print(E)
+    plot(T,E,label="L = "+str(L[size]))
+    #for j in i[2]: # Loop over Magnetizations per temperature
+    size += 1
 xlabel("Temperature (T)")
-#savefig("../Figures/E_mean_func_of_T.pdf")
-#close()
-
-fig6, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
-line1 = ax1.plot(T,M_mean_L40,label="a)")
-ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
-ax1.set_ylabel("$\\langle |M|\\rangle$")
-line2 = ax2.plot(T,M_mean_L60,label="b)")
-ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
-line3 = ax3.plot(T,M_mean_L80,label="c)")
-ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
-ax3.set_xlabel("Temperature (T)")
-ax3.set_ylabel("$\\langle |M|\\rangle$")
-line4 = ax4.plot(T,M_mean_L100,label="d)")
-ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
-xlabel("Temperature (T)")
-#savefig("../Figures/M_mean_func_of_T.pdf")
-#close()
-
-fig7, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
-line1 = ax1.plot(T,Cv_mean_L40,label="a)")
-ax1.text(1,1, 'a', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
-ax1.set_ylabel("$C_{v}$")
-line2 = ax2.plot(T,Cv_mean_L60,label="b)")
-ax2.text(1,1, 'b', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
-line3 = ax3.plot(T,Cv_mean_L80,label="c)")
-ax3.text(1,1, 'c', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
-ax3.set_xlabel("Temperature (T)")
-ax3.set_ylabel("$C_{v}$")
-line4 = ax4.plot(T,Cv_mean_L100,label="d)")
-ax4.text(1,1, 'd', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
-xlabel("Temperature (T)")
-#savefig("../Figures/Cv_mean_func_of_T.pdf")
-#close()
-
-fig8, ((ax1, ax2), (ax3, ax4)) = subplots(2, 2, sharex=True, sharey = True)
-line1 = ax1.plot(T,X_mean_L40,label="a)")
-ax1.text(1,1, 'L=40', horizontalalignment='left', verticalalignment='bottom', transform=ax1.transAxes)
-ax1.set_ylabel("$\\chi$")
-line2 = ax2.plot(T,X_mean_L60,label="b)")
-ax2.text(1,1, 'L=60', horizontalalignment='left', verticalalignment='bottom', transform=ax2.transAxes)
-line3 = ax3.plot(T,X_mean_L80,label="c)")
-ax3.text(1,1, 'L=80', horizontalalignment='left', verticalalignment='bottom', transform=ax3.transAxes)
-ax3.set_xlabel("Temperature (T)")
-ax3.set_ylabel("$\\chi$")
-line4 = ax4.plot(T,X_mean_L100,label="d)")
-ax4.text(1,1, 'L=100', horizontalalignment='left', verticalalignment='bottom', transform=ax4.transAxes)
-xlabel("Temperature (T)")
-#savefig("../Figures/X_mean_func_of_T.pdf")
-#close()
-'''
+ylabel("$\\langle E\\rangle (T)$")
 show()
