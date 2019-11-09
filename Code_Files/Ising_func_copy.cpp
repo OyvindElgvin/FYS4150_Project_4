@@ -41,11 +41,11 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
 
 
     // Vectors for storing E, M, Cv and X for different Temperatures
-    mat E_t = mat(T.n_elem,N/100000,fill::zeros);
-    mat M_t = mat(T.n_elem,N/100000,fill::zeros);
-    mat Mabs_t = mat(T.n_elem,N/100000,fill::zeros);
-    mat Cv_t = mat(T.n_elem,N/100000,fill::zeros);
-    mat X_t = mat(T.n_elem,N/100000,fill::zeros);
+    mat E_t = mat(T.n_elem,N/10000000000,fill::zeros);
+    mat M_t = mat(T.n_elem,N/10000000000,fill::zeros);
+    mat Mabs_t = mat(T.n_elem,N/10000000000,fill::zeros);
+    mat Cv_t = mat(T.n_elem,N/10000000000,fill::zeros);
+    mat X_t = mat(T.n_elem,N/10000000000,fill::zeros);
     //mat AC_t = mat(T.n_elem,N/1000,fill::zeros);
     vec AC_t = vec(T.n_elem,fill::zeros);
 
@@ -108,11 +108,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
             M2_mean += M*M;
             M_abs_mean += fabs(M);
 
-<<<<<<< HEAD
-            if ((j+1) % 100000000 == 0){
-=======
-            if ((j+1) % 100000 == 0){
->>>>>>> f3f282292178a37fd6f8fcc19e6a7f2eb8a5199c
+            if ((j+1) % 10000000000 == 0){
                 E_mean /= (j+1);
                 E2_mean /= (j+1);
                 M_mean /= (j+1);
@@ -124,11 +120,11 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
                 Cv = Variance_E/(T(i)*T(i));
                 X = Variance_M/T(i);
 
-                E_t(i,((j+1)/100000)-1) = E_mean/(L*L); //Per spin
-                M_t(i,((j+1)/100000)-1) = M_mean/(L*L);
-                Mabs_t(i,((j+1)/100000)-1) = M_abs_mean/(L*L);
-                Cv_t(i,((j+1)/100000)-1) = Cv/(L*L);
-                X_t(i,((j+1)/100000)-1) = X/(L*L);
+                E_t(i,((j+1)/10000000000)-1) = E_mean/(L*L); //Per spin
+                M_t(i,((j+1)/10000000000)-1) = M_mean/(L*L);
+                Mabs_t(i,((j+1)/10000000000)-1) = M_abs_mean/(L*L);
+                Cv_t(i,((j+1)/10000000000)-1) = Cv/(L*L);
+                X_t(i,((j+1)/10000000000)-1) = X/(L*L);
             }
 
         } // end of Monte Carlo loop
