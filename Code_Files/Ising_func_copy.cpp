@@ -108,7 +108,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test){
             M2_mean += M*M;
             M_abs_mean += fabs(M);
 
-            if ((j+1) % 1000 == 0){
+            if ((j+1) % 100000000 == 0){
                 E_mean /= (j+1);
                 E2_mean /= (j+1);
                 M_mean /= (j+1);
