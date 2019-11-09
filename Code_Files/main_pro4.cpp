@@ -36,10 +36,18 @@ int main(){
     //Ising_Func(T,20,10000000,"Test_stuff","order",0);
 
 
+    // Starts clock for general time
+    clock_t start, finish;
+    start = clock();
+
     Task_e();
 
 
-
+    finish = clock();
+    double timeused = double (finish - start)/(CLOCKS_PER_SEC );
+    timeused = timeused / 3600;
+    cout << setiosflags(ios::showpoint | ios::uppercase);
+    cout << setprecision(10) << setw(20) << "Hours used for the total calculation = " << timeused << endl;
 
 
 
