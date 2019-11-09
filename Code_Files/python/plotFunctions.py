@@ -22,19 +22,19 @@ def plotPhaseTransition(lst,temp,n):
         figure(1)
         plot(T,E,label="L = "+str(L[size]))
         index = 0
-        for j in i[2]: # Loop over Magnetizations per temperature
+        for j in i[3]: # Loop over Magnetizations per temperature
             M[index] = j[-1]
             index += 1
         figure(2)
         plot(T,M,label="L = "+str(L[size]))
         index = 0
-        for j in i[3]: # Loop over Magnetizations per temperature
+        for j in i[4]: # Loop over Magnetizations per temperature
             Cv[index] = j[-1]
             index += 1
         figure(3)
         plot(T,Cv,label="L = "+str(L[size]))
         index = 0
-        for j in i[4]: # Loop over Magnetizations per temperature
+        for j in i[5]: # Loop over Magnetizations per temperature
             X[index] = j[-1]
             index += 1
         figure(4)
