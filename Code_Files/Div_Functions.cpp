@@ -145,7 +145,7 @@ void Task_d(){
 
 void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
-    vec T = T_vector(2.0,2.6,0.01);
+    vec T = T_vector(2.1,2.26,0.01);
     vec L = vec("40 60 80 100");
     for (int i = 0;i<Nvalues.size();i++){
         for (uword j= 0;j<L.n_elem;j++){

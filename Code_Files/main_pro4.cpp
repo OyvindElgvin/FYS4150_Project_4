@@ -30,7 +30,7 @@ int main(){
     // Running test for L = 2 and N = 100, T = 1
 
 
-    vec T = vec("1.0 1.2 1.6 2.4");
+    //vec T = vec("1.0 1.2 1.6 2.4");
 
 
     //Ising_Func(T,20,10000000,"Test_stuff","order",0);
