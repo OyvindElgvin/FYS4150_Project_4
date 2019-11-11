@@ -148,9 +148,9 @@ void Task_d(){
 
 void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
-    vec T = T_vector(2.17,2.28,0.01);
+    vec T = T_vector(2.17,2.28,0.001);
     vec L = vec("40 60 80 100");
-    int stepsize = 100000;
+    int stepsize = 1000000;
     for (int i = 0;i<Nvalues.size();i++){
         for (uword j= 0;j<L.n_elem;j++){
             Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","random",0,stepsize,"no probability");
