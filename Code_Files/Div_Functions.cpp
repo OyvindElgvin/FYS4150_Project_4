@@ -114,7 +114,7 @@ void Task_b(){
     int L = 2;
     vec T = vec("1.0");
     int stepsize = 100000;
-
+    
     for (int i = 0;i<Nvalues.size();i++){
     Ising_Func_Para(T,L,Nvalues[i],"Results_4b","order",1,stepsize,"no probability");
 
@@ -129,8 +129,8 @@ void Task_c(){
     vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
-    Ising_Func_Para(T,L,Nvalues[i],"Results_4c_order","order",0,stepsize,"no probability");
-    Ising_Func_Para(T,L,Nvalues[i],"Results_4c_random","random",0,stepsize,"no probability");
+        Ising_Func_Para(T,L,Nvalues[i],"Results_4c_order","order",0,stepsize,"no probability");
+        Ising_Func_Para(T,L,Nvalues[i],"Results_4c_random","random",0,stepsize,"no probability");
     }
     return;
 } // end Task_c
@@ -139,10 +139,10 @@ void Task_c(){
 void Task_d(){
     vector<int> Nvalues = readvalues("Pro4d_Nvalues.txt");
     int L = 20;
-    int stepsize = 100000000;
     vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
+        int stepsize = pow(10,log10(Nvalues[i])-1);
         Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",2,stepsize,"probability");
     }
     return;
@@ -150,10 +150,10 @@ void Task_d(){
 
 void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
-    vec T = T_vector(1.9,2.5,0.02);
+    vec T = T_vector(1.8,3.0,0.01);
     vec L = vec("40 60 80 100");
-    int stepsize = 1000000000;
     for (int i = 0;i<Nvalues.size();i++){
+        int stepsize = pow(10,log10(Nvalues[i])-1);
         for (uword j= 0;j<L.n_elem;j++){
             cout << "L = " << L(j) << endl;
             Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","order",0,stepsize,"no probability");

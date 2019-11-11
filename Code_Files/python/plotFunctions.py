@@ -41,8 +41,8 @@ def plotMostLikelyState(lst,temp,n):
         state += 1
     axs1[-1].set_xlabel("$log_{10}$(# of MC-cycles)")
     axs2[-1].set_xlabel("$log_{10}$(# of MC-cycles)")
-    fig1.savefig("Most_Likely_State_E_mean_L_20.pdf")
-    fig2.savefig("Most_Likely_State_M_abs_L_20.pdf")
+    fig1.savefig("../Figures/Most_Likely_State_E_mean_L_20.pdf")
+    fig2.savefig("../Figures/Most_Likely_State_M_abs_L_20.pdf")
     show()
 
 def plotAcceptedConfigurations(lst,temp,n):
@@ -71,7 +71,7 @@ def plotAcceptedConfigurations(lst,temp,n):
 
         state += 1
     axs1[-1].set_xlabel("# of MC-cycles")
-    fig1.savefig("Number_of_Accepted_Configs_L_20.pdf")
+    fig1.savefig("../Figures/Number_of_Accepted_Configs_L_20.pdf")
     show()
 
 
@@ -88,7 +88,7 @@ def plotProbabilityDistribution(array,temp,n):
         axs[i].legend()
 
     axs[-1].set_xlabel("Mean energy, $\\langle E\\rangle$")
-    fig.savefig("Probability_Distribution_L_20.pdf")
+    fig.savefig("../Figures/Probability_Distribution_L_20.pdf")
     show()
 
 @jit
@@ -133,20 +133,20 @@ def plotPhaseTransition(lst,temp,n):
     legend()
     xlabel("Temperature (T)")
     ylabel("$\\langle E\\rangle (T)$")
-    savefig("E_of_T_N_"+str(n)+".pdf")
+    savefig("../Figures/E_of_T_N_"+str(n)+".pdf")
     figure(2)
     legend()
     xlabel("Temperature (T)")
     ylabel("$\\langle |M|\\rangle (T)$")
-    savefig("M_of_T_N_"+str(n)+".pdf")
+    savefig("../Figures/M_of_T_N_"+str(n)+".pdf")
     figure(3)
     legend()
     xlabel("Temperature (T)")
     ylabel("$C_{V} (T)$")
-    savefig("Cv_of_T_N_"+str(n)+".pdf")
+    savefig("../Figures/Cv_of_T_N_"+str(n)+".pdf")
     figure(4)
     legend()
     xlabel("Temperature (T)")
     ylabel("$\\chi (T)$")
-    savefig("X_of_T_N_"+str(n)+".pdf")
+    savefig("../Figures/X_of_T_N_"+str(n)+".pdf")
     show()
