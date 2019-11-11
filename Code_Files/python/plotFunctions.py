@@ -137,7 +137,7 @@ def plotPhaseTransition(lst,temp,n):
     figure(2)
     legend()
     xlabel("Temperature (T)")
-    ylabel("$\\langle M\\rangle (T)$")
+    ylabel("$\\langle |M|\\rangle (T)$")
     savefig("M_of_T_N_"+str(n)+".pdf")
     figure(3)
     legend()

@@ -71,7 +71,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
     // Loop over Temperatures
     for (uword i=0;i<T.n_elem;i++){
-        cout << "T = " <<T[i] << endl;
+        cout << "T = " <<T(i) << endl;
 
         vec dE = ("-8 -4 0 4 8");
         vec P = vec(5,fill::zeros);
@@ -104,7 +104,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
             changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
-            // Obtain 10^6 energy values after equilibrium
+            // Obtain 10^4 energy values after equilibrium
             if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
                 Energies(i,energy_index) = E;
                 energy_index += 1;
@@ -117,29 +117,39 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
             M_abs_mean += fabs(M);
 
             if ((j+1) % stepsize == 0){
-                /*E_mean /= (j+1);
-                E2_mean /= (j+1);
-                M_mean /= (j+1);
-                M2_mean /= (j+1);
-                M_abs_mean /= (j+1);*/
+                double norm = (j+1);
+                double perSpin = L*L;
+                double Variance_E = (E2_mean/norm-E_mean/norm*E_mean/norm)/perSpin;
+                double Variance_M = (M2_mean/norm-M_mean/norm*M_mean/norm)/perSpin;
 
-                double Variance_E = (E2_mean/(j+1)-E_mean/(j+1)*E_mean/(j+1));
-                double Variance_M = (M2_mean/(j+1)-M_mean/(j+1)*M_mean/(j+1));
-                Cv = Variance_E/(T(i)*T(i));
-                X = Variance_M/T(i);
-
-                E_t(i,((j+1)/stepsize)-1) = E_mean/(L*L)/(j+1); //Per spin
-                M_t(i,((j+1)/stepsize)-1) = M_mean/(L*L)/(j+1);
-                Mabs_t(i,((j+1)/stepsize)-1) = M_abs_mean/(L*L)/(j+1);
-                Cv_t(i,((j+1)/stepsize)-1) = Cv/(L*L);
-                X_t(i,((j+1)/stepsize)-1) = X/(L*L);
+                E_t(i,((j+1)/stepsize)-1) = E_mean/norm/perSpin; //Per spin
+                M_t(i,((j+1)/stepsize)-1) = M_mean/norm/perSpin;
+                Mabs_t(i,((j+1)/stepsize)-1) = M_abs_mean/norm/perSpin;
+                Cv_t(i,((j+1)/stepsize)-1) = Variance_E/(T(i)*T(i));
+                X_t(i,((j+1)/stepsize)-1) = Variance_M/T(i);
                 AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
             }
 
         } // end of Monte Carlo loop
+        double normalize = N;
+        double perSpin = L*L;
+        E_mean /= normalize; //Per spin
+        E2_mean /= normalize;
+        M_mean /= normalize;
+        M2_mean /= normalize;
+        M_abs_mean /= normalize;
 
+        double Variance_E = (E2_mean-E_mean*E_mean)/L/L;
+        double Variance_M = (M2_mean-M_mean*M_mean)/L/L;
 
-        //AC_t(i) = accepted_configurations;
+        E_mean /= L*L; //Per spin
+        E2_mean /= L*L;
+        M_mean /= L*L;
+        M2_mean /= L*L;
+        M_abs_mean /= L*L;
+
+        Cv = Variance_E/(T(i)*T(i));
+        X = Variance_M/T(i);
 
 /*
         cout << "<E>   = " << E_mean << endl
@@ -156,11 +166,16 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         // Run test if so desired
         if (test == 1){
 
-            double eps = pow(10,-6);
-            double exact_Em = -7.983928344;
+            double eps = pow(10,-2);
+            /*double exact_Em = -7.983928344;
             double exact_Mm = 0.0;
             double exact_Cv = 0.1283293234;
-            double exact_X = 15.9732151;
+            double exact_X = 15.9732151;*/
+            double exact_Em = -1.9959821; //Per spin
+            double exact_Mm = 0.0;
+            double exact_Cv = 0.032082332;
+            double exact_X = 3.9933038;
+
 
             if (abs(exact_Em - E_mean) < eps){
                 cout << "Mean energy equals exact value with precision " << eps << endl;
