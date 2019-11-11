@@ -46,8 +46,8 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     mat Mabs_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat Cv_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat X_t = mat(T.n_elem,N/stepsize,fill::zeros);
-    //mat AC_t = mat(T.n_elem,N/1000,fill::zeros);
-    vec AC_t = vec(T.n_elem,fill::zeros);
+    mat AC_t = mat(T.n_elem,N/stepsize,fill::zeros);
+    //vec AC_t = vec(T.n_elem,fill::zeros);
 
     // starting clock for time keeping
     high_resolution_clock::time_point time1 = high_resolution_clock::now();
@@ -90,10 +90,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         M_abs_mean = 0;
 
         mat S_matrix = mat(L,L,fill::zeros);
-        vec Energies = 0;
-        if (probability == "probability"){
-            Energies  = vec(N-stepsize,fill::zeros);
-        }
+        vec Energies  = vec(N-stepsize,fill::zeros);
 
         initialize(L,S_matrix,E,M,order);
 
@@ -104,9 +101,10 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
             changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
-            if ((j+1) >= stepsize) && (probability == "probability"){
+            if ((j+1) >= stepsize && probability == "probability"){
                 Energies((j+1)/stepsize) = E;
                 }
+
             E_mean += E;
             E2_mean += E*E;
             M_mean += M;
@@ -130,12 +128,13 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 Mabs_t(i,((j+1)/stepsize)-1) = M_abs_mean/(L*L);
                 Cv_t(i,((j+1)/stepsize)-1) = Cv/(L*L);
                 X_t(i,((j+1)/stepsize)-1) = X/(L*L);
+                AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
             }
 
         } // end of Monte Carlo loop
 
 
-        AC_t(i) = accepted_configurations;
+        //AC_t(i) = accepted_configurations;
 
 /*
         cout << "<E>   = " << E_mean << endl
