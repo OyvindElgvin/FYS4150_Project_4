@@ -150,7 +150,7 @@ void Task_d(){
 
 void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
-    vec T = T_vector(1.4,3.0,0.1);
+    vec T = T_vector(1.9,2.5,0.02);
     vec L = vec("40 60 80 100");
     int stepsize = 1000000000;
     for (int i = 0;i<Nvalues.size();i++){
