@@ -30,7 +30,7 @@ c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func.cpp Ising_f
 c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.800.1/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.800.1/include/ -larmadillo -lomp
 */
 
-void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize){
+void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize,string probability){
 
     // start function here
 
@@ -90,7 +90,10 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         M_abs_mean = 0;
 
         mat S_matrix = mat(L,L,fill::zeros);
-        vec Energies  = vec(N,fill::zeros);
+        vec Energies = 0;
+        if (probability == "probability"){
+            Energies  = vec(N-stepsize,fill::zeros);
+        }
 
         initialize(L,S_matrix,E,M,order);
 
@@ -101,7 +104,9 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
             changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
-            //Energies(j) = E;
+            if ((j+1) >= stepsize) && (probability == "probability"){
+                Energies((j+1)/stepsize) = E;
+                }
             E_mean += E;
             E2_mean += E*E;
             M_mean += M;
