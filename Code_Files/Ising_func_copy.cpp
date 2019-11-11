@@ -48,6 +48,8 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     mat X_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat AC_t = mat(T.n_elem,N/stepsize,fill::zeros);
     //vec AC_t = vec(T.n_elem,fill::zeros);
+    int energy_mesh = 10000;
+    mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
 
     // starting clock for time keeping
     high_resolution_clock::time_point time1 = high_resolution_clock::now();
@@ -90,10 +92,10 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         M_abs_mean = 0;
 
         mat S_matrix = mat(L,L,fill::zeros);
-        vec Energies  = vec(N-stepsize,fill::zeros);
 
         initialize(L,S_matrix,E,M,order);
 
+        int energy_index = 0;
         for(int j = 0;j<N;j++){
 
             int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
@@ -101,8 +103,10 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
             changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
-            if ((j+1) >= stepsize && probability == "probability"){
-                Energies((j+1)/stepsize) = E;
+            // Obtain 10^6 energy values after equilibrium
+            if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
+                Energies(i,energy_index) = E;
+                energy_index += 1;
                 }
 
             E_mean += E;
@@ -112,20 +116,20 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
             M_abs_mean += fabs(M);
 
             if ((j+1) % stepsize == 0){
-                E_mean /= (j+1);
+                /*E_mean /= (j+1);
                 E2_mean /= (j+1);
                 M_mean /= (j+1);
                 M2_mean /= (j+1);
-                M_abs_mean /= (j+1);
+                M_abs_mean /= (j+1);*/
 
-                double Variance_E = (E2_mean-E_mean*E_mean);
-                double Variance_M = (M2_mean-M_mean*M_mean);
+                double Variance_E = (E2_mean/(j+1)-E_mean/(j+1)*E_mean/(j+1));
+                double Variance_M = (M2_mean/(j+1)-M_mean/(j+1)*M_mean/(j+1));
                 Cv = Variance_E/(T(i)*T(i));
                 X = Variance_M/T(i);
 
-                E_t(i,((j+1)/stepsize)-1) = E_mean/(L*L); //Per spin
-                M_t(i,((j+1)/stepsize)-1) = M_mean/(L*L);
-                Mabs_t(i,((j+1)/stepsize)-1) = M_abs_mean/(L*L);
+                E_t(i,((j+1)/stepsize)-1) = E_mean/(L*L)/(j+1); //Per spin
+                M_t(i,((j+1)/stepsize)-1) = M_mean/(L*L)/(j+1);
+                Mabs_t(i,((j+1)/stepsize)-1) = M_abs_mean/(L*L)/(j+1);
                 Cv_t(i,((j+1)/stepsize)-1) = Cv/(L*L);
                 X_t(i,((j+1)/stepsize)-1) = X/(L*L);
                 AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
@@ -197,6 +201,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         string prob_file = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_Energies;
         output_Energies.open(prob_file,ios::out);
+        output_Energies << T << endl;
         output_Energies << Energies << endl;
         output_Energies.close();
     }
@@ -213,7 +218,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     cout << "runtime = " << runtime << " hours" << endl;
 
 
-    if (test != 1){
+    if (test == 0){
         string filename = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_Results;
         output_Results.open(filename,ios::out);

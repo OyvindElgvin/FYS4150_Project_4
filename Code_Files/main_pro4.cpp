@@ -40,7 +40,7 @@ int main(){
     clock_t start, finish;
     start = clock();
 
-    Task_d();
+    Task_c();
 
 
     finish = clock();

@@ -76,8 +76,20 @@ def plotAcceptedConfigurations(lst,temp,n):
 
 
 @jit
-def plotProbabilityDistribution():
-    return 0
+def plotProbabilityDistribution(array,temp,n):
+
+    T = temp
+    fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
+    fig.suptitle("Probability distribution, $P(E)$.")
+    for i in range(len(array[0])):
+        col = int(1+(max(array[1][i])-min(array[1][i]))/4)
+        axs[i].hist(array[1][i],col,label="T="+str(T[i][0]))
+        axs[i].set_ylabel("$P(E)$")
+        axs[i].legend()
+
+    axs[-1].set_xlabel("Mean energy, $\\langle E\\rangle$")
+    fig.savefig("Probability_Distribution_L_20.pdf")
+    show()
 
 @jit
 def plotPhaseTransition(lst,temp,n):

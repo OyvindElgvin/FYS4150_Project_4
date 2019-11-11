@@ -123,7 +123,7 @@ void Task_b(){
 void Task_c(){
     vector<int> Nvalues = readvalues("Pro4c_Nvalues.txt");
     int L = 20;
-    int stepsize = 100000;
+    int stepsize = 10000;
     vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
@@ -137,11 +137,11 @@ void Task_c(){
 void Task_d(){
     vector<int> Nvalues = readvalues("Pro4d_Nvalues.txt");
     int L = 20;
-    int stepsize = 10000000;
+    int stepsize = 1000000;
     vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
-        Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",1,stepsize,"probability");
+        Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",2,stepsize,"probability");
     }
     return;
 } // end Task_d
