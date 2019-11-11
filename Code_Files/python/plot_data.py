@@ -11,7 +11,8 @@ A_20_random = Py_Functions.readmatrices("../Results_4c_random_N_%s_L_20.txt" % n
 T_ML = [i for i in A_20_order[0]]
 lst_ML = [A_20_order,A_20_random]
 
-plotFunctions.plotMostLikelyState(lst_ML,T_ML,n_ML)
+#plotFunctions.plotMostLikelyState(lst_ML,T_ML,n_ML)
+plotFunctions.plotAcceptedConfigurations(lst_ML,T_ML,n_ML)
 
 '''
 

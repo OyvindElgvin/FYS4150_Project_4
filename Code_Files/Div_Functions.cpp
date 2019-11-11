@@ -141,7 +141,7 @@ void Task_d(){
     vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
-        Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",0,stepsize,"probability");
+        Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",1,stepsize,"probability");
     }
     return;
 } // end Task_d

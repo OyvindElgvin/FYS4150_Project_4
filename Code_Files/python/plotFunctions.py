@@ -45,9 +45,39 @@ def plotMostLikelyState(lst,temp,n):
     fig2.savefig("Most_Likely_State_M_abs_L_20.pdf")
     show()
 
+def plotAcceptedConfigurations(lst,temp,n):
+
+    T = temp
+    h = int(n/len(lst[0][6][0])) #Step size
+    n_values = linspace(h,n+h,int(n/h))
+    fig1, axs1 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
+    fig1.suptitle("Accepted configurations as function of MC-cycles.")
+    state = 1
+    plt = 0
+    for i in lst:
+        initial = 0
+        if state == 1:
+            initial = "Ordered"
+        else:
+            initial = "Random"
+        index = 0
+        for j in i[6]:
+            Accepted_configs = j
+            axs1[plt].plot(log10(n_values),log10(Accepted_configs),label="T="+str(T[index][0])+", "+initial)
+            axs1[plt].set_ylabel("Acc. conf.")
+            axs1[plt].legend()
+            plt += 1
+            index += 1
+
+        state += 1
+    axs1[-1].set_xlabel("$log_{10}$(# of MC-cycles)")
+    fig1.savefig("Number_of_Accepted_Configs_L_20.pdf")
+    show()
+
+
 @jit
 def plotProbabilityDistribution():
-    
+    return 0
 
 @jit
 def plotPhaseTransition(lst,temp,n):
