@@ -26,7 +26,7 @@ using namespace chrono;
 void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L, mat& spin_matrix, double& Energy, double& Mmoment,int& AC);
 vector<int> readvalues(string file);
 void Ising_Func(vec T,int L,int N,string file, string order,int test);
-void Ising_Func_Para(vec T,int L,int N,string file,string order,int test);
+void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize);
 void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order);
 
 void Task_b();

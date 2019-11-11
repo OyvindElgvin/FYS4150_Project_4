@@ -111,9 +111,10 @@ void Task_b(){
     vector<int> Nvalues = readvalues("Pro4b_Nvalues.txt");
     int L = 2;
     vec T = vec("1.0");
+    int stepsize = 100000;
 
     for (int i = 0;i<Nvalues.size();i++){
-    Ising_Func_Para(T,L,Nvalues[i],"Results_4b","order",0);
+    Ising_Func_Para(T,L,Nvalues[i],"Results_4b","order",0,stepsize);
 
     }
     return;
@@ -122,11 +123,12 @@ void Task_b(){
 void Task_c(){
     vector<int> Nvalues = readvalues("Pro4c_Nvalues.txt");
     int L = 20;
-    vec T = vec("1 2.4");
+    int stepsize = 100000;
+    vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
-    Ising_Func_Para(T,L,Nvalues[i],"Results_4c_order","order",0);
-    Ising_Func_Para(T,L,Nvalues[i],"Results_4c_random","random",0);
+    Ising_Func_Para(T,L,Nvalues[i],"Results_4c_order","order",0,stepsize);
+    Ising_Func_Para(T,L,Nvalues[i],"Results_4c_random","random",0,stepsize);
     }
     return;
 } // end Task_c
@@ -135,21 +137,23 @@ void Task_c(){
 void Task_d(){
     vector<int> Nvalues = readvalues("Pro4d_Nvalues.txt");
     int L = 20;
-    vec T = vec("1. 2.4");
+    int stepsize = 10000;
+    vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){
-        Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",0);
+        Ising_Func_Para(T,L,Nvalues[i],"Results_4d","random",0,stepsize);
     }
     return;
 } // end Task_d
 
 void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
-    vec T = T_vector(2.1,2.26,0.01);
+    vec T = T_vector(2.17,2.28,0.01);
     vec L = vec("40 60 80 100");
+    int stepsize = 100000;
     for (int i = 0;i<Nvalues.size();i++){
         for (uword j= 0;j<L.n_elem;j++){
-            Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","order",0);
+            Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","random",0,stepsize);
         }//end of L loop
     }//end of N loop
     return;

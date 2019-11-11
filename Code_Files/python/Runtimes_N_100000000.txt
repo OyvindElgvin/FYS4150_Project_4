@@ -1,9 +1,0 @@
-Calculating..
-runtime = 0.666007hours
-Calculating..
-runtime = 0.529738hours
-Calculating..
-runtime = 0.520973hours
-Calculating..
-runtime = 0.511569hours
-Hours used for the total calculation = 2.228465000
