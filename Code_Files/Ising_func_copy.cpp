@@ -192,7 +192,14 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
         }
 
-
+    // Save energies to file
+    if (probability == "probability"){
+        string prob_file = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
+        ofstream output_Energies;
+        output_Energies.open(prob_file,ios::out);
+        output_Energies << Energies << endl;
+        output_Energies.close();
+    }
 
     }
     } // End of temperature loop

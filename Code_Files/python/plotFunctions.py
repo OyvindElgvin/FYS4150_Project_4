@@ -63,14 +63,14 @@ def plotAcceptedConfigurations(lst,temp,n):
         index = 0
         for j in i[6]:
             Accepted_configs = j
-            axs1[plt].plot(log10(n_values),log10(Accepted_configs),label="T="+str(T[index][0])+", "+initial)
+            axs1[plt].loglog(n_values,Accepted_configs,label="T="+str(T[index][0])+", "+initial)
             axs1[plt].set_ylabel("Acc. conf.")
             axs1[plt].legend()
             plt += 1
             index += 1
 
         state += 1
-    axs1[-1].set_xlabel("$log_{10}$(# of MC-cycles)")
+    axs1[-1].set_xlabel("# of MC-cycles")
     fig1.savefig("Number_of_Accepted_Configs_L_20.pdf")
     show()
 
