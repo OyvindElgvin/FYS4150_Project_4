@@ -73,7 +73,7 @@ void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order)
 } // End initialize
 
 // function for changing energy state
-//void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC,double inverse_period){
+//void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC){
 void changing_state(double inverse_period, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC){
 
 
@@ -139,7 +139,7 @@ void Task_c(){
 void Task_d(){
     vector<int> Nvalues = readvalues("Pro4d_Nvalues.txt");
     int L = 20;
-    int stepsize = 1000000;
+    int stepsize = 100000000;
     vec T = vec("1.0 2.4");
 
     for (int i = 0;i<Nvalues.size();i++){

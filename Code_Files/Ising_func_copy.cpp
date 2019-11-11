@@ -48,7 +48,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     mat X_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat AC_t = mat(T.n_elem,N/stepsize,fill::zeros);
     //vec AC_t = vec(T.n_elem,fill::zeros);
-    int energy_mesh = 10000;
+    int energy_mesh = 100000;
     mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
 
     double inverse_period = 1./RAND_MAX;
@@ -111,7 +111,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
             //changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
             changing_state(inverse_period, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
-            // Obtain 10^4 energy values after equilibrium
+            // Obtain 10^5 energy values after equilibrium
             if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
                 Energies(i,energy_index) = E;
                 energy_index += 1;
