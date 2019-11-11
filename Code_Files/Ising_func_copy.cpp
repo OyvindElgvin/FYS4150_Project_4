@@ -71,6 +71,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
     // Loop over Temperatures
     for (uword i=0;i<T.n_elem;i++){
+        cout << "T = " <<T[i] << endl;
 
         vec dE = ("-8 -4 0 4 8");
         vec P = vec(5,fill::zeros);
