@@ -73,7 +73,8 @@ void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order)
 } // End initialize
 
 // function for changing energy state
-void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC){
+//void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC,double inverse_period){
+void changing_state(double inverse_period, uword i, uword j, vec dE, vec P,int L,mat& spin_matrix, double& Energy, double& Mmoment,int& AC){
 
 
     // Calculating energy difference for flipped spin
@@ -84,7 +85,8 @@ void changing_state(mt19937_64 generator, uword i, uword j, vec dE, vec P,int L,
     double Prob = P(index(0));
 
     // Sample rule: Check if new state is accepted
-    double r = generate_canonical< double, 128 > (generator);
+    //double r = generate_canonical< double, 128 > (generator);
+    double r = double(rand())*inverse_period;
     //cout << dE(index(0)) << "     " << Prob << "      " << r << endl;
     if (r < Prob){
         spin_matrix(i,j) = -spin_matrix(i,j);
@@ -150,11 +152,11 @@ void Task_e(){
     vector<int> Nvalues = readvalues("Pro4e_Nvalues.txt");
     vec T = T_vector(1.4,3.0,0.1);
     vec L = vec("40 60 80 100");
-    int stepsize = 100000;
+    int stepsize = 1000000000;
     for (int i = 0;i<Nvalues.size();i++){
         for (uword j= 0;j<L.n_elem;j++){
             cout << "L = " << L(j) << endl;
-            Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","random",0,stepsize,"no probability");
+            Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","order",0,stepsize,"no probability");
         }//end of L loop
     }//end of N loop
     return;

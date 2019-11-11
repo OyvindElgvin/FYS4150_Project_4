@@ -27,7 +27,7 @@ c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func.cpp Ising_f
 */
 //Henrik:
 /*
-c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.800.1/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.800.1/include/ -larmadillo -lomp
+c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.800.1/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.800.1/include/ -larmadillo -lomp
 */
 
 void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize,string probability){
@@ -51,6 +51,8 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     int energy_mesh = 10000;
     mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
 
+    double inverse_period = 1./RAND_MAX;
+
     // starting clock for time keeping
     high_resolution_clock::time_point time1 = high_resolution_clock::now();
 
@@ -60,6 +62,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     {
     unsigned seed = system_clock::now().time_since_epoch().count();
     mt19937_64 generator (seed);
+
     double E_mean = 0;
     double E2_mean = 0;
     double M_mean = 0;
@@ -99,10 +102,14 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         int energy_index = 0;
         for(int j = 0;j<N;j++){
 
-            int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
-            int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
+            //int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
+            //int iy = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
 
-            changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
+            int ix = int(double(rand())*inverse_period*L);
+            int iy = int(double(rand())*inverse_period*L);
+
+            //changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
+            changing_state(inverse_period, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
             // Obtain 10^4 energy values after equilibrium
             if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
