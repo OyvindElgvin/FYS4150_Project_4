@@ -54,6 +54,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     int energy_mesh = 100000;
     mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
     vec Sample_Variance_E = vec(T.n_elem,fill::zeros);
+    vec Sample_E_mean_t = vec(T.n_elem,fill::zeros);
 
     double inverse_period = 1./RAND_MAX;
 
@@ -145,6 +146,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 energy_index += 1;
                 if (energy_index == energy_mesh){
                     Sample_Variance_E(i) = (Sample_E2_mean/energy_mesh-Sample_E_mean/energy_mesh*Sample_E_mean/energy_mesh);
+                    Sample_E_mean_t(i) = Sample_E_mean/energy_mesh;
                 }
                 }
 
@@ -238,6 +240,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         output_Energies << T << endl;
         output_Energies << Energies << endl;
         output_Energies << Sample_Variance_E << endl;
+        output_Energies << Sample_E_mean_t << endl;
         output_Energies.close();
     }
 
