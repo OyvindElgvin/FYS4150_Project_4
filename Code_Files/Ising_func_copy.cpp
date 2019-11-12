@@ -25,9 +25,13 @@ using namespace chrono;
 /*
 c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -lomp
 */
-//Henrik:
+//Henrik Mac:
 /*
 c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.800.1/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.800.1/include/ -larmadillo -lomp
+*/
+//Henrik Windows:
+/*
+c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -larmadillo -lomp
 */
 
 void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize,string probability){
