@@ -151,6 +151,6 @@ def plotPhaseTransition(lst,temp,n):
     figure(4)
     legend()
     xlabel("Temperature (T)")
-    ylabel("$\\chi (T)$")
+    ylabel("$\\chi_{abs} (T)$")
     savefig("../Figures/X_of_T_N_"+str(n)+".pdf")
     show()
