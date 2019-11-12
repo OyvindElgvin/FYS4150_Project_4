@@ -50,6 +50,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     //vec AC_t = vec(T.n_elem,fill::zeros);
     int energy_mesh = 100000;
     mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
+    vec Sample_Variance_E = vec(T.n_elem,fill::zeros);
 
     double inverse_period = 1./RAND_MAX;
 
@@ -100,6 +101,8 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         initialize(L,S_matrix,E,M,order);
 
         int energy_index = 0;
+        double Sample_E_mean = 0;
+        double Sample_E2_mean = 0;
         for(int j = 0;j<N;j++){
 
             //int ix = static_cast<int>( (generate_canonical< double, 128 > (generator))*static_cast<double>(L) );
@@ -111,12 +114,6 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
             //changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
             changing_state(inverse_period, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
 
-            // Obtain 10^5 energy values after equilibrium
-            if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
-                Energies(i,energy_index) = E;
-                energy_index += 1;
-                }
-
             E_mean += E;
             E2_mean += E*E;
             M_mean += M;
@@ -127,7 +124,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 double norm = (j+1);
                 double perSpin = L*L;
                 double Variance_E = (E2_mean/norm-E_mean/norm*E_mean/norm)/perSpin;
-                double Variance_M = (M2_mean/norm-M_mean/norm*M_mean/norm)/perSpin;
+                double Variance_M = (M2_mean/norm-M_abs_mean/norm*M_abs_mean/norm)/perSpin;
 
                 E_t(i,((j+1)/stepsize)-1) = E_mean/norm/perSpin; //Per spin
                 M_t(i,((j+1)/stepsize)-1) = M_mean/norm/perSpin;
@@ -136,6 +133,17 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 X_t(i,((j+1)/stepsize)-1) = Variance_M/T(i);
                 AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
             }
+
+            // Obtain 10^5 energy values after equilibrium
+            if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
+                Energies(i,energy_index) = E;
+                Sample_E_mean += E;
+                Sample_E2_mean += E*E;
+                energy_index += 1;
+                if (energy_index == energy_mesh){
+                    Sample_Variance_E(i) = (Sample_E2_mean/energy_mesh-Sample_E_mean/energy_mesh*Sample_E_mean/energy_mesh);
+                }
+                }
 
         } // end of Monte Carlo loop
         double normalize = N;
@@ -226,6 +234,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         output_Energies.open(prob_file,ios::out);
         output_Energies << T << endl;
         output_Energies << Energies << endl;
+        output_Energies << Sample_Variance_E << endl;
         output_Energies.close();
     }
 
