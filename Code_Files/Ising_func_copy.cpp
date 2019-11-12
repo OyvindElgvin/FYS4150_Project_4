@@ -51,7 +51,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     mat Cv_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat X_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat AC_t = mat(T.n_elem,N/stepsize,fill::zeros);
-    int energy_mesh = 100000;
+    int energy_mesh = 1000000;
     mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
     vec Sample_Variance_E = vec(T.n_elem,fill::zeros);
     vec Sample_E_mean_t = vec(T.n_elem,fill::zeros);
