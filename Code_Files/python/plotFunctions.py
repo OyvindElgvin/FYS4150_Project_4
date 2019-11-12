@@ -88,7 +88,7 @@ def plotProbabilityDistribution(array,temp,n):
         axs[i].legend()
 
     axs[-1].set_xlabel("Mean energy, $\\langle E\\rangle$")
-    fig.savefig("../Figures/Probability_Distribution_L_20.pdf")
+    fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")
     show()
 
 @jit
