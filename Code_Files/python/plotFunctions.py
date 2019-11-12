@@ -2,6 +2,7 @@ from numpy import *
 from matplotlib.pyplot import *
 from numba import jit
 
+@jit(nopython=True)
 def plotMostLikelyState(lst,temp,n):
 
     T = temp
@@ -45,6 +46,7 @@ def plotMostLikelyState(lst,temp,n):
     fig2.savefig("../Figures/Most_Likely_State_M_abs_L_20.pdf")
     show()
 
+@jit(nopython=True)
 def plotAcceptedConfigurations(lst,temp,n):
 
     T = temp
@@ -75,7 +77,7 @@ def plotAcceptedConfigurations(lst,temp,n):
     show()
 
 
-@jit
+@jit(nopython=True)
 def plotProbabilityDistribution(array,temp,n):
 
     T = temp
@@ -95,7 +97,7 @@ def plotProbabilityDistribution(array,temp,n):
     fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")
     show()
 
-@jit
+@jit(nopython=True)
 def plotPhaseTransition(lst,temp,n):
     L = [40,60,80,100]
 
