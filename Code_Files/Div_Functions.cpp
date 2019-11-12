@@ -114,7 +114,7 @@ void Task_b(){
     int L = 2;
     vec T = vec("1.0");
     int stepsize = 100000;
-    
+
     for (int i = 0;i<Nvalues.size();i++){
     Ising_Func_Para(T,L,Nvalues[i],"Results_4b","order",1,stepsize,"no probability");
 
