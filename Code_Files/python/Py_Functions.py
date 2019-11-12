@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from timeit import default_timer as timer
 from numba import jit
 
-@jit
 
 def readarrays(filename):
 	#start = timer()
@@ -47,8 +46,6 @@ def readarrays(filename):
 	#print (end-start)
 	values.close()
 	return A,len(A)
-
-@jit
 
 def readmatrices(filename):
 	#start = timer()
