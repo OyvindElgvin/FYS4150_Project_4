@@ -156,16 +156,14 @@ The heavy calculation in this project is done by the \textit{metropolis} algorit
 
 \subsection{Periodic boundary conditions}
 To account for the fact that some of the spins at the boundary of the lattice does not have four nearest neighbours, periodic boundary conditions are introduced. This means that a spin at a boundary i.e. $s_{N,0}$ has a neighbour to the right with the same spin as the particle $s_{0,0}$. In one dimension, this can be expressed by
-
 \begin{align*}
     E_i=-J\sum_{j=1}^{N}s_js_{j+1}
 \end{align*}
 
-For small dimensions, the energy of the system will be significantly affected by whether or not periodic boundary conditions are implemented. As $N \rightarrow \infty$, the boundary becomes insignificant. This is what happens when looking at phase transitions and critical temperatures, where the system has to be described in a larger dimension.
+\noindent For small dimensions, the energy of the system will be significantly affected by whether or not periodic boundary conditions are implemented. As $N \rightarrow \infty$, the boundary becomes insignificant. This is what happens when looking at phase transitions and critical temperatures, where the system has to be described in a larger dimension.
 
 \subsection{Phase transitions}
-In the Ising model, it is interesting to see if it is possible to estimate phase transitions in the systems. These phase transitions can be i.e. liquid/gas (first order) or ferromagnetic/paramagnetic (second order). These transitions are all depending on the parameter, $T_C$, the Curie temperature or the critical temperature. The theory given in the Lecture notes of FYS3150 (\cite{LectureIsing}) can be used to describe some of the values in the Ising model class with a power law behavior as
-
+In the Ising model, it is interesting to see if it is possible to estimate phase transitions in the systems. These phase transitions can be i.e. liquid/gas (first order) or ferromagnetic/paramagnetic (second order). These transitions are all depending on the parameter, $T_C$, called the Curie temperature or the critical temperature. The theory given in the Lecture notes of FYS3150 (\cite{LectureIsing}) can be used to describe some of the values in the Ising model class with a power law behavior as follows
 \begin{equation}
     \langle M(T)\rangle\sim (T-T_c)^\beta \propto L^{-\beta/\nu}
 \end{equation}
@@ -181,20 +179,36 @@ where $\beta = 1/8$ is the so called critical exponent, $\alpha = 0$ and $\gamma
   \label{eq:xi}
 \end{equation}
 
-\noindent The lattice sizes in this report are always finite, and therefore $\chi$ will be proportional to this lattice size as seen in the equations above. Using finite size scaling relations, it will be possible to relate the results and behaviors in the finite lattices with the once from the infinite case. This results in the scaling of the critical temperature as
+\noindent The lattice sizes in this report are always finite, and therefore $\chi$ will be proportional to this lattice size as seen in the equations above. Using finite size scaling relations, it is possible to relate the results and behaviors in the finite lattices with the once from the infinite case. This results in a scaling of the critical temperature given by
 
 \begin{equation}
-    T_C(L)-T_C(L=\infty) = aL^{-1/\nu}
+    T_C(L)-T_C(L=\infty) = aL^{-1/\nu} \label{eq:tc}
 \end{equation}
-The exact result for $T_c$ is found in (\cite{LarsOns}) to be $\approx 2.269$ with $\nu = 1$.
+The exact result for $T_c$ is found in (\cite{LarsOns}) to be $\approx 2.269$ with $\nu = 1$. 
 
-Gjelder dette for et spesielt tilfelle? Ja, tilfellet der $L\rightarrow \infty$. 
+If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures from finite systems by using \eqref{eq:tc}. This would result in two equations with two unknown ($T_c(L=\infty)$ and $a$):
+\begin{align*}
+    \begin{cases}
+        T_c(L=\infty)=T_c(L_1)-aL_1^{-1/\nu}\\
+        T_c(L=\infty)=T_c(L_2)-aL_2^{-1/\nu}
+    \end{cases}
+\end{align*}
+
+subtracting these and solving for $a$ results in
+
+\begin{align*}
+    a=\frac{T_c(L_1)-T_c(L_2)}{L_1^{-1/\nu}-L_2^{-1/\nu}}
+\end{align*}
+
+such that 
+
+
 
 \section{Results}
 
 \subsection{The 2x2 Case}
 
-Table \ref{tab:configurations} list of the different spin configurations with their respective degeneracy, energy and magnetization, as where Table \ref{tab:benchmarks} displays some calculations from the 2x2 case.
+Table \ref{tab:configurations} list the different spin configurations with their respective degeneracy, energy and magnetization, as where Table \ref{tab:benchmarks} displays some calculations from the 2x2 case.
 
 \begin{table}[H]
     \centerline{\csvautobooktabularcenter{E_M_Configurations.csv}}
@@ -204,15 +218,15 @@ Table \ref{tab:configurations} list of the different spin configurations with th
 \vfill
 \begin{table}[H]
     \centerline{\csvautobooktabular{Benchmarks.csv}}
-    \caption{List of analytical values for the $2x2$ case.}
+    \caption{List of analytical and experimental values for the $2x2$ case. All values are given per spin.}
     \label{tab:benchmarks}
 \end{table}
 
-I Tabell \ref{tab:benchmarks}, kan vi i grunnen faktisk bare fylle inn en ekstra kolonne med resultatene fra 4b. Så blir det enkelt å sammenligne (som er hovedpunktet i oppgave 4b).
+
 
 \subsection{The most likely state}
 
-Tabell med "How many Monte Carly cycles is needed to reach equilibrium?" for T = 1.0 og 2.4 med både ordnet og uordnet initialtilstand (L = 20) for E og M. Eventuelle plot av tiden (antall MC sykluser) før likevekt kan vi legge i Appendix og bare referere til i duskusjonen.
+Tabell med "How many Monte Carly cycles is needed to reach equilibrium?" for T = 1.0 og 2.4 med både ordnet og uordnet initialtilstand (L = 20) for E og M. Eventuelle plot av tiden (antall MC sykluser) før likevekt kan vi legge i Appendix og bare referere til i diskusjonen.
 
 \subsection{The Probability Distribution}
 
