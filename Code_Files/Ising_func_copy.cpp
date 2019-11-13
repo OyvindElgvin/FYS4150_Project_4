@@ -142,7 +142,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
             }
 
-            // Obtain 10^5 energy values after equilibrium
+            // Obtain 10^6 energy values after equilibrium
             if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
                 Energies(i,energy_index) = E;
                 Sample_E_mean += E;
