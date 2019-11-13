@@ -80,11 +80,29 @@ def plotProbabilityDistribution(array,temp,n):
     T = temp
     fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
     fig.text(0.04, 0.5, "P(E)", va='center', rotation='vertical')
-    for i in range(len(array[0])):
+    for i in range(len(array)):
         variance = array[2][i][0]
         E_mean = array[3][i][0]
         col = int(1+(max(array[1][i])-min(array[1][i]))/4)
         axs[i].hist(array[1][i],col,label="T = "+str(T[i][0])+"\n$\\sigma_{E}$ = "+str(sqrt(variance)))
+        #axs[i].set_ylabel("$P(E)$")
+        axs[i].legend()
+        axs[i].axvline(x=E_mean-sqrt(variance),linewidth=1,linestyle="--",color='r')
+        axs[i].axvline(x=E_mean+sqrt(variance),linewidth=1,linestyle="--", color='r')
+
+    axs[-1].set_xlabel("Energy, E")
+    fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")
+    show()
+
+def plotProbabilityDistributionNew(energies,temp,variances,mean_energies,n):
+    T = temp
+    fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
+    fig.text(0.04, 0.5, "P(E)", va='center', rotation='vertical')
+    for i in range(len(energies)):
+        variance = variances[i][0]
+        E_mean = mean_energies[i][0]
+        col = int(1+(max(energies[i])-min(energies[i]))/4)
+        axs[i].hist(energies[i],col,normed=True,label="T = "+str(T[i][0])+"\n$\\sigma_{E}$ = "+str(sqrt(variance)))
         #axs[i].set_ylabel("$P(E)$")
         axs[i].legend()
         axs[i].axvline(x=E_mean-sqrt(variance),linewidth=1,linestyle="--",color='r')
