@@ -97,7 +97,7 @@ sorting=nyt
 
 \end{titlepage}
 
-\section{Introduction}
+\section{Introduction} \label{introduction}
 
 The Ising model is a model that has a large variety of usage. In this report, the model will be used to study phase transitions and thermodynamic properties in magnetic systems. The systems at hand are systems of size $L\times L$ particles in a grid. Each particle may be in either state "up" or "down" denoted with $1$ and $-1$, respectively. The model only focuses on the interaction between the nearest neighbor particles, and the energy between these is given by
 \begin{align}
@@ -127,7 +127,7 @@ Initially, we will derive values of a 2x2 case and thereafter, proceed to higher
 
 Next, the systems with $L=40, L=60, L=80$ and $L=100$ are studied as functions of temperature. These calculations are performed to try and simulate phase transitions in the systems. For successfully detected phase transitions, the critic temperature is also extracted and compared to the exact.
 
-\section{Methods and theory}
+\section{Methods and theory} \label{methods_and_theory}
 
 \subsection{Benchmarks}
 
@@ -200,11 +200,12 @@ subtracting these and solving for $a$ results in
     a=\frac{T_c(L_1)-T_c(L_2)}{L_1^{-1/\nu}-L_2^{-1/\nu}}
 \end{align*}
 which reveals the expression for the critical temperature in a infinite system as
-\begin{align*}
+\begin{equation}
     T_c(L=\infty)=T_c(L_1)-\left(\frac{T_c(L_1)-T_c(L_2)}{L_1^{-1/\nu}-L_2^{-1/\nu}}\right)L_1^{-1/\nu}
-\end{align*}
+    \label{eq:critical}
+\end{equation}
 
-\section{Results}
+\section{Results} \label{results}
 
 \subsection{The 2x2 Case}
 
@@ -252,24 +253,29 @@ Her trenger vi kun fire plot av de tilhørende probability distributions plotten
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{Code_Files/Figures/Probability_Distribution_N_1000000000_L_20.pdf}
-    \caption{Probability distribution of the mean energy, $\langle E\rangle$, in a lattice of size L = 20 for temperatures $T = [1.0,2.4]$. The data comes from $10^6$ energies that are collected after equilibrium has been reached.}
+    \caption{Probability distribution of the energy, $E$, in a lattice of size L = 20 for temperatures $T = [1.0,2.4]$. The data comes from $10^6$ energies that are collected after equilibrium has been reached. The red dashed lines shows the first order standard deviation, $\sigma_E$, from the mean energy.}
     \label{fig:probability}
 \end{figure}
 
 \subsection{Phase transitions and the critical temperature, $T_c$}
 
-Plot av $\langle E\rangle, \langle |M|\rangle, C_V$ og $\chi$ som funksjon av temperatur, $T \in [2.0,2.3]$, for tilfellene med L = 40, L = 60, L = 80 og L = 100. Samt en tabell der de kritiske temperaturene er utregnet for hvert system (L = 40, 60, 80 100).
+Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} in section \ref{appendix} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. From the $L=100$ curves, by the use of Equation \eqref{eq:critical}, the critical temperature of an infinite lattice is derived numerically. Table \ref{tab:critical} compares this to the one derived in \cite{LarsOns}. 
 
-\section{Discussion}
+\begin{table}[H]
+    \centerline{\csvautobooktabular{critical.csv}}
+    \caption{Experimentally derived critical temperature, $T_c(L=\infty)$, compared to the exact temperature by \cite{LarsOns}.}
+    \label{tab:critical}
+\end{table}
+
+\section{Discussion} \label{discussion}
 
 Tenker vi kan kjøre samme struktur i denne seksjonen som i resultatseksjonen, slik at vi diskuterer hvert system/delopggave for seg.
 
-\section{Conclusion}
+\section{Conclusion} \label{conclusion}
 
-\section{Appendix}
+\section{Appendix} \label{appendix}
 
 \subsection{Calculating the benchmarks}
-
 
 Finding the analytical values, we start by calculating the energies for the configurations of all possible spins. The number of configurations in the $2x2$ case is  $2^4 = 16$, in total. The energies are given by summing the interaction between the four neighbors
 \begin{align*}
@@ -378,13 +384,35 @@ Such that the analytical value of the susceptibility and the absolute susceptibi
     \chi = \frac{\sigma_M^2}{k_BT}
 \end{align*}
 
+\subsection{Figures}
 
+Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. All figures can be reproduced by running...
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Code_Files/Figures/E_of_T_N_1000000000.pdf}
+    \caption{Energy something}
+    \label{fig:E_of_T}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Code_Files/Figures/M_of_T_N_1000000000.pdf}
+    \caption{Magnetization something}
+    \label{fig:M_of_T}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Code_Files/Figures/Cv_of_T_N_1000000000.pdf}
+    \caption{Heat capacity something}
+    \label{fig:Cv_of_T}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Code_Files/Figures/X_of_T_N_1000000000.pdf}
+    \caption{Susceptibility something}
+    \label{fig:X_of_T}
+\end{figure}
 
-
-
-
-\subsection{Tables and data}
 
 \printbibliography
 
