@@ -50,6 +50,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     mat Mabs_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat Cv_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat X_t = mat(T.n_elem,N/stepsize,fill::zeros);
+    mat X_abs_t = mat(T.n_elem,N/stepsize,fill::zeros);
     mat AC_t = mat(T.n_elem,N/stepsize,fill::zeros);
     int energy_mesh = 1000000;
     mat Energies  = mat(T.n_elem,energy_mesh,fill::zeros);
@@ -92,6 +93,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         double M = 0; //expression for inital magnetization
         double Cv = 0; //Heat Capacity
         double X = 0; //Susceptibility
+        double X_abs = 0; //Absolute susceptibility
         int accepted_configurations = 0;
 
         E_mean = 0;
@@ -128,13 +130,15 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 double norm = (j+1);
                 double perSpin = L*L;
                 double Variance_E = (E2_mean/norm-E_mean/norm*E_mean/norm)/perSpin;
-                double Variance_M = (M2_mean/norm-M_abs_mean/norm*M_abs_mean/norm)/perSpin;
+                double Variance_M = (M2_mean/norm-M_mean/norm*M_mean/norm)/perSpin;
+                double Variance_M_abs = (M2_mean/norm-M_abs_mean/norm*M_abs_mean/norm)/perSpin;
 
                 E_t(i,((j+1)/stepsize)-1) = E_mean/norm/perSpin; //Per spin
                 M_t(i,((j+1)/stepsize)-1) = M_mean/norm/perSpin;
                 Mabs_t(i,((j+1)/stepsize)-1) = M_abs_mean/norm/perSpin;
                 Cv_t(i,((j+1)/stepsize)-1) = Variance_E/(T(i)*T(i));
                 X_t(i,((j+1)/stepsize)-1) = Variance_M/T(i);
+                X_abs_t(i,((j+1)/stepsize)-1) = Variance_M_abs/T(i);
                 AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
             }
 
@@ -161,6 +165,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
         double Variance_E = (E2_mean-E_mean*E_mean)/L/L;
         double Variance_M = (M2_mean-M_mean*M_mean)/L/L;
+        double Variance_M_abs = (M2_mean-M_abs_mean*M_abs_mean)/L/L;
 
         E_mean /= L*L; //Per spin
         E2_mean /= L*L;
@@ -170,16 +175,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
         Cv = Variance_E/(T(i)*T(i));
         X = Variance_M/T(i);
-
-/*
-        cout << "<E>   = " << E_mean << endl
-             << "<M>   = " << M_mean << endl;
-        cout << "<E^2> = " <<E2_mean << endl
-             << "<M^2> = " <<M2_mean << endl;
-        cout << "Cv    = " << Cv << endl
-             << "X     = " << X << endl;
-*/
-
+        X_abs = Variance_M_abs/T(i);
 
         // end calculations here
 
@@ -187,52 +183,78 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         if (test == 1){
 
             double eps = pow(10,-2);
-            /*double exact_Em = -7.983928344;
+            double exact_Em = -1.995982086; //Per spin
+            double exact_Cv = 0.03208233186;
             double exact_Mm = 0.0;
-            double exact_Cv = 0.1283293234;
-            double exact_X = 15.9732151;*/
-            double exact_Em = -1.9959821; //Per spin
-            double exact_Mm = 0.0;
-            double exact_Cv = 0.032082332;
-            double exact_X = 3.9933038;
+            double exact_abs_Mm = 0.9986607327;
+            double exact_X = 3.993303776;
+            double exact_X_abs = 0.004010739516;
 
 
             if (abs(exact_Em - E_mean) < eps){
-                cout << "Mean energy equals exact value with precision " << eps << endl;
+                cout << "Mean energy equals exact value with precision " << eps << endl
+                    << "Computed: " << E_mean << endl
+                    << "Exact: " << exact_Em << endl;
             }
             else{
                 cout << "MEAN ENERGY DOES NOT EQUAL EXACT VALUE" << endl
                      << "Computed: " << E_mean << endl
                     << "Exact: " << exact_Em << endl;
             }
-            if (abs(exact_Mm - M_mean) < eps){
-                    cout << "Mean Magnetic Moment equals exact value with precision " << eps << endl;
-            }
-            else{
-                    cout << "MEAN MAGNETIC MOMENT DOES NOT EQUAL EXACT VALUE" << endl
-                         << "Computed: " << M_mean << endl
-                         << "Exact: " << exact_Mm << endl;
-            }
             if (abs(exact_Cv - Cv) < eps){
-                    cout << "Heat Capacity equals exact value with precision " << eps << endl;
+                    cout << "Heat Capacity equals exact value with precision " << eps << endl
+                    << "Computed: " << Cv << endl
+                    << "Exact: " << exact_Cv << endl;
             }
             else{
                     cout << "HEAT CAPACITY DOES NOT EQUAL EXACT VALUE" << endl
                          << "Computed: " << Cv << endl
                          << "Exact: " << exact_Cv << endl;
             }
+            if (abs(exact_Mm - M_mean) < eps){
+                    cout << "Mean Magnetic Moment equals exact value with precision " << eps << endl
+                    << "Computed: " << M_mean << endl
+                    << "Exact: " << exact_Mm << endl;
+            }
+            else{
+                    cout << "MEAN MAGNETIC MOMENT DOES NOT EQUAL EXACT VALUE" << endl
+                         << "Computed: " << M_mean << endl
+                         << "Exact: " << exact_Mm << endl;
+            }
+            if (abs(exact_abs_Mm - M_abs_mean) < eps){
+                    cout << "Mean Absolute Magnetic Moment equals exact value with precision " << eps << endl
+                    << "Computed: " << M_abs_mean << endl
+                    << "Exact: " << exact_abs_Mm << endl;
+            }
+            else{
+                    cout << "MEAN ABSOLUTE MAGNETIC MOMENT DOES NOT EQUAL EXACT VALUE" << endl
+                         << "Computed: " << M_abs_mean << endl
+                         << "Exact: " << exact_abs_Mm << endl;
+            }
             if (abs(exact_X - X) < eps){
-                    cout << "Susceptibility equals exact value with precision " << eps << endl;
+                    cout << "Susceptibility equals exact value with precision " << eps << endl
+                    << "Computed: " << X << endl
+                    << "Exact: " << exact_X << endl;
             }
             else{
                     cout << "SUSCEPTIBILITY DOES NOT EQUAL EXACT VALUE" << endl
                          << "Computed: " << X << endl
                          << "Exact: " << exact_X << endl;
             }
+            if (abs(exact_X_abs - X_abs) < eps){
+                    cout << "Absolute Susceptibility equals exact value with precision " << eps << endl
+                    << "Computed: " << X_abs << endl
+                    << "Exact: " << exact_X_abs << endl;
+            }
+            else{
+                    cout << "ABSOLUTE SUSCEPTIBILITY DOES NOT EQUAL EXACT VALUE" << endl
+                         << "Computed: " << X_abs << endl
+                         << "Exact: " << exact_X_abs << endl;
+            }
 
         }
 
-    // Save energies to file
+    // Save probability energies to file
     if (probability == "probability"){
         string prob_file = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_Energies;
@@ -247,7 +269,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
     }
     } // End of temperature loop
 
-    // stops the clock
+    // Stops the clock
     high_resolution_clock::time_point time2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double> >(time2-time1);
     double runtime = time_span.count();
@@ -255,7 +277,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
     cout << "runtime = " << runtime << " hours" << endl;
 
-
+    // Save mean values to file
     if (test == 0){
         string filename = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
         ofstream output_Results;
@@ -266,11 +288,10 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
         output_Results << Mabs_t << endl;
         output_Results << Cv_t << endl;
         output_Results << X_t << endl;
+        output_Results << X_abs_t << endl;
         output_Results << AC_t << endl;
         output_Results.close();
     }
-
-
 
 return;
 } // End of Ising_func

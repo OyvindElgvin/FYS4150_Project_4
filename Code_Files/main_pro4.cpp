@@ -33,14 +33,14 @@ int main(){
     //vec T = vec("1.0 1.2 1.6 2.4");
 
 
-    //Ising_Func(T,20,10000000,"Test_stuff","order",0);
+    //Ising_Func_Para(T,20,10000000,"Test_stuff","order",0);
 
 
     // Starts clock for general time
     clock_t start, finish;
     start = clock();
 
-    Task_d();
+    Task_c();
 
 
     finish = clock();
@@ -70,7 +70,7 @@ int main(){
     // int T = Tvalues[j];
     int N = Nvalues[j];
 
-    Ising_Func(T,L,N,"Results_4b",0);
+    Ising_Func_Para(T,L,N,"Results_4b",0);
 
     } // end of N loop
     //} // end of T loop

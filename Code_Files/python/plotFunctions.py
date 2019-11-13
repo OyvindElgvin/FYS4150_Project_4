@@ -2,16 +2,17 @@ from numpy import *
 from matplotlib.pyplot import *
 from numba import jit
 
-@jit(nopython=True)
 def plotMostLikelyState(lst,temp,n):
 
     T = temp
     h = int(n/len(lst[0][1][0])) #Step size
     n_values = linspace(h,n+h,int(n/h))
     fig1, axs1 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
-    fig1.suptitle("Mean energy as function of MC-cycles.")
+    fig1.text(0.04, 0.5, "$\\langle E\\rangle$", va='center', rotation='vertical')
+    #fig1.suptitle("Mean energy as function of MC-cycles.")
     fig2, axs2 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
-    fig2.suptitle("Mean absolute magnetization as function of MC-cycles.")
+    fig2.text(0.04, 0.5, "$\\langle |M|\\rangle$", va='center', rotation='vertical')
+    #fig2.suptitle("Mean absolute magnetization as function of MC-cycles.")
     state = 1
     plt = 0
     for i in lst:
@@ -24,7 +25,7 @@ def plotMostLikelyState(lst,temp,n):
         for j in i[1]:
             E_mean = j
             axs1[plt].plot(log10(n_values),E_mean,label="T="+str(T[index][0])+", "+initial)
-            axs1[plt].set_ylabel("$\\langle E\\rangle$")
+            #axs1[plt].set_ylabel("$\\langle E\\rangle$")
             axs1[plt].legend()
             plt += 1
             index += 1
@@ -34,7 +35,7 @@ def plotMostLikelyState(lst,temp,n):
         for j in i[3]:
             M_abs = j
             axs2[plt].plot(log10(n_values),M_abs,label="T="+str(T[index][0])+", "+initial)
-            axs2[plt].set_ylabel("$\\langle |M|\\rangle$")
+            #axs2[plt].set_ylabel("$\\langle |M|\\rangle$")
             axs2[plt].legend()
             plt += 1
             index += 1
@@ -46,14 +47,14 @@ def plotMostLikelyState(lst,temp,n):
     fig2.savefig("../Figures/Most_Likely_State_M_abs_L_20.pdf")
     show()
 
-@jit(nopython=True)
 def plotAcceptedConfigurations(lst,temp,n):
 
     T = temp
     h = int(n/len(lst[0][6][0])) #Step size
     n_values = linspace(h,n+h,int(n/h))
     fig1, axs1 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
-    fig1.suptitle("Accepted configurations as function of MC-cycles.")
+    fig1.text(0.04, 0.5, "Accepted configurations", va='center', rotation='vertical')
+    #fig1.suptitle("Accepted configurations as function of MC-cycles.")
     state = 1
     plt = 0
     for i in lst:
@@ -63,10 +64,10 @@ def plotAcceptedConfigurations(lst,temp,n):
         else:
             initial = "Random"
         index = 0
-        for j in i[6]:
+        for j in i[7]:
             Accepted_configs = j
             axs1[plt].loglog(n_values,Accepted_configs,label="T="+str(T[index][0])+", "+initial)
-            axs1[plt].set_ylabel("Acc. conf.")
+            #axs1[plt].set_ylabel("Acc. conf.")
             axs1[plt].legend()
             plt += 1
             index += 1
@@ -77,12 +78,11 @@ def plotAcceptedConfigurations(lst,temp,n):
     show()
 
 
-@jit(nopython=True)
 def plotProbabilityDistribution(array,temp,n):
 
     T = temp
     fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
-    fig.suptitle("Probability distribution, $P(E)$.")
+    #fig.suptitle("Probability distribution, $P(E)$.")
     for i in range(len(array[0])):
         variance = array[2][i][0]
         E_mean = array[3][i][0]
@@ -97,7 +97,6 @@ def plotProbabilityDistribution(array,temp,n):
     fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")
     show()
 
-@jit(nopython=True)
 def plotPhaseTransition(lst,temp,n):
     L = [40,60,80,100]
 
