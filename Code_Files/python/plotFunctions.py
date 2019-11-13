@@ -9,10 +9,8 @@ def plotMostLikelyState(lst,temp,n):
     n_values = linspace(h,n+h,int(n/h))
     fig1, axs1 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
     fig1.text(0.04, 0.5, "$\\langle E\\rangle$", va='center', rotation='vertical')
-    #fig1.suptitle("Mean energy as function of MC-cycles.")
     fig2, axs2 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
     fig2.text(0.04, 0.5, "$\\langle |M|\\rangle$", va='center', rotation='vertical')
-    #fig2.suptitle("Mean absolute magnetization as function of MC-cycles.")
     state = 1
     plt = 0
     for i in lst:
@@ -54,7 +52,6 @@ def plotAcceptedConfigurations(lst,temp,n):
     n_values = linspace(h,n+h,int(n/h))
     fig1, axs1 = subplots(4,1,sharex=True,gridspec_kw={'hspace': 0})
     fig1.text(0.04, 0.5, "Accepted configurations", va='center', rotation='vertical')
-    #fig1.suptitle("Accepted configurations as function of MC-cycles.")
     state = 1
     plt = 0
     for i in lst:
@@ -82,18 +79,18 @@ def plotProbabilityDistribution(array,temp,n):
 
     T = temp
     fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
-    #fig.suptitle("Probability distribution, $P(E)$.")
+    fig.text(0.04, 0.5, "P(E)", va='center', rotation='vertical')
     for i in range(len(array[0])):
         variance = array[2][i][0]
         E_mean = array[3][i][0]
         col = int(1+(max(array[1][i])-min(array[1][i]))/4)
         axs[i].hist(array[1][i],col,label="T = "+str(T[i][0])+"\n$\\sigma_{E}$ = "+str(sqrt(variance)))
-        axs[i].set_ylabel("$P(E)$")
+        #axs[i].set_ylabel("$P(E)$")
         axs[i].legend()
         axs[i].axvline(x=E_mean-sqrt(variance),linewidth=1,linestyle="--",color='r')
         axs[i].axvline(x=E_mean+sqrt(variance),linewidth=1,linestyle="--", color='r')
 
-    axs[-1].set_xlabel("Mean energy, $\\langle E\\rangle$")
+    axs[-1].set_xlabel("Energy, E")
     fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")
     show()
 
@@ -122,13 +119,13 @@ def plotPhaseTransition(lst,temp,n):
         figure(2)
         plot(T,M,label="L = "+str(L[size]))
         index = 0
-        for j in i[4]: # Loop over Magnetizations per temperature
+        for j in i[4]: # Loop over Heat Capacity per temperature
             Cv[index] = j[-1]
             index += 1
         figure(3)
         plot(T,Cv,label="L = "+str(L[size]))
         index = 0
-        for j in i[5]: # Loop over Magnetizations per temperature
+        for j in i[5]: # Loop over Susceptibility per temperature
             X[index] = j[-1]
             index += 1
         figure(4)
