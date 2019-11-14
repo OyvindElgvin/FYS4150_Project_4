@@ -3,7 +3,7 @@ from matplotlib.pyplot import *
 import plotFunctions
 import Py_Functions
 
-
+'''
 # 1 The most likely state
 n_ML = 100000000 #ML = Most likely
 A_20_order = Py_Functions.readmatrices("../Results_4c_order_N_%s_L_20.txt" % n_ML)[0]
@@ -16,7 +16,7 @@ lst_ML = [A_20_order,A_20_random]
 
 plotFunctions.plotMostLikelyState(lst_ML,T_ML,n_ML)
 plotFunctions.plotAcceptedConfigurations(lst_ML,T_ML,n_ML)
-
+'''
 
 '''
 # 2 Probability distribution
@@ -35,9 +35,9 @@ mean_energies = array([[float(i) for i in values[6]],[float(i) for i in values[7
 
 plotFunctions.plotProbabilityDistribution(energies,T_PD,variances,mean_energies,n_PD)
 '''
-'''
+
 # 3 Phase transition and critical temperature
-n = 1000000000
+n = 10000000
 A_40 = Py_Functions.readmatrices("../Results_4e_2_N_%s_L_40.txt" % n)[0]
 print("Read 40")
 A_60 = Py_Functions.readmatrices("../Results_4e_2_N_%s_L_60.txt" % n)[0]
@@ -62,4 +62,3 @@ max_index_80 = int(where(L_80 == max_80)[0][0])
 T_c_max = T[max_index_100]-((T[max_index_100]-T[max_index_80])/(100**(-1)-80**(-1)))*100**(-1)
 
 print("Critical temperature using max values of Cv: "+str(T_c_max))
-'''

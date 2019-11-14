@@ -34,7 +34,7 @@ c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L
 c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -larmadillo -lomp
 */
 
-void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize,string probability){
+void Ising_Func_Para_e(vec T,int L,int N,string file,string order,int test,int stepsize,string probability){
 
     // start function here
 
@@ -118,15 +118,18 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
             //changing_state(generator, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
             changing_state(inverse_period, ix, iy, dE, P,L,S_matrix, E, M,accepted_configurations);
-
+            
+            if ((j+1) >= stepsize){
             E_mean += E;
             E2_mean += E*E;
             M_mean += M;
             M2_mean += M*M;
             M_abs_mean += fabs(M);
-
+            }
+    
             if ((j+1) % stepsize == 0){
-                double norm = (j+1);
+
+                double norm = (j+1)-stepsize;
                 double perSpin = L*L;
                 double Variance_E = (E2_mean/norm-E_mean/norm*E_mean/norm)/perSpin;
                 double Variance_M = (M2_mean/norm-M_mean/norm*M_mean/norm)/perSpin;
@@ -141,20 +144,8 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 AC_t(i,((j+1)/stepsize)-1) = accepted_configurations/norm;
             }
 
-            // Obtain 10^6 energy values after equilibrium
-            if ((j+1) >= stepsize && probability == "probability" && energy_index < energy_mesh){
-                Energies(i,energy_index) = E;
-                Sample_E_mean += E;
-                Sample_E2_mean += E*E;
-                energy_index += 1;
-                if (energy_index == energy_mesh){
-                    Sample_Variance_E(i) = (Sample_E2_mean/energy_mesh-Sample_E_mean/energy_mesh*Sample_E_mean/energy_mesh);
-                    Sample_E_mean_t(i) = Sample_E_mean/energy_mesh;
-                }
-                }
-
         } // end of Monte Carlo loop
-        double normalize = N;
+        double normalize = N-stepsize;
         double perSpin = L*L;
         E_mean /= normalize; //Per spin
         E2_mean /= normalize;
@@ -191,7 +182,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
 
             if (abs(exact_Em - E_mean) < eps){
-                cout << "Mean energy equals exact value with precision " << eps << endl
+                cout << "Mean energy equals exact value with at least precision " << eps << endl
                     << "Computed: " << E_mean << endl
                     << "Exact: " << exact_Em << endl;
             }
@@ -201,7 +192,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                     << "Exact: " << exact_Em << endl;
             }
             if (abs(exact_Cv - Cv) < eps){
-                    cout << "Heat Capacity equals exact value with precision " << eps << endl
+                    cout << "Heat Capacity equals exact value with at least  precision " << eps << endl
                     << "Computed: " << Cv << endl
                     << "Exact: " << exact_Cv << endl;
             }
@@ -211,7 +202,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                          << "Exact: " << exact_Cv << endl;
             }
             if (abs(exact_Mm - M_mean) < eps){
-                    cout << "Mean Magnetic Moment equals exact value with precision " << eps << endl
+                    cout << "Mean Magnetic Moment equals exact value with at least  precision " << eps << endl
                     << "Computed: " << M_mean << endl
                     << "Exact: " << exact_Mm << endl;
             }
@@ -221,7 +212,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                          << "Exact: " << exact_Mm << endl;
             }
             if (abs(exact_abs_Mm - M_abs_mean) < eps){
-                    cout << "Mean Absolute Magnetic Moment equals exact value with precision " << eps << endl
+                    cout << "Mean Absolute Magnetic Moment equals exact value at least  with precision " << eps << endl
                     << "Computed: " << M_abs_mean << endl
                     << "Exact: " << exact_abs_Mm << endl;
             }
@@ -231,7 +222,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                          << "Exact: " << exact_abs_Mm << endl;
             }
             if (abs(exact_X - X) < eps){
-                    cout << "Susceptibility equals exact value with precision " << eps << endl
+                    cout << "Susceptibility equals exact value with at least  precision " << eps << endl
                     << "Computed: " << X << endl
                     << "Exact: " << exact_X << endl;
             }
@@ -241,7 +232,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                          << "Exact: " << exact_X << endl;
             }
             if (abs(exact_X_abs - X_abs) < eps){
-                    cout << "Absolute Susceptibility equals exact value with precision " << eps << endl
+                    cout << "Absolute Susceptibility equals exact value with at least  precision " << eps << endl
                     << "Computed: " << X_abs << endl
                     << "Exact: " << exact_X_abs << endl;
             }
@@ -252,19 +243,6 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
             }
 
         }
-
-    // Save probability energies to file
-    if (probability == "probability"){
-        string prob_file = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
-        ofstream output_Energies;
-        output_Energies.open(prob_file,ios::out);
-        output_Energies << T << endl;
-        output_Energies << Energies << endl;
-        output_Energies << Sample_Variance_E << endl;
-        output_Energies << Sample_E_mean_t << endl;
-        output_Energies.close();
-    }
-
     }
     } // End of temperature loop
 

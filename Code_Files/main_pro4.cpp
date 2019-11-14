@@ -30,17 +30,17 @@ int main(){
     // Running test for L = 2 and N = 100, T = 1
 
 
-    //vec T = vec("1.0 1.2 1.6 2.4");
+    //vec T = vec("1.0");
 
 
-    //Ising_Func_Para(T,20,10000000,"Test_stuff","order",0);
+    //Ising_Func_Para_e(T,2,100000000,"Results_4b","order",1,10000000,"no probability");
 
 
     // Starts clock for general time
     clock_t start, finish;
     start = clock();
 
-    Task_c();
+    Task_e();
 
 
     finish = clock();
@@ -50,31 +50,4 @@ int main(){
     cout << setprecision(10) << setw(20) << "Hours used for the total calculation = " << timeused << endl;
 
 
-
-
-
-
-/*
-
-    // Reading T, N and L values from file
-    vector<int> Nvalues = readvalues("Pro4_Nvalues.txt");
-    vector<int> Lvalues = readvalues("Pro4_Lvalues.txt");
-    //vector<int> Tvalues = readvalues("Pro4_Tvalues.txt");
-
-    // Calculating for all N for all L
-    for (vector<int>::size_type i=0;i< Lvalues.size();i++){
-    for (vector<int>::size_type j=0;j< Nvalues.size();j++){
-    //for (vector<int>::size_type k=0;k< Nvalues.size();k++){
-
-    int L = Lvalues[i];
-    // int T = Tvalues[j];
-    int N = Nvalues[j];
-
-    Ising_Func_Para(T,L,N,"Results_4b",0);
-
-    } // end of N loop
-    //} // end of T loop
-    } // end of L loop
-
-*/
 } // end of main
