@@ -23,7 +23,7 @@ using namespace chrono;
 // Terminal:
 //Øyvind:
 /*
-c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -lomp
+c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -lomp
 */
 //Henrik Mac:
 /*
@@ -38,7 +38,6 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
     // start function here
 
-    cout << "Calculating.." << endl;
 
 
     // Initiaize Random Number Generator
@@ -64,7 +63,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
 
     // parallelizing 4 threads and making a seperate seed for each thread
     //#pragma omp parallel num_threads(2)
-    #pragma omp parallel num_threads(2)
+    #pragma omp parallel num_threads(4)
     {
     unsigned seed = system_clock::now().time_since_epoch().count();
     mt19937_64 generator (seed);
