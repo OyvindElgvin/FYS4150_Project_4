@@ -23,7 +23,7 @@ using namespace chrono;
 // Terminal:
 //Øyvind:
 /*
-c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_copy.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -lomp
+c++ -O2 -o exe -std=c++11 main_pro4.cpp Div_Functions.cpp Ising_func_para.cpp Ising_func_para_e.cpp -L/usr/local/Cellar/armadillo/9.600.6/lib/ -L/usr/local/lib -I/usr/local/Cellar/armadillo/9.600.6/include/ -larmadillo -lomp
 */
 //Henrik Mac:
 /*
