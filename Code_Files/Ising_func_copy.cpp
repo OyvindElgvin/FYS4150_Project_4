@@ -138,7 +138,7 @@ void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int ste
                 Cv_t(i,((j+1)/stepsize)-1) = Variance_E/(T(i)*T(i));
                 X_t(i,((j+1)/stepsize)-1) = Variance_M/T(i);
                 X_abs_t(i,((j+1)/stepsize)-1) = Variance_M_abs/T(i);
-                AC_t(i,((j+1)/stepsize)-1) = accepted_configurations;
+                AC_t(i,((j+1)/stepsize)-1) = accepted_configurations/norm;
             }
 
             // Obtain 10^6 energy values after equilibrium

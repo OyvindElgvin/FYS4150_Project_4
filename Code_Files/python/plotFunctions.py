@@ -63,7 +63,7 @@ def plotAcceptedConfigurations(lst,temp,n):
         index = 0
         for j in i[7]:
             Accepted_configs = j
-            axs1[plt].loglog(n_values,Accepted_configs,label="T="+str(T[index][0])+", "+initial)
+            axs1[plt].plot(log10(n_values),Accepted_configs,label="T="+str(T[index][0])+", "+initial)
             #axs1[plt].set_ylabel("Acc. conf.")
             axs1[plt].legend()
             plt += 1
