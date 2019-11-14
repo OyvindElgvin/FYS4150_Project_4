@@ -74,27 +74,7 @@ def plotAcceptedConfigurations(lst,temp,n):
     fig1.savefig("../Figures/Number_of_Accepted_Configs_L_20.pdf")
     show()
 
-
-def plotProbabilityDistribution(array,temp,n):
-
-    T = temp
-    fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
-    fig.text(0.04, 0.5, "P(E)", va='center', rotation='vertical')
-    for i in range(len(array)):
-        variance = array[2][i][0]
-        E_mean = array[3][i][0]
-        col = int(1+(max(array[1][i])-min(array[1][i]))/4)
-        axs[i].hist(array[1][i],col,label="T = "+str(T[i][0])+"\n$\\sigma_{E}$ = "+str(sqrt(variance)))
-        #axs[i].set_ylabel("$P(E)$")
-        axs[i].legend()
-        axs[i].axvline(x=E_mean-sqrt(variance),linewidth=1,linestyle="--",color='r')
-        axs[i].axvline(x=E_mean+sqrt(variance),linewidth=1,linestyle="--", color='r')
-
-    axs[-1].set_xlabel("Energy, E")
-    fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")
-    show()
-
-def plotProbabilityDistributionNew(energies,temp,variances,mean_energies,n):
+def plotProbabilityDistribution(energies,temp,variances,mean_energies,n):
     T = temp
     fig, axs = subplots(2,1,sharex=True,gridspec_kw={'hspace': 0})
     fig.text(0.04, 0.5, "P(E)", va='center', rotation='vertical')
@@ -143,7 +123,7 @@ def plotPhaseTransition(lst,temp,n):
         figure(3)
         plot(T,Cv,label="L = "+str(L[size]))
         index = 0
-        for j in i[5]: # Loop over Susceptibility per temperature
+        for j in i[6]: # Loop over Susceptibility per temperature
             X[index] = j[-1]
             index += 1
         figure(4)
