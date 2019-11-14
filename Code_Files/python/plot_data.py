@@ -4,7 +4,11 @@ import plotFunctions
 import Py_Functions
 
 '''
+Uncomment the task that you want done.
+'''
+
 # 1 The most likely state
+'''
 n_ML = 100000000 #ML = Most likely
 A_20_order = Py_Functions.readmatrices("../Results_4c_order_N_%s_L_20.txt" % n_ML)[0]
 print("Read ordered")
@@ -18,8 +22,8 @@ plotFunctions.plotMostLikelyState(lst_ML,T_ML,n_ML)
 plotFunctions.plotAcceptedConfigurations(lst_ML,T_ML,n_ML)
 '''
 
-'''
 # 2 Probability distribution
+'''
 n_PD = 1000000000 #PD = Probability distribution
 values = []
 
@@ -37,6 +41,7 @@ plotFunctions.plotProbabilityDistribution(energies,T_PD,variances,mean_energies,
 '''
 
 # 3 Phase transition and critical temperature
+
 n = 10000000
 A_40 = Py_Functions.readmatrices("../Results_4e_2_N_%s_L_40.txt" % n)[0]
 print("Read 40")
