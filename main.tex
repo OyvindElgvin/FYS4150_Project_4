@@ -15,7 +15,8 @@ style=alphabetic,
 citestyle=authoryear,
 sorting=nyt
 ]{biblatex}
-\addbibresource{bibliography.bib}
+
+\addbibresource{Data/bibliography.bib}
  
  
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -190,7 +191,7 @@ with $\nu = 1$. The exact result for $T_c(L=\infty)$ is found in (\cite{LarsOns}
 \begin{align*}
     kT_c/J=\frac{2}{ln(1+\sqrt{2})}=2.269
 \end{align*}
-If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures or more from finite systems by using \eqref{eq:tc}. This would either result in a couple of equations with two unknown variables; $T_c(L=\infty)$ and $a$, given by
+If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures or more from finite systems by using Equation \eqref{eq:tc}. This would either result in a couple of equations with two unknown variables; $T_c(L=\infty)$ and $a$, given by
 \begin{align*}
     \begin{cases}
         T_c(L=\infty)=T_c(L_1)-aL_1^{-1/\nu}\\
@@ -210,13 +211,13 @@ where $L=0$ gives the critical temperature of the infinite system.
 Table \ref{tab:configurations} lists the different possible spin configurations with their respective degeneracy, energy and magnetization in the 2x2 lattice, whereas Table \ref{tab:benchmarks} displays the analytic and experimental values of interest in the 2x2 lattice.
 
 \begin{table}[H]
-    \centerline{\csvautobooktabularcenter{E_M_Configurations.csv}}
+    \centerline{\csvautobooktabularcenter{Data/E_M_Configurations.csv}}
     \caption{List of the different possible spin configurations with their respective degeneracy, energy and magnetization in the 2x2 case.}
     \label{tab:configurations}
 \end{table}
 
 \begin{table}[H]
-    \centerline{\csvautobooktabular{Benchmarks.csv}}
+    \centerline{\csvautobooktabular{Data/Benchmarks.csv}}
     \caption{List of analytical and experimental values for the $2x2$ lattice with the absolute relative deviation. All values are scaled by the number of spin ($L^2$).}
     \label{tab:benchmarks}
 \end{table}
@@ -227,19 +228,19 @@ Figure \ref{fig:E_equiv} and Figure \ref{fig:M_equiv} gives a graphical presenta
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Most_Likely_State_E_mean_L_20.pdf}
+    \includegraphics[scale=0.7]{Figures/Most_Likely_State_E_mean_L_20.pdf}
     \caption{The mean energy for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
     \label{fig:E_equiv}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Most_Likely_State_M_abs_L_20.pdf}
+    \includegraphics[scale=0.7]{Figures/Most_Likely_State_M_abs_L_20.pdf}
     \caption{The mean absolute magnetization for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
     \label{fig:M_equiv}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Number_of_Accepted_Configs_L_20.pdf}
+    \includegraphics[scale=0.7]{Figures/Number_of_Accepted_Configs_L_20.pdf}
     \caption{Number of accepted configurations per MC-cycle for temperatures $T=[1.0,2.4]$ in both an ordered and a random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled there are $10^4$ MC-cycles between each data point.}
     \label{fig:acc_conf}
 \end{figure}
@@ -248,7 +249,7 @@ Figure \ref{fig:E_equiv} and Figure \ref{fig:M_equiv} gives a graphical presenta
 Figure \ref{fig:probability} displays the probability distribution of energies for temperatures $T=1.0$ and $T=2.4$. For $T=2.4$, the program \texttt{plot\_data.py} calculates (by integration) that $67.93\%$ of the data points are withing the first order standard deviation.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Probability_Distribution_N_1000000000_L_20.pdf}
+    \includegraphics[scale=0.7]{Figures/Probability_Distribution_N_1000000000_L_20.pdf}
     \caption{Probability distribution of the energy, $E$, in a lattice of size L = 20 for temperatures $T = [1.0,2.4]$. The data comes from $10^7$ energies that are collected after equilibrium has been reached (here; $10^8$ MC-cycles). The red dashed lines shows the first order standard deviation, $\sigma_E$, from the mean energy.}
     \label{fig:probability}
 \end{figure}
@@ -258,7 +259,7 @@ Figure \ref{fig:probability} displays the probability distribution of energies f
 Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} in section \ref{appendix} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. By the use of Equation \eqref{eq:tc}, and the maxima of the $C_v$ curve, the critical temperature of the infinite lattice is derived numerically in \texttt{plot\_data.py}. Table \ref{tab:critical} compares this to the one derived in \cite{LarsOns}. 
 
 \begin{table}[H]
-    \centerline{\csvautobooktabular{critical.csv}}
+    \centerline{\csvautobooktabular{Data/critical.csv}}
     \caption{Experimentally derived critical temperature, $T_c(L=\infty)$, compared to the exact temperature by \cite{LarsOns}.}
     \label{tab:critical}
 \end{table}
@@ -430,25 +431,25 @@ Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} shows $\langle E\rangle$, $\langle |M|\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/E_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/E_of_T_N_1000000000.pdf}
     \caption{The mean energy as function of temperature T for lattice sizes 40, 60, 80 and 100. (Run: \texttt{phase\_exe})}
     \label{fig:E_of_T}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/M_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/M_of_T_N_1000000000.pdf}
     \caption{Magnetization something}
     \label{fig:M_of_T}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Cv_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/Cv_of_T_N_1000000000.pdf}
     \caption{Heat capacity something}
     \label{fig:Cv_of_T}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/X_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/X_of_T_N_1000000000.pdf}
     \caption{Susceptibility something}
     \label{fig:X_of_T}
 \end{figure}

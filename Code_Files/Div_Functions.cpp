@@ -117,7 +117,6 @@ void Task_b(){
 
     for (int i = 0;i<Nvalues.size();i++){
     Ising_Func_Para(T,L,Nvalues[i],"Results_4b","order",1,stepsize,"no probability");
-
     }
     return;
 } // end Task_b
@@ -156,7 +155,7 @@ void Task_e(){
         int stepsize = pow(10,log10(Nvalues[i])-1);
         for (uword j= 0;j<L.n_elem;j++){
             cout << "L = " << L(j) << endl;
-            Ising_Func_Para(T,L(j),Nvalues[i],"Results_4e_2","order",0,stepsize,"no probability");
+            Ising_Func_Para_e(T,L(j),Nvalues[i],"Results_4e_2","order",0,stepsize,"no probability");
         }//end of L loop
     }//end of N loop
     return;
