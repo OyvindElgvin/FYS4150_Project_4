@@ -51,15 +51,24 @@ A_40_R_3 = Py_Functions.readmatrices("Results_4e_2_N_%s_L_40_R_3.txt" % n)[0]
 
 A_40 = zeros(5)
 print(A_40)
-A_40[0] = A_40_R_0[0][:]
-A_40[1] = A_40_R_0[1][:] + A_40_R_1[1][:] + A_40_R_2[1][:] + A_40_R_3[1][:]
-A_40[2] = A_40_R_0[2][:] + A_40_R_1[2][:] + A_40_R_2[2][:] + A_40_R_3[2][:]
-A_40[3] = A_40_R_0[3][:] + A_40_R_1[3][:] + A_40_R_2[3][:] + A_40_R_3[3][:]
-A_40[4] = A_40_R_0[4][:] + A_40_R_1[4][:] + A_40_R_2[4][:] + A_40_R_3[4][:]
-# ja dette går jo ikke siden elementene i A_40 ikke er arrays 
+A_40_1 = A_40_R_0[0][:]
+A_40_2 = A_40_R_0[1][:] + A_40_R_1[1][:] + A_40_R_2[1][:] + A_40_R_3[1][:]
+A_40_3 = A_40_R_0[2][:] + A_40_R_1[2][:] + A_40_R_2[2][:] + A_40_R_3[2][:]
+A_40_4 = A_40_R_0[3][:] + A_40_R_1[3][:] + A_40_R_2[3][:] + A_40_R_3[3][:]
+A_40_5 = A_40_R_0[4][:] + A_40_R_1[4][:] + A_40_R_2[4][:] + A_40_R_3[4][:]
+# ja dette gaar jo ikke siden elementene i A_40 ikke er arrays 
 print("Read 40")
-print(A_40)
+print(A_40_2)
+E = []
+Cv=[]
+for i in range(len(A_40_1)):
+	E.append(A_40_2[i][-1])
+	Cv.append(A_40_5[i][-1])
 
+plot(A_40_1,Cv)
+show()
+
+'''
 A_60 = Py_Functions.readmatrices("Results_4e_2_N_s_L_60_R_0.txt")[0]
 print("Read 60")
 A_80 = Py_Functions.readmatrices("Results_4e_2_N_%s_L_80_R_0.txt" % n)[0]
@@ -70,6 +79,7 @@ print("Read 100")
 #lst = [A_40,A_60,A_80,A_100]
 
 #plotFunctions.plotPhaseTransition(lst,T,n)
+'''
 """
 #Finding critical temperature with max value of the Cv-plot
 L = array([40,60,80,100])
