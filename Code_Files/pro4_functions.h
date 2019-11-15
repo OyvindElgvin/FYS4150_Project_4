@@ -29,6 +29,8 @@ vector<int> readvalues(string file);
 void Ising_Func_Para(vec T,int L,int N,string file,string order,int test,int stepsize,string probability);
 void Ising_Func_Para_e(vec T,int L,int N,string file,string order,int test,int stepsize,string probability);
 void initialize(int n_spins,mat& spin_matrix, double& E, double& M,string order);
+void Ising_Func_Para_mpi_e(vec T,int L,int N,string file,string order,int test,int stepsize,string probability);
+
 
 void Task_b();
 void Task_c();

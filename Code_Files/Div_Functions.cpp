@@ -12,6 +12,7 @@
 #define EPS 3.0e-14
 #define MAXIT 10
 
+
 #include <random>
 #include <chrono>
 
@@ -155,7 +156,7 @@ void Task_e(){
         int stepsize = pow(10,log10(Nvalues[i])-1);
         for (uword j= 0;j<L.n_elem;j++){
             cout << "L = " << L(j) << endl;
-            Ising_Func_Para_e(T,L(j),Nvalues[i],"Results_4e_2","order",0,stepsize,"no probability");
+            Ising_Func_Para_mpi_e(T,L(j),Nvalues[i],"Results_4e_2","order",0,stepsize,"no probability");
         }//end of L loop
     }//end of N loop
     return;

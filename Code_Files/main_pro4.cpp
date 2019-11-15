@@ -10,6 +10,7 @@
 #include <stdio.h>
 #define EPS 3.0e-14
 #define MAXIT 10
+#include <mpi.h>
 
 #include "pro4_functions.h"
 
@@ -35,7 +36,7 @@ int main(){
 
     //Ising_Func_Para_e(T,2,100000000,"Results_4b","order",1,10000000,"no probability");
 
-
+    MPI_Init(NULL, NULL);
     // Starts clock for general time
     clock_t start, finish;
     start = clock();
@@ -48,6 +49,6 @@ int main(){
     timeused = timeused / 3600;
     cout << setiosflags(ios::showpoint | ios::uppercase);
     cout << setprecision(10) << setw(20) << "Hours used for the total calculation = " << timeused << endl;
-
+    MPI_Finalize ();
 
 } // end of main
