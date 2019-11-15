@@ -62,8 +62,8 @@ void Ising_Func_Para_e(vec T,int L,int N,string file,string order,int test,int s
     high_resolution_clock::time_point time1 = high_resolution_clock::now();
 
     // parallelizing 4 threads and making a seperate seed for each thread
-    #pragma omp parallel num_threads(2)
-    //#pragma omp parallel num_threads(4)
+    //#pragma omp parallel num_threads(2)
+    #pragma omp parallel num_threads(4)
     {
     unsigned seed = system_clock::now().time_since_epoch().count();
     mt19937_64 generator (seed);
