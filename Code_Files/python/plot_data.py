@@ -23,7 +23,7 @@ plotFunctions.plotAcceptedConfigurations(lst_ML,T_ML,n_ML)
 '''
 
 # 2 Probability distribution
-
+'''
 n_PD = 1000000000 #PD = Probability distribution
 values = []
 
@@ -38,8 +38,8 @@ variances = array([[float(i) for i in values[4]],[float(i) for i in values[5]]])
 mean_energies = array([[float(i) for i in values[6]],[float(i) for i in values[7]]])
 
 plotFunctions.plotProbabilityDistribution(energies,T_PD,variances,mean_energies,n_PD)
-
 '''
+
 # 3 Phase transition and critical temperature
 
 n = 1000000000
@@ -54,7 +54,7 @@ print("Read 100")
 T = [i[0] for i in A_40[0]]
 lst = [A_40,A_60,A_80,A_100]
 
-#plotFunctions.plotPhaseTransition(lst,T,n)
+plotFunctions.plotPhaseTransition(lst,T,n)
 
 #Finding critical temperature with max value of the Cv-plot
 L = array([40,60,80,100])
@@ -72,4 +72,3 @@ coeffs = polyfit(L,T_c_values,1)
 T_inf = coeffs[-1]
 
 print("Critical temperature using max values of Cv: "+str(T_inf))
-'''
