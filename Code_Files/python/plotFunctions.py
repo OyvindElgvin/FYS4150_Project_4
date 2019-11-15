@@ -81,12 +81,20 @@ def plotProbabilityDistribution(energies,temp,variances,mean_energies,n):
     for i in range(len(energies)):
         variance = variances[i][0]
         E_mean = mean_energies[i][0]
-        col = int(1+(max(energies[i])-min(energies[i]))/4)
-        axs[i].hist(energies[i],col,normed=True,label="T = "+str(T[i][0])+"\n$\\sigma_{E}$ = "+str(sqrt(variance)))
-        #axs[i].set_ylabel("$P(E)$")
+        col = int((max(energies[i])-min(energies[i]))/4)
+        N, bins, patches = axs[i].hist(energies[i],col,normed=True,label="T = "+str(T[i][0])+"\n$\\sigma_{E}$ = "+str(sqrt(variance)))
         axs[i].legend()
         axs[i].axvline(x=E_mean-sqrt(variance),linewidth=1,linestyle="--",color='r')
         axs[i].axvline(x=E_mean+sqrt(variance),linewidth=1,linestyle="--", color='r')
+
+        bin_width = bins[1] - bins[0]
+        run = 0
+        integral = 0
+        for h in N:
+            if (bins[run] >= E_mean-sqrt(variance) and bins[run] <= E_mean+sqrt(variance)):
+                integral += bin_width*h
+            run += 1
+        print("Data set within first order STD (T = "+str(T[i][0])+"): "+str(integral*100)+"%")
 
     axs[-1].set_xlabel("Energy, E")
     fig.savefig("../Figures/Probability_Distribution_N_"+str(n)+"_L_20.pdf")

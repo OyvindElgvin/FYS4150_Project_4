@@ -23,7 +23,7 @@ plotFunctions.plotAcceptedConfigurations(lst_ML,T_ML,n_ML)
 '''
 
 # 2 Probability distribution
-'''
+
 n_PD = 1000000000 #PD = Probability distribution
 values = []
 
@@ -38,8 +38,8 @@ variances = array([[float(i) for i in values[4]],[float(i) for i in values[5]]])
 mean_energies = array([[float(i) for i in values[6]],[float(i) for i in values[7]]])
 
 plotFunctions.plotProbabilityDistribution(energies,T_PD,variances,mean_energies,n_PD)
-'''
 
+'''
 # 3 Phase transition and critical temperature
 
 n = 1000000000
@@ -54,16 +54,22 @@ print("Read 100")
 T = [i[0] for i in A_40[0]]
 lst = [A_40,A_60,A_80,A_100]
 
-plotFunctions.plotPhaseTransition(lst,T,n)
+#plotFunctions.plotPhaseTransition(lst,T,n)
 
-#Finding critical temperature with max value of Cv-plot
-L_100 = A_100[6][:,-1]
-L_80 = A_80[6][:,-1]
-max_100 = amax(L_100)
-max_80 = amax(L_80)
-max_index_100 = int(where(L_100 == max_100)[0][0])
-max_index_80 = int(where(L_80 == max_80)[0][0])
+#Finding critical temperature with max value of the Cv-plot
+L = array([40,60,80,100])
+T_c_values = zeros(len(L))
+ind = 0
+for i in range(len(L)):
+    values = lst[-i][4][:,-1]
+    max_value = amax(values)
+    max_index = int(where(values == max_value)[0][0])
+    T_c_values[ind] = T[max_index]
+    ind += 1
 
-T_c_max = T[max_index_100]-((T[max_index_100]-T[max_index_80])/(100**(-1)-80**(-1)))*100**(-1)
+coeffs = polyfit(L,T_c_values,1)
 
-print("Critical temperature using max values of Cv: "+str(T_c_max))
+T_inf = coeffs[-1]
+
+print("Critical temperature using max values of Cv: "+str(T_inf))
+'''
