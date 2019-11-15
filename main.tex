@@ -15,7 +15,8 @@ style=alphabetic,
 citestyle=authoryear,
 sorting=nyt
 ]{biblatex}
-\addbibresource{bibliography.bib}
+
+\addbibresource{Data/bibliography.bib}
  
  
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -125,13 +126,11 @@ as functions of the energy and spin. Where, $\beta =1/k_B T$. These equations ar
 
 Initially, we will derive values of a 2x2 case and thereafter, proceed to higher dimensions. In a higher dimension case with $L=20$, the time it takes to reach the most likely state, represented by the number of Monte Carlo cycles, is calculated for two different temperatures with both an ordered and a random initial state. This gives an estimate of the equilibrium time of the system. The energy data from this case is then translated to a probability function $P(E)$. 
 
-Next, the systems with $L=40, L=60, L=80$ and $L=100$ are studied as functions of temperature. These calculations are performed to try and simulate phase transitions in the systems. For successfully detected phase transitions, the critic temperature is also extracted and compared to the exact.
+Next, the systems with $L=40, L=60, L=80$ and $L=100$ are studied as functions of temperature. These calculations are performed to try and simulate phase transitions in the systems. For successfully detected phase transitions, the critical temperature is also extracted and compared to the results yielded by Onsager (1994).
 
 \section{Methods and theory} \label{methods_and_theory}
 
-\subsection{Benchmarks}
-
-For the $2x2$ case, the energy, magnetic momentum, specific heat capacity, and the magnetic susceptibility can all be calculated analytically. These analytical values, shown in Table \ref{tab:benchmarks}, are used as benchmarks for the numerically derived values.
+All data used in this report can be reproduced by running the executable files in the GitHub repository (\cite{GitHub}) and thereafter running the python file \texttt{plot\_data.py}.
 
 \subsection{The Metropolis algorithm}
 
@@ -162,6 +161,10 @@ To account for the fact that some of the spins at the boundary of the lattice do
 
 \noindent For small dimensions, the energy of the system will be significantly affected by whether or not periodic boundary conditions are implemented. As $N \rightarrow \infty$, the boundary becomes insignificant. This is what happens when looking at phase transitions and critical temperatures, where the system has to be described in a larger dimension.
 
+\subsection{Benchmarks}
+
+For the $2x2$ case, the energy, magnetic momentum, specific heat capacity, and the magnetic susceptibility can all be calculated analytically. These analytical values, shown in Table \ref{tab:benchmarks}, are used as benchmarks for the numerically derived values. In our function for the Ising model (As seen in \texttt{Ising\_Func\_Para.cpp} and \texttt{Ising\_Func\_Para\_e.cpp}) we have implemented a test that compares the computed values to the benchmarks. The test is easily callable, and have been used throughout the project to check that the program works after  minor and major changes. 
+
 \subsection{Phase transitions}
 In the Ising model, it is interesting to see if it is possible to estimate phase transitions in the systems. These phase transitions can be i.e. liquid/gas (first order) or ferromagnetic/paramagnetic (second order). These transitions are all depending on the parameter, $T_C$, called the Curie temperature or the critical temperature. The theory given in the Lecture notes of FYS3150 (\cite{LectureIsing}) can be used to describe some of the values in the Ising model class with a power law behavior as follows
 \begin{equation}
@@ -188,22 +191,18 @@ with $\nu = 1$. The exact result for $T_c(L=\infty)$ is found in (\cite{LarsOns}
 \begin{align*}
     kT_c/J=\frac{2}{ln(1+\sqrt{2})}=2.269
 \end{align*}
-If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures from finite systems by using \eqref{eq:tc}. This would result in two equations with two unknown variables; $T_c(L=\infty)$ and $a$, given by
+If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures or more from finite systems by using Equation \eqref{eq:tc}. This would either result in a couple of equations with two unknown variables; $T_c(L=\infty)$ and $a$, given by
 \begin{align*}
     \begin{cases}
         T_c(L=\infty)=T_c(L_1)-aL_1^{-1/\nu}\\
         T_c(L=\infty)=T_c(L_2)-aL_2^{-1/\nu}
     \end{cases}
 \end{align*}
-subtracting these and solving for $a$ results in
+or; one use \texttt{NumPy}'s \texttt{polyfit}, do a linear regression for several experimental temperatures and find an approximation to the curve
 \begin{align*}
-    a=\frac{T_c(L_1)-T_c(L_2)}{L_1^{-1/\nu}-L_2^{-1/\nu}}
+        T_C(L) = T_C(L=\infty)+aL^{-1/\nu}
 \end{align*}
-which reveals the expression for the critical temperature in a infinite system as
-\begin{equation}
-    T_c(L=\infty)=T_c(L_1)-\left(\frac{T_c(L_1)-T_c(L_2)}{L_1^{-1/\nu}-L_2^{-1/\nu}}\right)L_1^{-1/\nu}
-    \label{eq:critical}
-\end{equation}
+where $L=0$ gives the critical temperature of the infinite system.
 
 \section{Results} \label{results}
 
@@ -212,13 +211,13 @@ which reveals the expression for the critical temperature in a infinite system a
 Table \ref{tab:configurations} lists the different possible spin configurations with their respective degeneracy, energy and magnetization in the 2x2 lattice, whereas Table \ref{tab:benchmarks} displays the analytic and experimental values of interest in the 2x2 lattice.
 
 \begin{table}[H]
-    \centerline{\csvautobooktabularcenter{E_M_Configurations.csv}}
+    \centerline{\csvautobooktabularcenter{Data/E_M_Configurations.csv}}
     \caption{List of the different possible spin configurations with their respective degeneracy, energy and magnetization in the 2x2 case.}
     \label{tab:configurations}
 \end{table}
 
 \begin{table}[H]
-    \centerline{\csvautobooktabular{Benchmarks.csv}}
+    \centerline{\csvautobooktabular{Data/Benchmarks.csv}}
     \caption{List of analytical and experimental values for the $2x2$ lattice with the absolute relative deviation. All values are scaled by the number of spin ($L^2$).}
     \label{tab:benchmarks}
 \end{table}
@@ -229,49 +228,91 @@ Figure \ref{fig:E_equiv} and Figure \ref{fig:M_equiv} gives a graphical presenta
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Most_Likely_State_E_mean_L_20.pdf}
+    \includegraphics[scale=0.7]{Figures/Most_Likely_State_E_mean_L_20.pdf}
     \caption{The mean energy for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
     \label{fig:E_equiv}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Most_Likely_State_M_abs_L_20.pdf}
+    \includegraphics[scale=0.7]{Figures/Most_Likely_State_M_abs_L_20.pdf}
     \caption{The mean absolute magnetization for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
     \label{fig:M_equiv}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Number_of_Accepted_Configs_L_20.pdf}
-    \caption{Number of accepted configurations for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20 presented in a loglog plot. There are $10^4$ MC-cycles between each data point.}
+    \includegraphics[scale=0.7]{Figures/Number_of_Accepted_Configs_L_20.pdf}
+    \caption{Number of accepted configurations per MC-cycle for temperatures $T=[1.0,2.4]$ in both an ordered and a random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled there are $10^4$ MC-cycles between each data point.}
     \label{fig:acc_conf}
 \end{figure}
 
 \subsection{The Probability Distribution}
-
-Her trenger vi kun fire plot av de tilhørende probability distributions plottene til de forrige resultatene. Det kan her også være kult å innlemme $\sigma _E^2$ i plottet i form av standardavviket fra mean-verdien. For eksempel slik som fra wikipedia: \url{https://en.wikipedia.org/wiki/File:Comparison_standard_deviations.svg}.
-
+Figure \ref{fig:probability} displays the probability distribution of energies for temperatures $T=1.0$ and $T=2.4$. For $T=2.4$, the program \texttt{plot\_data.py} calculates (by integration) that $67.93\%$ of the data points are withing the first order standard deviation.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Probability_Distribution_N_1000000000_L_20.pdf}
-    \caption{Probability distribution of the energy, $E$, in a lattice of size L = 20 for temperatures $T = [1.0,2.4]$. The data comes from $10^6$ energies that are collected after equilibrium has been reached. The red dashed lines shows the first order standard deviation, $\sigma_E$, from the mean energy.}
+    \includegraphics[scale=0.7]{Figures/Probability_Distribution_N_1000000000_L_20.pdf}
+    \caption{Probability distribution of the energy, $E$, in a lattice of size L = 20 for temperatures $T = [1.0,2.4]$. The data comes from $10^7$ energies that are collected after equilibrium has been reached (here; $10^8$ MC-cycles). The red dashed lines shows the first order standard deviation, $\sigma_E$, from the mean energy.}
     \label{fig:probability}
 \end{figure}
 
 \subsection{Phase transitions and the critical temperature, $T_c$}
 
-Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} in section \ref{appendix} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. From the $L=100$ curves, by the use of Equation \eqref{eq:critical}, the critical temperature of an infinite lattice is derived numerically. Table \ref{tab:critical} compares this to the one derived in \cite{LarsOns}. 
+Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} in section \ref{appendix} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. By the use of Equation \eqref{eq:tc}, and the maxima of the $C_v$ curve, the critical temperature of the infinite lattice is derived numerically in \texttt{plot\_data.py}. Table \ref{tab:critical} compares this to the one derived in \cite{LarsOns}. 
 
 \begin{table}[H]
-    \centerline{\csvautobooktabular{critical.csv}}
+    \centerline{\csvautobooktabular{Data/critical.csv}}
     \caption{Experimentally derived critical temperature, $T_c(L=\infty)$, compared to the exact temperature by \cite{LarsOns}.}
     \label{tab:critical}
 \end{table}
 
 \section{Discussion} \label{discussion}
 
-Tenker vi kan kjøre samme struktur i denne seksjonen som i resultatseksjonen, slik at vi diskuterer hvert system/delopggave for seg.
+\subsection{The 2x2 Case}
+As seen by table \ref{tab:benchmarks}, the values computed by our program are quite accurate with respect to the analytical values. One may see that the relative deviation from the analytical values are largest in terms of $\langle C_v \rangle$ and $\chi _abs$. This is not very strange, noting that those values are calculated using $\langle E \rangle$ and $\langle M \rangle$. It is only natural that using erroneous values to compute other values, yields less precision in the final result.   However, one would maybe expect $\chi$ to be deviating by a similar amount - it is not easy to say why this is not the case. 
+
+It seems clear by the benchmark comparison that our program runs properly and yields correct results for the 2x2 case. This gives reason to believe that our results for higher values of $L$ are also plausible. 
+
+\subsection{The most likely state}
+In figures \ref{fig:E_equiv} and \ref{fig:M_equiv}, we have plotted the time evolution (given by the number of Monte Carlo Cycles) of the energy and absolute magnetic moment of the system. For low temperatures ($T = 1$), the system should be in the ground state, with ordered spins and low energy. We see that this is the case - after a number of MC cycles, the energy stabilizes at approximately $-1.997$ pr spin. This seems to take about the same amount of time ($\sim 10^7$ MC-cycles) regardless of what initial state the system is in - ordered or random. 
+
+For higher temperatures ($T=2.4$), the equilibrium state has considerably higher energy, somewhere around $-1.2$ pr spin. However, for the magnetic moment, we see the opposite trend - for low temperatures, the mean magnetic moment pr. spin stabilizes at about $1$, whilst for higher temperatures, it stabilizes at about $0.5$. This is easily explained if we note that for the ground state, all the spins should point in the same direction. Hence, the total magnetic moment pr. spin is 
+\begin{align*}
+    M = \frac{1 \cdot L^2}{L^2} = 1
+\end{align*}
+Note that if we plotted $\langle M \rangle$ instead of $\langle |M| \rangle$, this value could just as well be $-1$, depending on the initial configuration.
+
+For higher temperatures, the spins are configured in a more random manner, and hence the magnetic moment pr. spin is no longer equal to one. In fact, for high temperatures, one would expect the magnetic moment to go to zero, as seen for $L=100$ in Figure \ref{fig:M_of_T}. The 20x20 case is probably not large enough to properly illustrate this development. 
+
+In Figure \ref{fig:acc_conf}, the number of accepted configurations pr Monte Carlo cycle is plotted. One can see that these plots coincides well with the earlier discussed plots for the energy and the magnetic moment. When starting off in the ground state at some low temperature, the likelihood of moving into a higher energy state is very low. As a result, one would expect that few of the proposed spin flips are accepted. This is also what we see - when the system has reached equilibrium, the number of accepted flips is basically zero. For higher temperatures, the likelihood of proposing a state with lower or higher energy than the equilibrium state is much higher - hence, we see that the number of accepted flips pr. cycle is approximately 0.27.
+
+This increase in accepted flips per cycle will in turn reveal a larger fluctuation in energy as time passes. Looking at the axis of the energy plots - it is easily observed that at higher temperatures, the energy fluctuations at equilibrium are much larger. The next section gives a deeper explanation of this.
+
+\subsection{Probability Distribution}
+The fluctuations discussed in the above subsection may now be addressed further. The plots showing the equilibrium time are great when estimating there to begin precise calculations. However, they do not give a good indication of the values of the possible energy states and how likely they are to be possessed by the system - in comes the probability distribution.
+
+In Figure \ref{fig:probability} in Section \ref{results}, the experimental probability distribution for the low temperature case and the high temperature case is given. A first glance at the high temperature distribution gives a good impression of a normal distribution. This correlates well with the fact that the random number generator used in the metropolis algorithm is in fact based on the normal distribution.
+
+As for the low temperature case, there are just three different energies in the distribution (may be more, but only observing with the naked eye). The largest column is the one for the ground state energy, and reflects the fact that the system at low temperatures prefers a lower energy than the system at high temperatures. This column thereby represents the most likely energy state at $T=1.0$, and is in fact also the lowest possible energy a system of this kind may have. Because of this it is obvious why the distribution isn't broadening towards higher (and lower) energies, such as it does in the high temperature case. This broadening reflects the possibility for the system to oscillate in energy at higher temperatures, even though equilibrium has been reached.
+
+It is interesting to compare the standard deviation, $\sigma_E$, (and therefore also the variance, $\sigma_E^2$) of the two different temperature cases (red dotted lines in Figure \ref{fig:probability}). At $T=1$, the STD is low (compared to $T=2.4$), which is an intuitive and direct result of the fact that the energy is bound to low values. As for $T=2.4$, the STD increases a lot more and looks more like the first order STD of the normal distribution. An ideal normal distribution curve has $\sim 68\%$ of its data points within the first order STD. From Section \ref{results}, the probability distribution at $T=2.4$ has $67.93\%$ of its data points withing the first order STD - which coincides well with that of the normal distribution!
+
+\subsection{Phase transitions and the critical temperature, $T_c$}
+
+As seen in Table \ref{eq:tc}, the experimental critical temperature is calculated to be 2.2885, with a relative deviation of $\sim 0.8\%$ from the exact value calculated in (\cite{LarsOns}). The critical temperature is where the system turns from magnetic to non-magnetic, or from ferromagnetic to paramagnetic, but these temperatures are scaled and, therefore, not to be taken as kelvin. 
+
+In figure 6, we see that the magnetization phase quickly turns non-magnetic around the critical temperature as the temperature rises, which makes sense since the entropy of the system rises with the rise of temperature, and a magnetic phase is then hard to sustain. 
+
+Figure \ref{fig:X_of_T}, clearly shows how the susceptibility peaks around the critical temperature, and that the larger the system is the higher the peak is. 
+
+HER ER DET BARE Å FYLLE INN ELLER EDITERE OVER HER GUTTER.. 
 
 \section{Conclusion} \label{conclusion}
+
+In this project, we have used Monte Carlo Methods with the Metropolis Algorithm to model a ferromagnetic system with the use of the Ising Model. The goal of this project was to find a critical temperature for the phase transition from magnetic to non-magnetic in the binary system.
+
+The basic idea of the model was to construct an $L \times L$ lattice with spins pointing either up or down. Then proposing $N$ number of spin flips, and either accept or reject these based on a sample rule. As more and more spin flips where proposed, the system developed towards an equilibrium state, and allowed us to calculate expectation values for the energy and the magnetic moment. In turn, these values made it easy to calculate the heat capacity and susceptibility of the system. 
+
+We have analyzed the above mentioned values for a number of different temperatures, and from equations for finite lattice scaling; found an estimate of the critical temperature for the phase transition. The critical temperature was found to be $Tc = 2.2885$.
+
 
 \section{Appendix} \label{appendix}
 
@@ -386,29 +427,29 @@ Such that the analytical value of the susceptibility and the absolute susceptibi
 
 \subsection{Figures}
 
-Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. All figures can be reproduced by running...
+Figure \ref{fig:E_of_T}-\ref{fig:X_of_T} shows $\langle E\rangle$, $\langle |M|\rangle$, $C_v$ and $\chi_{abs}$ as function of temperature. All figures can be reproduced by running \texttt{phase\_exe} followed by \texttt{plot\_data.py}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/E_of_T_N_1000000000.pdf}
-    \caption{Energy something}
+    \includegraphics[scale=0.7]{Figures/E_of_T_N_1000000000.pdf}
+    \caption{The mean energy as function of temperature T for lattice sizes 40, 60, 80 and 100. (Run: \texttt{phase\_exe})}
     \label{fig:E_of_T}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/M_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/M_of_T_N_1000000000.pdf}
     \caption{Magnetization something}
     \label{fig:M_of_T}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/Cv_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/Cv_of_T_N_1000000000.pdf}
     \caption{Heat capacity something}
     \label{fig:Cv_of_T}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Code_Files/Figures/X_of_T_N_1000000000.pdf}
+    \includegraphics[scale=0.7]{Figures/X_of_T_N_1000000000.pdf}
     \caption{Susceptibility something}
     \label{fig:X_of_T}
 \end{figure}
