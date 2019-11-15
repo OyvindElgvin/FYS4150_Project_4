@@ -85,17 +85,24 @@ sorting=nyt
 \hbadness = \tolerance
 \pretolerance = 2000
 
-\title{FYS4150: Project 3}
+\title{The Ising Model;\\ and some of its thermodynamic properties.}
 \author{Jonathan Brakstad Waters\\Øyvind Engebretsen Elgvin\\Henrik Lind Petlund}
 
 \begin{document}
 
 \begin{titlepage}
+\vfill
 \maketitle
 \begin{abstract}
-    
-\end{abstract}
 
+This report studies the thermodynamic properties of the two dimensional Ising Model and demonstrates how a second order phase transition can be described using this binary model. The numerically approximation to the critical temperature of the phase transition is found to be close to the exact analytical solution in (\cite{LarsOns}). The thermodynamic properties in terms of; oscillating energy, configuration of equilibrium and temperature dependence are shown in various plots.
+
+The report applies the Metropolis algorithm and shows how it can be used to determine whether or not to make a change of a thermodynamic variable (energy). This, combined with the normal distribution PDF, turns out to give satisfying results and simulate the exiting phase transition from ferromagnetic to non-magnetic.
+
+\newpage
+
+\end{abstract}
+\tableofcontents
 \end{titlepage}
 
 \section{Introduction} \label{introduction}
@@ -152,6 +159,8 @@ The heavy calculation in this project is done by the \textit{metropolis} algorit
 
 
 \noindent Step 2-6 is what is called a Monte Carlo cycle and is, in turn, a measurement of the energy of the system. The final values are to be divided by the total number of Monte Carlo cycles used. The Metropolis algorithm is described more thoroughly in the lecture notes of FYS3150 (\cite{LectureIsing}) with code examples.
+
+\newpage
 
 \subsection{Periodic boundary conditions}
 To account for the fact that some of the spins at the boundary of the lattice does not have four nearest neighbours, periodic boundary conditions are introduced. This means that a spin at a boundary i.e. $s_{N,0}$ has a neighbour to the right with the same spin as the particle $s_{0,0}$. In one dimension, this can be expressed by
