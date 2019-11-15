@@ -84,7 +84,7 @@ void Ising_Func_Para_mpi_e(vec T,int L,int N,string file,string order,int test,i
 
     int no_intervals = T.n_elem/numprocs;
     int myloop_begin = my_rank*no_intervals;
-    int myloop_end = (my_rank + 1)*no_intervals - 1;
+    int myloop_end = (my_rank + 1)*no_intervals;
     if( (my_rank == numprocs-1) && (myloop_end<T.n_elem) ) myloop_end = T.n_elem;
 
 
