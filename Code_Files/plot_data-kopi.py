@@ -42,8 +42,8 @@ plotFunctions.plotProbabilityDistribution(energies,T_PD,variances,mean_energies,
 
 # 3 Phase transition and critical temperature
 
-n = 1410065408
-#n = 1000000000
+#n = 1410065408
+n = 1000000000
 A_40_R_0 = Py_Functions.readmatrices("Results_4e_2_N_%s_L_40_R_0.txt" % n)[0]
 A_40_R_1 = Py_Functions.readmatrices("Results_4e_2_N_%s_L_40_R_1.txt" % n)[0]
 A_40_R_2 = Py_Functions.readmatrices("Results_4e_2_N_%s_L_40_R_2.txt" % n)[0]
