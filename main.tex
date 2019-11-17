@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{babel,amsmath,amsthm,graphicx,mathtools,textcomp,varioref,amssymb,float,listings}
 \usepackage[top=50pt,left=40pt,right=40pt]{geometry}
+\usepackage[format=plain,labelfont=bf,up,textfont=it,up]{caption}
 \usepackage{titling,wrapfig}
 \usepackage{color}
 \usepackage{csquotes}
@@ -85,7 +86,7 @@ sorting=nyt
 \hbadness = \tolerance
 \pretolerance = 2000
 
-\title{The Ising Model;\\ and some of its thermodynamic properties.}
+\title{The Ising Model \\ and some of its thermodynamic properties.}
 \author{Jonathan Brakstad Waters\\Øyvind Engebretsen Elgvin\\Henrik Lind Petlund}
 
 \begin{document}
@@ -95,9 +96,9 @@ sorting=nyt
 \maketitle
 \begin{abstract}
 
-This report studies the thermodynamic properties of the two dimensional Ising Model and demonstrates how a second order phase transition can be described using this binary model. The numerically approximation to the critical temperature of the phase transition is found to be close to the exact analytical solution in (\cite{LarsOns}). The thermodynamic properties in terms of; oscillating energy, configuration of equilibrium and temperature dependence are shown in various plots.
+This report studies the thermodynamic properties of the two dimensional Ising Model and demonstrates how a second order phase transition can be described using this binary model. The numerically approximation to the critical temperature of the phase transition is found to be $T_c = 2.885$, which is close to the exact analytical solution in (\cite{LarsOns}). The thermodynamic properties in terms of oscillating energy, configuration of equilibrium, and temperature dependence are shown in various plots.
 
-The report applies the Metropolis algorithm and shows how it can be used to determine whether or not to make a change of a thermodynamic variable (energy). This, combined with the normal distribution PDF, turns out to give satisfying results and simulate the exiting phase transition from ferromagnetic to non-magnetic.
+The report applies the Metropolis algorithm and shows how it can be used to determine whether or not to make a change of a thermodynamic variable (energy). This, combined with the normal probability distribution function, turns out to give satisfying results and simulate the exiting (EXCITING?) phase transition from ferromagnetic to non-magnetic.
 
 \newpage
 
@@ -107,31 +108,33 @@ The report applies the Metropolis algorithm and shows how it can be used to dete
 
 \section{Introduction} \label{introduction}
 
-The Ising model is a model that has a large variety of usage. In this report, the model will be used to study phase transitions and thermodynamic properties in magnetic systems. The systems at hand are systems of size $L\times L$ particles in a grid. Each particle may be in either state "up" or "down" denoted with $1$ and $-1$, respectively. The model only focuses on the interaction between the nearest neighbor particles, and the energy between these is given by
+The Ising model is a model that has a large variety of usage. In this report, the model will be used to study phase transitions and thermodynamic properties in magnetic systems. The main goal of the project is to derive the critical temperature for the phase transition from ferromagnetic to paramagnetic. 
+
+The systems at hand are systems of $L\times L$ spins in a two dimensional grid. Each spin may be in either state "up" or "down" denoted with $1$ and $-1$, respectively. The model only focuses on the interaction between the nearest neighbor spins, and the energy between these is given by
 \begin{align}
     E = -J \sum_{<kl>}^N s_ks_l 
 \end{align}
 where $N$ is the number of particles, $s_i=\pm 1$ and $J>0$ is a constant which represents ferromagnetism and the strength of the particle interactions. We assume periodic boundary conditions so that every particle in the lattice has four nearest neighbors. 
 
-Further, the partition function of the system is given by
+Furthermore, the partition function, specific heat capacity, magnetic moment and susceptibility of the system is given by
 \begin{equation}
-Z=\sum_i e^{-\beta E_i} \label{eq:partition}
+Z=\sum_i e^{-\beta E_i} \label{eq:partition} 
 \end{equation}
-the specific heat capacity
+
 \begin{equation}
 C_V=\frac{1}{k_B T^2}\left(\langle E^2\rangle-\langle E\rangle^2\right)
 \end{equation}
-the magnetisation
+
 \begin{equation}
 M=\sum_is_i
 \end{equation}
-and the susceptibility
+
 \begin{equation}
 \chi= \frac{1}{k_B T}\left(\langle M^2\rangle-\langle M\rangle^2\right)
 \end{equation}
-as functions of the energy and spin. Where, $\beta =1/k_B T$. These equations are also mentioned in the lecture slides by (\cite{LectureIsing}) from the course FYS3150.
+as functions of energy and spin, with $\beta =1/k_B T$. These equations are also mentioned in the lecture slides by \cite{LectureIsing} from the course FYS3150.
 
-Initially, we will derive values of a 2x2 case and thereafter, proceed to higher dimensions. In a higher dimension case with $L=20$, the time it takes to reach the most likely state, represented by the number of Monte Carlo cycles, is calculated for two different temperatures with both an ordered and a random initial state. This gives an estimate of the equilibrium time of the system. The energy data from this case is then translated to a probability function $P(E)$. 
+Initially, we will derive values of a 2x2 case and thereafter, proceed to higher dimensions. In a higher dimension case with $L=20$, the time it takes to reach the most likely state, represented by the number of Monte Carlo cycles, is calculated for two different temperatures with both an ordered and a random initial state. This gives an estimate of the equilibrium time of the system. The energy data from this case is represented by a probability function $P(E)$. 
 
 Next, the systems with $L=40, L=60, L=80$ and $L=100$ are studied as functions of temperature. These calculations are performed to try and simulate phase transitions in the systems. For successfully detected phase transitions, the critical temperature is also extracted and compared to the results yielded by Onsager (1994).
 
@@ -139,28 +142,25 @@ Next, the systems with $L=40, L=60, L=80$ and $L=100$ are studied as functions o
 
 All data used in this report can be reproduced by running the executable files in the GitHub repository (\cite{GitHub}) and thereafter running the python file \texttt{plot\_data.py}.
 
-\subsection{The Metropolis algorithm}
+\subsection{Monte Carlo method and Metropolis Algorithm}
 
-The heavy calculation in this project is done by the \textit{metropolis} algorithm. The steps of this algorithm are:
+The heavy calculation in this project is done by using Monte Carlo methods with the \textit{metropolis} algorithm. The steps of our calculation are:
 
-1. Initialize a random initial state with the energy $E_0$. This state will have spins in random directions. 
+\begin{enumerate}
+    \item Initialize an initial state with the energy $E_0$ and magnetic moment $M_0$. This state will have spins in either random directions, or with all spins pointing the same way.
+    \item Choose a random spin particle in the lattice, and propose a spin flip. 
+    \item Apply the Metropolis Algorithm to decide wether or not to accect the spin flip:
+        \begin{enumerate}
+            \item Calculate the energy change, $\Delta E=E_1-E_0$, caused by the proposed spin flip. If $\Delta E \le 0$, the spin change is accepted, and we jump to step 4.
+            \item If $\Delta E > 0$, calculate the relative probability $w=e^{-\beta \Delta E}$.
+            \item For a random number $r \in [0,1]$, if $r \le w$, the new configuration is accepted, otherwise the old configuration is kept.
+        \end{enumerate}
+    \item Update the expectation values for energy and magnetic moment, and the corresponding heat capacity and susceptibility.
+    \item Repeat steps two to four for as longed as desired.
+\end{enumerate}
 
-2. Choose a random spin particle in the lattice, and flip it.
+\noindent Steps two to five are called a Monte Carlo Cycle. The number of Monte Carlo cycles, $N$ is determined prior to the calculations. The larger the value for $N$, the better results one should get, as given by the law of large numbers. More details on Monte Carlo methods and the Metropolis Algorithm can be found in the lecture notes for FYS3150 \cite{LectureIsing}. Our implementation of these methods can be found in the program \texttt{Ising\_func\_para.cpp}. 
 
-3. Calculate the energy change, $\Delta E=E_1-E_0$, caused by the flipped spin. If $\Delta E \le 0$, the spin change is accepted, and step 6 is the next step.
-
-4. If the $\Delta E > 0$, calculate the the Boltzmann distribution $w=e^{-\beta \Delta E}$.
-
-5. Calculate a random number $r$. If $r \le w$, the new configuration is accepted, otherwise the old configuration is kept.
-
-6. Update the expectation values (energy, magnetization, heat capacity, and susceptibility).
-
-7. Repeat steps 2-6 until the values are satisfying.
-
-
-\noindent Step 2-6 is what is called a Monte Carlo cycle and is, in turn, a measurement of the energy of the system. The final values are to be divided by the total number of Monte Carlo cycles used. The Metropolis algorithm is described more thoroughly in the lecture notes of FYS3150 (\cite{LectureIsing}) with code examples.
-
-\newpage
 
 \subsection{Periodic boundary conditions}
 To account for the fact that some of the spins at the boundary of the lattice does not have four nearest neighbours, periodic boundary conditions are introduced. This means that a spin at a boundary i.e. $s_{N,0}$ has a neighbour to the right with the same spin as the particle $s_{0,0}$. In one dimension, this can be expressed by
@@ -168,14 +168,16 @@ To account for the fact that some of the spins at the boundary of the lattice do
     E_i=-J\sum_{j=1}^{N}s_js_{j+1}
 \end{align*}
 
-\noindent For small dimensions, the energy of the system will be significantly affected by whether or not periodic boundary conditions are implemented. As $N \rightarrow \infty$, the boundary becomes insignificant. This is what happens when looking at phase transitions and critical temperatures, where the system has to be described in a larger dimension.
+\noindent as described by \cite{Lec15}. To account for the periodic boundary conditions, we use the function \texttt{Periodic}, found in \texttt{Div\_Functions.cpp}.
+
+For small dimensions, the energy of the system will be significantly affected by whether or not periodic boundary conditions are implemented. As $N \rightarrow \infty$, the boundary becomes insignificant. This is what happens when looking at phase transitions and critical temperatures, where the system has to be described in a larger dimension.
 
 \subsection{Benchmarks}
 
 For the $2x2$ case, the energy, magnetic momentum, specific heat capacity, and the magnetic susceptibility can all be calculated analytically. These analytical values, shown in Table \ref{tab:benchmarks}, are used as benchmarks for the numerically derived values. In our function for the Ising model (As seen in \texttt{Ising\_Func\_Para.cpp} and \texttt{Ising\_Func\_Para\_e.cpp}) we have implemented a test that compares the computed values to the benchmarks. The test is easily callable, and have been used throughout the project to check that the program works after  minor and major changes. 
 
 \subsection{Phase transitions}
-In the Ising model, it is interesting to see if it is possible to estimate phase transitions in the systems. These phase transitions can be i.e. liquid/gas (first order) or ferromagnetic/paramagnetic (second order). These transitions are all depending on the parameter, $T_C$, called the Curie temperature or the critical temperature. The theory given in the Lecture notes of FYS3150 (\cite{LectureIsing}) can be used to describe some of the values in the Ising model class with a power law behavior as follows
+In the Ising model, it is interesting to see if it is possible to estimate phase transitions in the systems. These phase transitions can be i.e. liquid/gas (first order) or ferromagnetic/paramagnetic (second order). These transitions are all depending on the parameter $T_C$, called the Curie temperature or the critical temperature. The theory given in the Lecture notes of FYS3150 (\cite{LectureIsing}) can be used to describe some of the values in the Ising model class with a power law behavior as follows
 \begin{equation}
     \langle M(T)\rangle\sim (T-T_c)^\beta \propto L^{-\beta/\nu}
 \end{equation}
@@ -191,7 +193,7 @@ where $\beta = 1/8$ is the so called critical exponent, $\alpha = 0$ and $\gamma
   \label{eq:xi}
 \end{equation}
 
-\noindent The lattice sizes in this report are always finite, and therefore $\chi$ will be proportional to this lattice size as seen in the equations above. Using finite size scaling relations, it is possible to relate the results and behaviors in the finite lattices with the once from the infinite case. This results in a scaling of the critical temperature given by
+\noindent The lattice sizes in this report are always finite, and therefore $\chi$ will be proportional to this lattice size as seen in the equations above. Using finite size scaling relations, it is possible to relate the results and behaviors in the finite lattices with the ones from the infinite case. This results in a scaling of the critical temperature given by
 
 \begin{equation}
     T_C(L)-T_C(L=\infty) = aL^{-1/\nu} \label{eq:tc}
@@ -200,18 +202,28 @@ with $\nu = 1$. The exact result for $T_c(L=\infty)$ is found in (\cite{LarsOns}
 \begin{align*}
     kT_c/J=\frac{2}{ln(1+\sqrt{2})}=2.269
 \end{align*}
-If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures or more from finite systems by using Equation \eqref{eq:tc}. This would either result in a couple of equations with two unknown variables; $T_c(L=\infty)$ and $a$, given by
+If a phase transition is observed in a finite system, the critical temperature, $T_{c}(L_i)$, is possible to derive. The value of $T_{c}(L=\infty)$ can be derived if one has two temperatures or more from finite systems by using Equation \eqref{eq:tc}. This would result in a couple of equations with two unknown variables; $T_c(L=\infty)$ and $a$, given by
 \begin{align*}
     \begin{cases}
         T_c(L=\infty)=T_c(L_1)-aL_1^{-1/\nu}\\
         T_c(L=\infty)=T_c(L_2)-aL_2^{-1/\nu}
     \end{cases}
 \end{align*}
-or; one use \texttt{NumPy}'s \texttt{polyfit}, do a linear regression for several experimental temperatures and find an approximation to the curve
+\noindent By eliminating $a$, we get the following expression for the critical temperature of an infinite lattice: 
+\begin{equation}
+    T_c(L=\infty) = \frac{L_2 T_c(L_2) - L_1 T_c(L_1)}{L_2-L_1}
+    \label{eq:Tc_inf}
+\end{equation}
+
+Alternatively, one could use \texttt{NumPy}'s \texttt{polyfit}, do a linear regression for several experimental temperatures and find an approximation to the curve
 \begin{align*}
         T_C(L) = T_C(L=\infty)+aL^{-1/\nu}
 \end{align*}
-where $L=0$ gives the critical temperature of the infinite system.
+where $T_c(L=0)$ gives the critical temperature of the infinite system. 
+
+We have tried both methods. For the regression, we used four lattice sizes, $L \in [40,60,80,100]$. For the use of equation (\ref{eq:Tc_inf}), we have set $L_1 = 40$ and $L_2 = 100$. To find $T_c$ for each lattice, we have plotted the heat capacity $C_V$ as function of temperature. The critical temperature for each lattice is read as the one corresponding to the maximum value of $C_V$. 
+
+It turns out that the use of equation (\ref{eq:Tc_inf} yields the better results when comparing with \cite{LarsOns}, and so those are the results we will present.
 
 \section{Results} \label{results}
 
@@ -231,6 +243,8 @@ Table \ref{tab:configurations} lists the different possible spin configurations 
     \label{tab:benchmarks}
 \end{table}
 
+\newpage
+
 \subsection{The most likely state}
 
 Figure \ref{fig:E_equiv} and Figure \ref{fig:M_equiv} gives a graphical presentation of the time ($\#$ of MC-cycles) it takes for different systems to reach equilibrium. Depending on the ordering of the initial state and the temperature of the different systems; an estimate of the equilibrium time can be made. Figure \ref{fig:acc_conf} gives the number of accepted configurations as function of MC-cycles.
@@ -238,19 +252,19 @@ Figure \ref{fig:E_equiv} and Figure \ref{fig:M_equiv} gives a graphical presenta
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{Figures/Most_Likely_State_E_mean_L_20.pdf}
-    \caption{The mean energy for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
+    \caption{The mean energy for temperatures $T=[1.0,2.4]$ for both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
     \label{fig:E_equiv}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{Figures/Most_Likely_State_M_abs_L_20.pdf}
-    \caption{The mean absolute magnetization for temperatures $T=[1.0,2.4]$ in both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
+    \caption{The mean absolute magnetization for temperatures $T=[1.0,2.4]$ for both an ordered and random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled and there are $10^4$ MC-cycles between each data point.}
     \label{fig:M_equiv}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{Figures/Number_of_Accepted_Configs_L_20.pdf}
-    \caption{Number of accepted configurations per MC-cycle for temperatures $T=[1.0,2.4]$ in both an ordered and a random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled there are $10^4$ MC-cycles between each data point.}
+    \caption{Number of accepted configurations per MC-cycle for temperatures $T=[1.0,2.4]$, for both an ordered and a random initial state as function of MC-cycles (time), L = 20. The x-axis is logarithmically scaled there are $10^4$ MC-cycles between each data point.}
     \label{fig:acc_conf}
 \end{figure}
 
@@ -306,7 +320,7 @@ It is interesting to compare the standard deviation, $\sigma_E$, (and therefore 
 
 \subsection{Phase transitions and the critical temperature, $T_c$}
 
-As seen in Table \ref{eq:tc}, the experimental critical temperature is calculated to be 2.2885, with a relative deviation of $\sim 0.8\%$ from the exact value calculated in (\cite{LarsOns}). The critical temperature is where the system turns from magnetic to non-magnetic, or from ferromagnetic to paramagnetic, but these temperatures are scaled and, therefore, not to be taken as kelvin. 
+The critical temperature is where the system turns from magnetic to non-magnetic, or from ferromagnetic to paramagnetic, but these temperatures are scaled and, therefore, not to be taken as kelvin. As seen in Table \ref{eq:tc}, the experimental critical temperature is calculated to be 2.2885, with a relative deviation of $\sim 0.2\%$ from the exact value calculated in (\cite{LarsOns}). Our calculation was done as described in section \ref{methods_and_theory}, using our maximum values for $Cv$ to approximate the critical temperature for an infinitely large lattice. It could well be that our result would have been closer to the exact value if our lattice sizes were larger, or we calculated with more Monte Carlo Cycles or for more temperatures on our interval. However, that would be time consuming, and we have tried to strike a good compromise between precision and runtime. 
 
 In figure 6, we see that the magnetization phase quickly turns non-magnetic around the critical temperature as the temperature rises, which makes sense since the entropy of the system rises with the rise of temperature, and a magnetic phase is then hard to sustain. 
 
@@ -318,9 +332,9 @@ HER ER DET BARE Å FYLLE INN ELLER EDITERE OVER HER GUTTER..
 
 In this project, we have used Monte Carlo Methods with the Metropolis Algorithm to model a ferromagnetic system with the use of the Ising Model. The goal of this project was to find a critical temperature for the phase transition from magnetic to non-magnetic in the binary system.
 
-The basic idea of the model was to construct an $L \times L$ lattice with spins pointing either up or down. Then proposing $N$ number of spin flips, and either accept or reject these based on a sample rule. As more and more spin flips where proposed, the system developed towards an equilibrium state, and allowed us to calculate expectation values for the energy and the magnetic moment. In turn, these values made it easy to calculate the heat capacity and susceptibility of the system. 
+The basic idea of the model was to construct an $L \times L$ lattice with spins pointing either up or down. Then we proposed $N$ number of spin flips, and either accept or reject these based on a sample rule. As more and more spin flips where proposed, the system developed towards an equilibrium state, and allowed us to calculate expectation values for the energy and the magnetic moment. In turn, these values made it easy to calculate the heat capacity and susceptibility of the system as the variances of Energy and magnetic moment respectively. 
 
-We have analyzed the above mentioned values for a number of different temperatures, and from equations for finite lattice scaling; found an estimate of the critical temperature for the phase transition. The critical temperature was found to be $Tc = 2.2885$.
+We have analyzed the above mentioned values for a number of different temperatures. From equations for finite lattice scaling we found an estimate for the critical temperature for the phase transition. The critical temperature was found to be $Tc = 2.2885$.
 
 
 \section{Appendix} \label{appendix}
