@@ -288,29 +288,5 @@ void Ising_Func_Para_mpi_e(vec T,int L,int N,string file,string order,int test,i
 
 
 
-
-
-
-
-
-
-
-    /*
-    // Save mean values to file
-    if (test == 0){
-        string filename = file + "_N_" + to_string(N) + "_L_" + to_string(L) + ".txt" ;
-        ofstream output_Results;
-        output_Results.open(filename,ios::out);
-        output_Results << T << endl;
-        output_Results << E_t << endl;
-        output_Results << M_t << endl;
-        output_Results << Mabs_t << endl;
-        output_Results << Cv_t << endl;
-        output_Results << X_t << endl;
-        output_Results << X_abs_t << endl;
-        output_Results << AC_t << endl;
-        output_Results.close();
-    }
-    */
 return;
 } // End of Ising_func
